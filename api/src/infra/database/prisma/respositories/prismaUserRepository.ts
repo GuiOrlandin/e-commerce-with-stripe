@@ -62,10 +62,10 @@ export class PrismaUserRepository implements UserRepository {
     return userRaw;
   }
 
-  async findById(email: string): Promise<Partial<User> | null> {
+  async findById(id: string): Promise<Partial<User> | null> {
     const user = await this.prisma.user.findFirst({
       where: {
-        email,
+        id,
       },
     });
 
