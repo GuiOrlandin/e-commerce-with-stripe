@@ -12,7 +12,7 @@ model User {
     created_at    DateTime @default(now())
     email         String   @unique
     password_hash String
-    role          Role
+    role          String?
     name          String
     phone_number  String?
     profile_picture String?
@@ -25,8 +25,4 @@ model User {
 }
 
 
-enum Role {
-    USER
-    ADMIN
-}
 
