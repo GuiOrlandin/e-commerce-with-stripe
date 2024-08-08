@@ -28,6 +28,10 @@ export class UserRepositoryInMemory implements UserRepository {
     return user;
   }
 
+  SaveCheckoutInUser(user: User): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
   async save(user: User): Promise<void> {
     const userIndex = this.users.findIndex(
       (currentUser) => currentUser._id === user._id,

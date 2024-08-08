@@ -9,6 +9,9 @@ import * as path from 'path';
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
   constructor(private prisma: PrismaService) {}
+  SaveCheckoutInUser(user: User): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 
   private async deleteFile(filePath: string): Promise<void> {
     const fullPath = path.join(
