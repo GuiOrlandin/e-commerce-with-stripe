@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { CheckoutItems } from '../repositories/userRepository';
 
 export interface UserSchema {
   email: string;
@@ -10,7 +10,7 @@ export interface UserSchema {
   created_at?: Date;
   products?: []; //editar e colocar products aqui;
   role: string;
-  purchasedProducts?: []; //editar e colocar products aqui
+  purchasedProducts?: CheckoutItems[];
   profile_picture: string | null;
 }
 
@@ -22,6 +22,7 @@ export class User {
       ...props,
       created_at: props.created_at || new Date(),
       role: props.role || 'USER',
+      purchasedProducts: props.purchasedProducts || [],
       profile_picture: props.profile_picture || null,
     };
   }
@@ -33,7 +34,7 @@ export class User {
   get products(): [] {
     return this.props.products;
   }
-  get purchasedProducts(): [] {
+  get purchasedProducts(): CheckoutItems[] {
     return this.props.purchasedProducts;
   }
 

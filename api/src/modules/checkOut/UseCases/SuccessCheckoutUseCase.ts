@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { request, response } from 'express';
 import { UserRepository } from 'src/modules/user/repositories/userRepository';
 import Stripe from 'stripe';
 
@@ -10,12 +9,12 @@ interface CheckOutItems {
 }
 
 interface CheckOutRequest {
-  userId: string;
+  userId?: string;
   sessionId: string;
 }
 
 @Injectable()
-export class CheckOutUseCase {
+export class SuccessCheckOutUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute({ sessionId, userId }: CheckOutRequest) {
@@ -27,7 +26,9 @@ export class CheckOutUseCase {
       apiVersion: '2024-06-20',
     });
 
-    const result = await stripe.checkout.sessions.listLineItems(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
 
     const user = await this.userRepository.findById(userId);
 
@@ -35,8 +36,10 @@ export class CheckOutUseCase {
       throw new Error('Usuário não encontrado!');
     }
 
-    console.log(JSON.stringify(result));
+    await this.userRepository.SaveCheckoutInUser(lineItems, user);
 
-    response.send('Your payment was successful');
+    console.log(JSON.stringify(lineItems.data));
+
+    return 'Your payment was successful';
   }
 }

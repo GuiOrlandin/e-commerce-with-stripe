@@ -43,7 +43,7 @@ export class CheckOutUseCase {
         allowed_countries: ['BR'],
       },
       mode: 'payment',
-      success_url: 'https://example.com/success', //editar o link
+      success_url: `http://localhost:3333/checkout?sessionId={CHECKOUT_SESSION_ID}`, //editar o link
       cancel_url: 'http://localhost:5173/', //editar o link
     });
 

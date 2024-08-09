@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/modules/user/entities/User';
-import { UserRepository } from 'src/modules/user/repositories/userRepository';
+import {
+  CheckoutItems,
+  UserRepository,
+} from 'src/modules/user/repositories/userRepository';
 import { PrismaService } from '../prisma.service';
 import { PrismaUserMapper } from '../mappers/prismaUserMapper';
 import * as fs from 'fs';
 import * as path from 'path';
+import { JsonObject } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
   constructor(private prisma: PrismaService) {}
-  SaveCheckoutInUser(user: User): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
 
   private async deleteFile(filePath: string): Promise<void> {
     const fullPath = path.join(
@@ -79,6 +80,44 @@ export class PrismaUserRepository implements UserRepository {
     const userRaw = PrismaUserMapper.toDomain(user);
 
     return userRaw;
+  }
+
+  async SaveCheckoutInUser(
+    items: CheckoutItems,
+    user: Partial<User>,
+  ): Promise<void> {
+    const userUnmodified = await this.prisma.user.findFirst({
+      where: {
+        id: user._id,
+      },
+      select: {
+        purchasedProducts: true,
+      },
+    });
+
+    const existingProducts = Array.isArray(userUnmodified?.purchasedProducts)
+      ? userUnmodified.purchasedProducts
+      : [];
+
+    const newProducts: JsonObject[] = items.data.map((item) => ({
+      description: item.description,
+      amount_total: item.amount_total,
+      price: {
+        unit_amount: item.price.unit_amount,
+      },
+      quantity: item.quantity,
+    }));
+
+    const updatedPurchasedProducts = [...existingProducts, ...newProducts];
+
+    await this.prisma.user.update({
+      where: {
+        id: user._id,
+      },
+      data: {
+        purchasedProducts: updatedPurchasedProducts,
+      },
+    });
   }
 
   async save(user: User): Promise<void> {

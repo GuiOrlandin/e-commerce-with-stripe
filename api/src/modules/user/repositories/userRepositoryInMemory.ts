@@ -1,5 +1,5 @@
 import { User } from '../entities/User';
-import { UserRepository } from './userRepository';
+import { CheckoutItems, UserRepository } from './userRepository';
 
 export class UserRepositoryInMemory implements UserRepository {
   public users: User[] = [];
@@ -28,8 +28,8 @@ export class UserRepositoryInMemory implements UserRepository {
     return user;
   }
 
-  SaveCheckoutInUser(user: User): Promise<void> {
-    throw new Error('Method not implemented.');
+  async SaveCheckoutInUser(items: CheckoutItems, user: User): Promise<void> {
+    user.purchasedProducts.push(items);
   }
 
   async save(user: User): Promise<void> {

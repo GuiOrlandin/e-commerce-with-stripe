@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CheckOutItems {
+export class CheckoutItems {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -16,6 +16,6 @@ export class CheckOutItems {
 export class CreateCheckoutBody {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CheckOutItems)
-  items: CheckOutItems[];
+  @Type(() => CheckoutItems)
+  items: CheckoutItems[];
 }
