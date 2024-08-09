@@ -22,11 +22,11 @@ export class CheckOutUseCase {
       apiVersion: '2024-06-20',
     });
 
-    // const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findById(userId);
 
-    // if (!user) {
-    //   throw new Error('Usuário não encontrado!');
-    // }
+    if (!user) {
+      throw new Error('Usuário não encontrado!');
+    }
 
     const session = await stripe.checkout.sessions.create({
       line_items: items.map((item) => ({
@@ -41,6 +41,9 @@ export class CheckOutUseCase {
       })),
       shipping_address_collection: {
         allowed_countries: ['BR'],
+      },
+      metadata: {
+        userId: user._id,
       },
       mode: 'payment',
       success_url: `http://localhost:3333/checkout?sessionId={CHECKOUT_SESSION_ID}`, //editar o link

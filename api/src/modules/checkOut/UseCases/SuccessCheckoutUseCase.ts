@@ -17,28 +17,24 @@ interface CheckOutRequest {
 export class SuccessCheckOutUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute({ sessionId, userId }: CheckOutRequest) {
-    if (!sessionId) {
-      throw new Error('Session ID is required');
-    }
-
+  async execute({ sessionId }: CheckOutRequest) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2024-06-20',
     });
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
+    const metadataUserId = session.metadata.userId;
+
     const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
 
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findById(metadataUserId);
 
     if (!user) {
-      throw new Error('Usuário não encontrado!');
+      throw new Error('User dont found!');
     }
 
     await this.userRepository.SaveCheckoutInUser(lineItems, user);
-
-    console.log(JSON.stringify(lineItems.data));
 
     return 'Your payment was successful';
   }

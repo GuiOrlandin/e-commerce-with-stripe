@@ -3,6 +3,7 @@ import { User } from '../entities/User';
 export interface DataItems {
   description: string;
   amount_total: number;
+  id: string;
   price: {
     unit_amount: number;
   };

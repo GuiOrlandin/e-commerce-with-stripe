@@ -95,18 +95,17 @@ export class PrismaUserRepository implements UserRepository {
       },
     });
 
-    console.log(items);
 
     const existingProducts = Array.isArray(userUnmodified?.purchasedProducts)
       ? userUnmodified.purchasedProducts
       : [];
 
-    console.log(existingProducts);
 
     const newProducts: JsonObject[] = items.data.map((item) => {
       return {
         description: item.description,
         amount_total: item.amount_total,
+        id: item.id,
         price: {
           unit_amount: item.price.unit_amount,
         },
