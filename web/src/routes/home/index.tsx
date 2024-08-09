@@ -36,7 +36,6 @@ export default function Home() {
     },
   });
 
-  console.log(success);
 
   useEffect(() => {
     if (isSuccess) {

@@ -34,8 +34,6 @@ export class CheckoutController {
 
     const checkoutUrl = await this.checkoutUseCase.execute({ items });
 
-    console.log(checkoutUrl);
-
     res.json({ url: checkoutUrl });
   }
   @Get()
@@ -50,8 +48,6 @@ export class CheckoutController {
     const checkoutUrl = await this.successCheckoutUseCase.execute({
       sessionId,
     });
-
-    console.log(checkoutUrl);
 
     res.json({ checkoutUrl });
   }

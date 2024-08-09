@@ -25,8 +25,10 @@ export class PrismaUserMapper {
       adress,
       phone_number,
       role,
-      products: JSON.stringify(products),
-      purchasedProducts: JSON.stringify(purchasedProducts),
+      products: products ? JSON.parse(JSON.stringify(products)) : null,
+      purchasedProducts: purchasedProducts
+        ? JSON.parse(JSON.stringify(purchasedProducts))
+        : null,
     };
   }
 
@@ -53,10 +55,10 @@ export class PrismaUserMapper {
       phone_number,
       role,
       profile_picture,
-      products: products ? JSON.parse(products as string) : [],
+      products: products ? JSON.parse(JSON.stringify(products)) : null,
       purchasedProducts: purchasedProducts
-        ? JSON.parse(purchasedProducts as string)
-        : [],
+        ? JSON.parse(JSON.stringify(purchasedProducts))
+        : null,
     });
   }
 }

@@ -15,15 +15,12 @@ export class ValidateUserUseCase {
   async execute({ email, password_hash }: ValidateUserRequest) {
     const user = await this.userRepository.findByEmail(email);
 
-    console.log(user);
-
     if (!user) {
       throw new AuthValueIncorrectException();
     }
 
     const userFound = await this.userRepository.findById(user._id);
 
-    console.log(userFound);
 
     const isPasswordMatched = await compare(
       password_hash,
