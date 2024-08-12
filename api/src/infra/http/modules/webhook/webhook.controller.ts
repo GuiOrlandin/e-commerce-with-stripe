@@ -46,7 +46,7 @@ export class WebhookController {
     }
 
     switch (event.type) {
-      case 'checkout.session.completed':
+      case "checkout.session.completed":
         const session = event.data.object as Stripe.Checkout.Session;
 
         await this.successCheckoutUseCase.execute({

@@ -9,6 +9,15 @@ export interface DataItems {
   };
   quantity: number;
 }
+export interface AdressItems {
+  city: string;
+  country: string;
+  line1: string;
+  line2: string;
+  postal_code: string;
+  state: string;
+}
+
 export interface CheckoutItems {
   data: DataItems[];
 }
@@ -21,5 +30,6 @@ export abstract class UserRepository {
   abstract SaveCheckoutInUser(
     items: CheckoutItems,
     user: Partial<User>,
+    AdressItems: AdressItems,
   ): Promise<void>;
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/modules/user/entities/User';
 import {
+  AdressItems,
   CheckoutItems,
   UserRepository,
 } from 'src/modules/user/repositories/userRepository';
@@ -85,6 +86,7 @@ export class PrismaUserRepository implements UserRepository {
   async SaveCheckoutInUser(
     items: CheckoutItems,
     user: Partial<User>,
+    AdressItems: AdressItems,
   ): Promise<void> {
     const userUnmodified = await this.prisma.user.findFirst({
       where: {
@@ -95,11 +97,9 @@ export class PrismaUserRepository implements UserRepository {
       },
     });
 
-
     const existingProducts = Array.isArray(userUnmodified?.purchasedProducts)
       ? userUnmodified.purchasedProducts
       : [];
-
 
     const newProducts: JsonObject[] = items.data.map((item) => {
       return {
@@ -108,6 +108,13 @@ export class PrismaUserRepository implements UserRepository {
         id: item.id,
         price: {
           unit_amount: item.price.unit_amount,
+        },
+        adress: {
+          city: AdressItems.city,
+          country: AdressItems.country,
+          adress: AdressItems.line1,
+          numberAndNeighborhood: AdressItems.line2,
+          postalCode: AdressItems.postal_code,
         },
         quantity: item.quantity,
       };

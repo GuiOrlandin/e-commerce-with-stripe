@@ -22,7 +22,13 @@ export class SuccessCheckOutUseCase {
       apiVersion: '2024-06-20',
     });
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: [
+        'line_items',
+        'line_items.data.price.product',
+        'customer_details',
+      ],
+    });
 
     const metadataUserId = session.metadata.userId;
 
@@ -34,7 +40,15 @@ export class SuccessCheckOutUseCase {
       throw new Error('User dont found!');
     }
 
-    await this.userRepository.SaveCheckoutInUser(lineItems, user);
+    console.log(lineItems);
+    console.log(session.customer_details?.address);
+    console.log(session.line_items);
+
+    await this.userRepository.SaveCheckoutInUser(
+      lineItems,
+      user,
+      session.customer_details?.address,
+    );
 
     return 'Your payment was successful';
   }
