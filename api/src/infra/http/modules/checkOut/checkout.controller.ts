@@ -16,7 +16,7 @@ export class CheckoutController {
   ) {
     const items = body.items;
 
-    const userId = request.user._id as string;
+    const userId = request.user.id as string;
 
     const checkoutUrl = await this.checkoutUseCase.execute({ items, userId });
 

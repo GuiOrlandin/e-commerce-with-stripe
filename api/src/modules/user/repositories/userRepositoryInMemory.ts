@@ -19,7 +19,7 @@ export class UserRepositoryInMemory implements UserRepository {
   }
 
   async findById(id: string): Promise<User> {
-    const user = this.users.find((user) => user._id === id);
+    const user = this.users.find((user) => user.id === id);
 
     if (!user) {
       return null;
@@ -34,7 +34,7 @@ export class UserRepositoryInMemory implements UserRepository {
 
   async save(user: User): Promise<void> {
     const userIndex = this.users.findIndex(
-      (currentUser) => currentUser._id === user._id,
+      (currentUser) => currentUser.id === user.id,
     );
 
     if (userIndex >= 0) {

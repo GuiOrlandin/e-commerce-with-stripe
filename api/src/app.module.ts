@@ -8,6 +8,7 @@ import { AuthModule } from './infra/http/modules/auth/auth.module';
 import { CheckoutModule } from './infra/http/modules/checkOut/checkout.module';
 import { WebhookModule } from './infra/http/modules/webhook/webhook.module';
 import configs from 'config/config';
+import { ProductModule } from './infra/http/modules/product/product.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import configs from 'config/config';
     AuthModule,
     CheckoutModule,
     WebhookModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [

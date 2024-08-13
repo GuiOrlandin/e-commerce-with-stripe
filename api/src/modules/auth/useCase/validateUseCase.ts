@@ -19,8 +19,7 @@ export class ValidateUserUseCase {
       throw new AuthValueIncorrectException();
     }
 
-    const userFound = await this.userRepository.findById(user._id);
-
+    const userFound = await this.userRepository.findById(user.id);
 
     const isPasswordMatched = await compare(
       password_hash,

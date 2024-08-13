@@ -1,3 +1,4 @@
+import { Product } from 'src/modules/products/entities/product';
 import { CheckoutItems } from '../repositories/userRepository';
 
 export interface UserSchema {
@@ -5,12 +6,13 @@ export interface UserSchema {
   password_hash: string;
   name: string;
   adress: string;
-  _id?: string;
+  id?: string;
   phone_number: string;
   created_at?: Date;
-  products?: []; //editar e colocar products aqui;
+  products?: Product[];
   role: string;
   purchasedProducts?: CheckoutItems[];
+  items_sold?: CheckoutItems[];
   profile_picture: string | null;
 }
 
@@ -23,16 +25,21 @@ export class User {
       created_at: props.created_at || new Date(),
       role: props.role || 'USER',
       purchasedProducts: props.purchasedProducts || [],
+      products: props.products || [],
+      items_sold: props.items_sold || [],
       profile_picture: props.profile_picture || null,
     };
   }
 
-  get _id(): string {
-    return this.props._id;
+  get id(): string {
+    return this.props.id;
   }
 
-  get products(): [] {
+  get products(): Product[] {
     return this.props.products;
+  }
+  get items_sold(): CheckoutItems[] {
+    return this.props.items_sold;
   }
   get purchasedProducts(): CheckoutItems[] {
     return this.props.purchasedProducts;

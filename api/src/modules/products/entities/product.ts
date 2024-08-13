@@ -7,6 +7,7 @@ export interface ProductSchema {
   unit_value: number;
   stock: number;
   user_id: string;
+  category: string;
 }
 
 export class Product {
@@ -31,12 +32,20 @@ export class Product {
   set name(name: string) {
     this.props.name = name;
   }
+
   get user_id(): string {
-    return this.props.name;
+    return this.props.user_id;
   }
 
   set user_id(user_id: string) {
     this.props.user_id = user_id;
+  }
+  get category(): string {
+    return this.props.category;
+  }
+
+  set category(category: string) {
+    this.props.category = category;
   }
 
   get stock(): number {

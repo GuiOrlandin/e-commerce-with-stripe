@@ -3,7 +3,7 @@ import { User as UserRaw } from '@prisma/client';
 
 export class PrismaUserMapper {
   static toPrisma({
-    _id,
+    id,
     profile_picture,
     created_at,
     email,
@@ -12,20 +12,20 @@ export class PrismaUserMapper {
     adress,
     phone_number,
     role,
-    products,
     purchasedProducts,
+    items_sold,
   }: User): UserRaw {
     return {
       email,
       name,
       password_hash,
       created_at,
-      id: _id,
+      id,
       profile_picture,
       adress,
       phone_number,
       role,
-      products: products ? JSON.parse(JSON.stringify(products)) : null,
+      items_sold: items_sold ? JSON.parse(JSON.stringify(items_sold)) : null,
       purchasedProducts: purchasedProducts
         ? JSON.parse(JSON.stringify(purchasedProducts))
         : null,
@@ -42,20 +42,20 @@ export class PrismaUserMapper {
     phone_number,
     profile_picture,
     role,
-    products,
     purchasedProducts,
+    items_sold,
   }: UserRaw): User {
     return new User({
       email,
       name,
       password_hash,
       created_at,
-      _id: id,
+      id,
       adress,
       phone_number,
       role,
       profile_picture,
-      products: products ? JSON.parse(JSON.stringify(products)) : null,
+      items_sold: items_sold ? JSON.parse(JSON.stringify(items_sold)) : null,
       purchasedProducts: purchasedProducts
         ? JSON.parse(JSON.stringify(purchasedProducts))
         : null,

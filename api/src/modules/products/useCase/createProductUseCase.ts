@@ -9,12 +9,13 @@ interface CreatedProductRequest {
   description?: string;
   image_url: string;
   user_id: string;
+  category: string;
   unit_value: number;
   stock: number;
 }
 
 @Injectable()
-export class CreateUserUseCase {
+export class CreateProductUseCase {
   constructor(private productRepository: ProductRepository) {}
 
   async execute({
@@ -25,6 +26,7 @@ export class CreateUserUseCase {
     unit_value,
     stock,
     user_id,
+    category,
   }: CreatedProductRequest) {
     const product = new Product({
       created_at,
@@ -34,6 +36,7 @@ export class CreateUserUseCase {
       unit_value,
       stock,
       user_id,
+      category,
     });
 
     await this.productRepository.create(product);

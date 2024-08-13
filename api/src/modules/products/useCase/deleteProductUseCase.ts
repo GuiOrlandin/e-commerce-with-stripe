@@ -7,7 +7,7 @@ interface DeleteProductRequest {
 }
 
 @Injectable()
-export class CreateUserUseCase {
+export class DeleteProductUserUseCase {
   constructor(private productRepository: ProductRepository) {}
 
   async execute({ product_id, user_id }: DeleteProductRequest) {

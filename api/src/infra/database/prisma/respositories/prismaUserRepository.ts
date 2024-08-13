@@ -90,7 +90,7 @@ export class PrismaUserRepository implements UserRepository {
   ): Promise<void> {
     const userUnmodified = await this.prisma.user.findFirst({
       where: {
-        id: user._id,
+        id: user.id,
       },
       select: {
         purchasedProducts: true,
@@ -125,7 +125,7 @@ export class PrismaUserRepository implements UserRepository {
 
     await this.prisma.user.update({
       where: {
-        id: user._id,
+        id: user.id,
       },
       data: {
         purchasedProducts: updatedPurchasedProducts,

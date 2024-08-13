@@ -45,7 +45,7 @@ export class CheckOutUseCase {
         allowed_countries: ['BR'],
       },
       metadata: {
-        userId: user._id,
+        userId: user.id,
       },
       mode: 'payment',
       success_url: `http://localhost:3333/checkout?sessionId={CHECKOUT_SESSION_ID}`, //editar o link
