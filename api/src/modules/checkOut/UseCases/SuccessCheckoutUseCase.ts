@@ -40,10 +40,6 @@ export class SuccessCheckOutUseCase {
       throw new Error('User dont found!');
     }
 
-    console.log(lineItems);
-    console.log(session.customer_details?.address);
-    console.log(session.line_items);
-
     await this.userRepository.SaveCheckoutInUser(
       lineItems,
       user,

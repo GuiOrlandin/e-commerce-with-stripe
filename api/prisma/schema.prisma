@@ -18,10 +18,25 @@ model User {
     profile_picture String?
     adress         String?
 
-    products        Json?
+    products Products[]
     purchasedProducts Json?
+    items_sold Json?
 
     @@map("users")
+}
+
+model Products {
+    id            String   @id @default(auto()) @map("_id") @db.ObjectId
+    created_at    DateTime @default(now())
+    name          String
+    description  String?
+    image_url      String
+    user          User      @relation(fields: [user_id], references: [id])
+    user_id       String    @db.ObjectId
+    unit_value  Float
+    stock       Float
+
+    @@map("products")
 }
 
 

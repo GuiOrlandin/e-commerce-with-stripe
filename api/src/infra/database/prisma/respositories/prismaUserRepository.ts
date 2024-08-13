@@ -117,6 +117,7 @@ export class PrismaUserRepository implements UserRepository {
           postalCode: AdressItems.postal_code,
         },
         quantity: item.quantity,
+        created_at: new Date().toISOString(),
       };
     });
 

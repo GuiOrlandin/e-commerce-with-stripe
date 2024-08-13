@@ -4,6 +4,7 @@ import Stripe from 'stripe';
 
 interface CheckOutItems {
   name: string;
+  description: string;
   quantity: number;
   unitValue: number;
 }
@@ -34,6 +35,7 @@ export class CheckOutUseCase {
           currency: 'BRL',
           product_data: {
             name: item.name,
+            description: item.description,
           },
           unit_amount: item.unitValue * 100,
         },

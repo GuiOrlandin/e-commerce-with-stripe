@@ -6,6 +6,10 @@ export class CheckoutItems {
   @IsNotEmpty()
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
   @IsNotEmpty()
   quantity: number;
 
