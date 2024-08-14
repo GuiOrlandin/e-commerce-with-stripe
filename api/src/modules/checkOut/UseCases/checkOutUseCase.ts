@@ -7,6 +7,7 @@ interface CheckOutItems {
   description: string;
   quantity: number;
   unitValue: number;
+  image_url: string;
 }
 
 interface CheckOutRequest {
@@ -36,6 +37,9 @@ export class CheckOutUseCase {
           product_data: {
             name: item.name,
             description: item.description,
+            metadata: {
+              image_url: item.image_url,
+            },
           },
           unit_amount: item.unitValue * 100,
         },

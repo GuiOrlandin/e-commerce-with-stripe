@@ -40,8 +40,23 @@ export class SuccessCheckOutUseCase {
       throw new Error('User dont found!');
     }
 
+    const processedItems = session.line_items?.data.map((item) => {
+      const product = item.price?.product as Stripe.Product;
+      return {
+        amount_total: item.amount_total,
+        description: product.description || '',
+        id: item.id,
+        name: product.name,
+        quantity: item.quantity,
+        unit_amount: item.price?.unit_amount || 0,
+        image_url: product.metadata.image_url,
+      };
+    });
+
     await this.userRepository.SaveCheckoutInUser(
-      lineItems,
+      {
+        data: processedItems,
+      },
       user,
       session.customer_details?.address,
     );

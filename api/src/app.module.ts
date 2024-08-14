@@ -9,12 +9,19 @@ import { CheckoutModule } from './infra/http/modules/checkOut/checkout.module';
 import { WebhookModule } from './infra/http/modules/webhook/webhook.module';
 import configs from 'config/config';
 import { ProductModule } from './infra/http/modules/product/product.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configs],
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'uploads'),
+      serveRoot: '/files',
+      renderPath: '/files/*',
     }),
     DatabaseModule,
     UserModule,

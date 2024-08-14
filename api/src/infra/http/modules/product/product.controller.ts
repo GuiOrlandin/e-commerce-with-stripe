@@ -48,9 +48,6 @@ export class ProductController {
     const unitValue = parseFloat(unit_value);
     const stockValue = parseFloat(stock);
 
-    console.log(request.user);
-    console.log(request.user.id);
-
     const product = await this.createProductUseCase.execute({
       name,
       stock: stockValue,

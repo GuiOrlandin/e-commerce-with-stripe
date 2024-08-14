@@ -103,12 +103,14 @@ export class PrismaUserRepository implements UserRepository {
 
     const newProducts: JsonObject[] = items.data.map((item) => {
       return {
-        description: item.description,
         amount_total: item.amount_total,
         id: item.id,
-        price: {
-          unit_amount: item.price.unit_amount,
-        },
+        description: item.description,
+        name: item.name,
+        image_Url: item.image_url,
+        unit_amount: item.unit_amount,
+        quantity: item.quantity,
+        created_at: new Date().toISOString(),
         adress: {
           city: AdressItems.city,
           country: AdressItems.country,
@@ -116,8 +118,6 @@ export class PrismaUserRepository implements UserRepository {
           numberAndNeighborhood: AdressItems.line2,
           postalCode: AdressItems.postal_code,
         },
-        quantity: item.quantity,
-        created_at: new Date().toISOString(),
       };
     });
 

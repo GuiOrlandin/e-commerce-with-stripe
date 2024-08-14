@@ -1,12 +1,12 @@
 import { User } from '../entities/User';
 
 export interface DataItems {
-  description: string;
   amount_total: number;
   id: string;
-  price: {
-    unit_amount: number;
-  };
+  name: string;
+  description: string;
+  image_url: string;
+  unit_amount: number;
   quantity: number;
 }
 export interface AdressItems {
