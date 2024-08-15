@@ -138,8 +138,10 @@ export class PrismaUserRepository implements UserRepository {
         (productInDb) => productInDb.id === product.id,
       );
 
-      const newStockOfProduct =
-        currentProductInDb.stock - (product.quantity as number);
+      const newStockOfProduct = Math.max(
+        currentProductInDb.stock - (product.quantity as number),
+        0,
+      );
 
       return {
         where: { id: product.id as string },

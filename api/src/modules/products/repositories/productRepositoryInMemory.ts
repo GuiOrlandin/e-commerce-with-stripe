@@ -1,7 +1,7 @@
 import { Product } from '../entities/product';
 import { ProductRepository } from './productRepository';
 
-export class UserRepositoryInMemory implements ProductRepository {
+export class ProductRepositoryInMemory implements ProductRepository {
   public products: Product[] = [];
 
   async create(product: Product): Promise<void> {
@@ -30,5 +30,11 @@ export class UserRepositoryInMemory implements ProductRepository {
     if (productIndex >= 0) {
       this.products[productIndex] = product;
     }
+  }
+
+  async findAllProducts(): Promise<Product[]> {
+    const products = this.products;
+
+    return products;
   }
 }

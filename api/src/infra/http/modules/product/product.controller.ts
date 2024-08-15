@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Request,
@@ -15,12 +16,15 @@ import { AuthRequestModel } from '../auth/models/AuthRequestModel';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { DeleteProductUserUseCase } from 'src/modules/products/useCase/deleteProductUseCase';
+import { Public } from '../auth/decorators/isPublic';
+import { FindAllProductUseCase } from 'src/modules/products/useCase/findAllProductsUseCase';
 
 @Controller('product')
 export class ProductController {
   constructor(
     private createProductUseCase: CreateProductUseCase,
     private deleteProductUseCase: DeleteProductUserUseCase,
+    private findAllProductsUseCase: FindAllProductUseCase,
   ) {}
 
   @Post()
@@ -60,6 +64,14 @@ export class ProductController {
     });
 
     return product;
+  }
+
+  @Get()
+  @Public()
+  async findAllProducts() {
+    const products = await this.findAllProductsUseCase.execute();
+
+    return products;
   }
 
   @Delete(':id')
