@@ -2,7 +2,8 @@ import { User } from '../entities/User';
 
 export interface DataItems {
   amount_total: number;
-  id: string;
+  purchase_id: string;
+  product_id: string;
   name: string;
   description: string;
   image_url: string;

@@ -8,6 +8,10 @@ export class CheckoutItems {
 
   @IsString()
   @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
   image_url: string;
 
   @IsString()

@@ -45,11 +45,12 @@ export class SuccessCheckOutUseCase {
       return {
         amount_total: item.amount_total,
         description: product.description || '',
-        id: item.id,
+        purchase_id: item.id,
         name: product.name,
         quantity: item.quantity,
         unit_amount: item.price?.unit_amount || 0,
         image_url: product.metadata.image_url,
+        product_id: product.metadata.product_id,
       };
     });
 

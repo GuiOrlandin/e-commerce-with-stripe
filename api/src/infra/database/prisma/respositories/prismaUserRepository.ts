@@ -104,7 +104,8 @@ export class PrismaUserRepository implements UserRepository {
     const newProducts: JsonObject[] = items.data.map((item) => {
       return {
         amount_total: item.amount_total,
-        id: item.id,
+        id: item.product_id,
+        purchase_id: item.purchase_id,
         description: item.description,
         name: item.name,
         image_Url: item.image_url,
@@ -120,6 +121,35 @@ export class PrismaUserRepository implements UserRepository {
         },
       };
     });
+
+    const productsId = newProducts.map((product) => product.id as string);
+    const productsInDatabase = await this.prisma.product.findMany({
+      where: {
+        id: { in: productsId },
+      },
+      select: {
+        id: true,
+        stock: true,
+      },
+    });
+
+    const updates = newProducts.map((product) => {
+      const currentProductInDb = productsInDatabase.find(
+        (productInDb) => productInDb.id === product.id,
+      );
+
+      const newStockOfProduct =
+        currentProductInDb.stock - (product.quantity as number);
+
+      return {
+        where: { id: product.id as string },
+        data: { stock: newStockOfProduct },
+      };
+    });
+
+    await Promise.all(
+      updates.map((update) => this.prisma.product.update(update)),
+    );
 
     const updatedPurchasedProducts = [...existingProducts, ...newProducts];
 
