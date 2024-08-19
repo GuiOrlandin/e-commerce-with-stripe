@@ -4,7 +4,7 @@ export const ProductCartContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: #ffffff;
-  padding: 1rem;
+  padding: 1.6rem;
   border-radius: 8px;
   max-height: 22rem;
   max-width: 20.3125rem;
@@ -41,22 +41,33 @@ export const AddProductsToCartButton = styled.button`
   display: flex;
   background: #d9d9d9;
   padding: 0.1rem 0.4rem 0.3rem 0.4rem;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 export const RemoveProductsCartButton = styled.button`
   display: flex;
   background: #d9d9d9;
   padding: 0.1rem 0.4rem 0.2rem 0.4rem;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 export const StockContainer = styled.div`
   display: flex;
-  margin: 0;
+  align-items: center;
+  justify-content: center;
   padding-top: 0.3rem;
   p {
+    display: flex;
+    align-items: center;
     margin: 0;
     font-weight: bold;
   }
 
   span {
-    margin-left: 0.2rem;
+    margin-left: 0.4rem;
   }
 `;

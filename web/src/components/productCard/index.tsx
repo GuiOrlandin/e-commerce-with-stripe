@@ -18,7 +18,9 @@ export default function ProductCart({ product }: ProductsCartProps) {
   const [productNumber, setProductNumber] = useState<number>(1);
 
   function handleAddProductsInCart() {
-    setProductNumber(productNumber! + 1);
+    if (productNumber! < product.props.stock) {
+      setProductNumber(productNumber! + 1);
+    }
   }
   function handleRemoveProductsOfCart() {
     if (productNumber! > 0) {
@@ -38,11 +40,15 @@ export default function ProductCart({ product }: ProductsCartProps) {
           <span>{product.props.stock}</span>
         </StockContainer>
         <AddOrRemoveButtons>
-          <AddProductsToCartButton onClick={() => handleAddProductsInCart()}>
+          <AddProductsToCartButton
+            disabled={productNumber! === product.props.stock}
+            onClick={() => handleAddProductsInCart()}
+          >
             +
           </AddProductsToCartButton>
           <span>{productNumber}</span>
           <RemoveProductsCartButton
+            disabled={productNumber! === 0}
             onClick={() => handleRemoveProductsOfCart()}
           >
             -
