@@ -27,7 +27,7 @@ export default function SideBar() {
   return (
     <SideBarContainer>
       <HomeButton $variant={buttonSelected}>
-        <h1 onClick={() => setButtonSelected("home")}>Home</h1>
+        <h2 onClick={() => setButtonSelected("home")}>Home</h2>
       </HomeButton>
       <OptionsButtonsContainer>
         <CartButton $variant={buttonSelected}>

@@ -61,7 +61,7 @@ export const HomeButton = styled.div<ButtonSelected>`
   border-bottom: ${({ $variant }) =>
     $variant === "home" ? "1px solid #2906b1" : "1px solid transparent"};
 
-  h1 {
+  h2 {
     margin: 0;
     font-size: 1.8rem;
     color: #2906b1;
