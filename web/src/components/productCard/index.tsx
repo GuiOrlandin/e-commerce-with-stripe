@@ -1,4 +1,4 @@
-import { Products } from "../../routes/home";
+import { ProductsResponse } from "../../routes/home";
 import {
   AddOrRemoveButtons,
   AddProductsToCartButton,
@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 
 interface ProductsCartProps {
-  product: Products;
+  product: ProductsResponse;
 }
 
 export default function ProductCart({ product }: ProductsCartProps) {

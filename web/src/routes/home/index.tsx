@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import SideBar from "../../components/sidebar";
 import ProductCart from "../../components/productCard";
 
-export interface Products {
+export interface ProductsResponse {
   props: {
     _id: string;
     category: string;
@@ -49,7 +49,7 @@ export default function Home() {
     refetch,
     isSuccess,
     isLoading,
-  } = useQuery<Products[]>({
+  } = useQuery<ProductsResponse[]>({
     queryKey: ["checkout-info"],
 
     queryFn: async () => {
