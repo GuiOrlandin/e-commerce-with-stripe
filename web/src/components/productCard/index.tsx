@@ -1,4 +1,5 @@
 import { ProductsResponse } from "../../routes/home";
+import { productStore } from "../../store/productStore";
 import {
   AddOrRemoveButtons,
   AddProductsToCartButton,
@@ -8,7 +9,7 @@ import {
   StockContainer,
 } from "./styles";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ProductsCartProps {
   product: ProductsResponse;
@@ -16,6 +17,9 @@ interface ProductsCartProps {
 
 export default function ProductCart({ product }: ProductsCartProps) {
   const [productNumber, setProductNumber] = useState<number>(1);
+  const setProduct = productStore((state) => state.setProduct);
+  const removeProduct = productStore((state) => state.removeProduct);
+  const productsInCart = productStore((state) => state.products);
 
   function handleAddProductsInCart() {
     if (productNumber! < product.props.stock) {
@@ -28,6 +32,27 @@ export default function ProductCart({ product }: ProductsCartProps) {
     }
   }
   console.log(product);
+
+  useEffect(() => {
+    if (productNumber === 1) {
+      setProduct({
+        _id: product.props._id,
+        category: product.props.category,
+        created_at: product.props.created_at,
+        description: product.props.description,
+        image_url: product.props.image_url,
+        name: product.props.name,
+        stock: product.props.stock,
+        unit_value: product.props.unit_value,
+        user_id: product.props.user_id,
+      });
+    }
+    if (productNumber === 0) {
+      removeProduct(product.props._id);
+    }
+  }, [productNumber]);
+
+  console.log(productsInCart);
 
   return (
     <ProductCartContainer>

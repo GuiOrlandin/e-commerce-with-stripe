@@ -50,7 +50,7 @@ export default function Home() {
     isSuccess,
     isLoading,
   } = useQuery<ProductsResponse[]>({
-    queryKey: ["checkout-info"],
+    queryKey: ["products"],
 
     queryFn: async () => {
       return axios
