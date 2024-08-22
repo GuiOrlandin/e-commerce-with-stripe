@@ -1,5 +1,5 @@
 import { ProductsResponse } from "../../routes/home";
-import { productStore } from "../../store/productStore";
+import { Product, productStore } from "../../store/productStore";
 import {
   AddOrRemoveButtons,
   AddProductsToCartButton,
@@ -16,7 +16,9 @@ interface ProductsCartProps {
 }
 
 export default function ProductCart({ product }: ProductsCartProps) {
-  const [productNumber, setProductNumber] = useState<number>(1);
+  const [productNumber, setProductNumber] = useState<number>(0);
+  const [productInCart, setProductInCart] = useState<boolean>(false);
+
   const setProduct = productStore((state) => state.setProduct);
   const removeProduct = productStore((state) => state.removeProduct);
   const productsInCart = productStore((state) => state.products);
@@ -31,10 +33,19 @@ export default function ProductCart({ product }: ProductsCartProps) {
       setProductNumber(productNumber! - 1);
     }
   }
-  console.log(product);
 
   useEffect(() => {
-    if (productNumber === 1) {
+    const productAlreadyInCart = productsInCart.find(
+      (productsInCart) => productsInCart._id === product.props._id
+    );
+
+    if (productAlreadyInCart && !productInCart) {
+      setProductInCart(true);
+      setProductNumber(1);
+      console.log("oi");
+    }
+
+    if (productNumber > 0 && !productInCart) {
       setProduct({
         _id: product.props._id,
         category: product.props.category,
@@ -46,13 +57,15 @@ export default function ProductCart({ product }: ProductsCartProps) {
         unit_value: product.props.unit_value,
         user_id: product.props.user_id,
       });
+
+      setProductInCart(true);
     }
-    if (productNumber === 0) {
+
+    if (productNumber === 0 && productInCart) {
       removeProduct(product.props._id);
+      setProductInCart(false);
     }
   }, [productNumber]);
-
-  console.log(productsInCart);
 
   return (
     <ProductCartContainer>

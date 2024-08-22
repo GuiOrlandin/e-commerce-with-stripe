@@ -10,4 +10,5 @@ export const HomeContainer = styled.div`
 export const ProductCartContainer = styled.div`
   display: flex;
   padding: 0 2rem;
+  gap: 1.2rem;
 `;

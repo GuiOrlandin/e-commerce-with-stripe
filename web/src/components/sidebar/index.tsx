@@ -1,5 +1,6 @@
 import {
   CartButton,
+  CartLength,
   ChartButton,
   DeliveryButton,
   HomeButton,
@@ -13,17 +14,18 @@ import { FaRegChartBar } from "react-icons/fa";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { PiSignInLight } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import { productStore } from "../../store/productStore";
 
 export default function SideBar() {
   const [buttonSelected, setButtonSelected] = useState("home");
   const navigate = useNavigate();
+  const products = productStore((state) => state.products);
 
   function handleSetButtonSelected(button: string) {
     setButtonSelected(button);
     navigate(`/${button}`);
   }
 
-  console.log(buttonSelected);
   return (
     <SideBarContainer>
       <HomeButton $variant={buttonSelected}>
@@ -35,6 +37,11 @@ export default function SideBar() {
             size={31}
             onClick={() => handleSetButtonSelected("cart")}
           />
+          {products.length >= 1 ? (
+            <CartLength>{products.length}</CartLength>
+          ) : (
+            <></>
+          )}
         </CartButton>
         <ChartButton $variant={buttonSelected}>
           <FaRegChartBar

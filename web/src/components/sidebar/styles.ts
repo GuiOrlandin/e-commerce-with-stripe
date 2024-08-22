@@ -4,7 +4,7 @@ interface ButtonSelected {
   $variant: string;
 }
 
-export const SideBarContainer = styled.div`
+export const SideBarContainer = styled.aside`
   display: flex;
   justify-content: space-between;
   padding: 1rem;
@@ -21,9 +21,19 @@ export const OptionsButtonsContainer = styled.div`
   flex-direction: column;
   gap: 1rem;
 `;
+export const CartLength = styled.div`
+  display: flex;
+  position: absolute;
+  margin-left: 1.2rem;
+  bottom: 12px;
+  padding: 0rem 0.5rem 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: #7462ba;
+`;
 export const CartButton = styled.button<ButtonSelected>`
   border: none;
   background: ${({ $variant }) => ($variant === "cart" ? "#D9D9D9" : "")};
+  position: relative;
 
   padding: 1rem;
   &:hover {
