@@ -1,5 +1,5 @@
 import { ProductsResponse } from "../../routes/home";
-import { Product, productStore } from "../../store/productStore";
+import {  productStore } from "../../store/productStore";
 import {
   AddOrRemoveButtons,
   AddProductsToCartButton,
@@ -22,6 +22,7 @@ export default function ProductCart({ product }: ProductsCartProps) {
   const setProduct = productStore((state) => state.setProduct);
   const removeProduct = productStore((state) => state.removeProduct);
   const productsInCart = productStore((state) => state.products);
+  const updateProduct = productStore((state) => state.updateProduct);
 
   function handleAddProductsInCart() {
     if (productNumber! < product.props.stock) {
@@ -41,8 +42,12 @@ export default function ProductCart({ product }: ProductsCartProps) {
 
     if (productAlreadyInCart && !productInCart) {
       setProductInCart(true);
-      setProductNumber(1);
+      setProductNumber(productAlreadyInCart.quantity);
       console.log("oi");
+    }
+
+    if(productNumber > 1 && productInCart){
+      updateProduct(product.props._id, productNumber)
     }
 
     if (productNumber > 0 && !productInCart) {
@@ -53,7 +58,7 @@ export default function ProductCart({ product }: ProductsCartProps) {
         description: product.props.description,
         image_url: product.props.image_url,
         name: product.props.name,
-        stock: product.props.stock,
+        quantity: productNumber,
         unit_value: product.props.unit_value,
         user_id: product.props.user_id,
       });

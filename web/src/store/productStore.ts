@@ -8,7 +8,7 @@ export interface Product {
   description: string;
   image_url: string;
   name: string;
-  stock: number;
+  quantity: number;
   unit_value: number;
   user_id: string;
 }
@@ -17,6 +17,7 @@ interface ProductStore {
   products: Product[];
   setProduct: (product: Product) => void;
   removeProduct: (productId: string) => void;
+  updateProduct: (productId: string, quantity: number) => void;
 }
 
 export const productStore = create<ProductStore>()(
@@ -28,6 +29,14 @@ export const productStore = create<ProductStore>()(
       removeProduct: (productId) =>
         set((state) => ({
           products: state.products.filter((p) => p._id !== productId),
+        })),
+        updateProduct: (productId, quantity) =>
+        set((state) => ({
+          products: state.products.map((product) =>
+            product._id === productId
+              ? { ...product, quantity }
+              : product
+          ),
         })),
     }),
     {
