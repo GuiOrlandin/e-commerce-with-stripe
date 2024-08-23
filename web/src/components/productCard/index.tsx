@@ -1,21 +1,32 @@
 import { ProductsResponse } from "../../routes/home";
-import {  productStore } from "../../store/productStore";
+import { productStore } from "../../store/productStore";
 import {
   AddOrRemoveButtons,
+  AddOrRemoveButtonsInCart,
   AddProductsToCartButton,
+  ImageNameAndDescriptionInCartCard,
+  NameAndDescriptionInCartCard,
   ProductCartContainer,
+  ProductContainer,
+  ProductInCartPageContainer,
   RemoveProductsCartButton,
   StockAndAddOrRemoveButtons,
+  StockAndAddOrRemoveButtonsAndUnitValueInCart,
+  StockAndAddOrRemoveButtonsInCart,
   StockContainer,
+  StockContainerInCart,
+  TotalValueOfProduct,
+  UnitValueContainer,
 } from "./styles";
 
 import { useState, useEffect } from "react";
 
 interface ProductsCartProps {
   product: ProductsResponse;
+  page?: string;
 }
 
-export default function ProductCart({ product }: ProductsCartProps) {
+export default function ProductCart({ product, page }: ProductsCartProps) {
   const [productNumber, setProductNumber] = useState<number>(0);
   const [productInCart, setProductInCart] = useState<boolean>(false);
 
@@ -25,7 +36,7 @@ export default function ProductCart({ product }: ProductsCartProps) {
   const updateProduct = productStore((state) => state.updateProduct);
 
   function handleAddProductsInCart() {
-    if (productNumber! < product.props.stock) {
+    if (product.props.stock && productNumber! < product.props.stock) {
       setProductNumber(productNumber! + 1);
     }
   }
@@ -43,11 +54,10 @@ export default function ProductCart({ product }: ProductsCartProps) {
     if (productAlreadyInCart && !productInCart) {
       setProductInCart(true);
       setProductNumber(productAlreadyInCart.quantity);
-      console.log("oi");
     }
 
-    if(productNumber > 1 && productInCart){
-      updateProduct(product.props._id, productNumber)
+    if (productNumber > 1 && productInCart) {
+      updateProduct(product.props._id, productNumber);
     }
 
     if (productNumber > 0 && !productInCart) {
@@ -60,6 +70,7 @@ export default function ProductCart({ product }: ProductsCartProps) {
         name: product.props.name,
         quantity: productNumber,
         unit_value: product.props.unit_value,
+        stock: product.props.stock!,
         user_id: product.props.user_id,
       });
 
@@ -72,32 +83,88 @@ export default function ProductCart({ product }: ProductsCartProps) {
     }
   }, [productNumber]);
 
+  console.log(product);
+
   return (
-    <ProductCartContainer>
-      <h1>{product.props.name}</h1>
-      <img src={`http://localhost:3333/files/${product.props.image_url}`} />
-      <p>{product.props.description}</p>
-      <StockAndAddOrRemoveButtons>
-        <StockContainer>
-          <p>{product.props.stock === 1 ? "Disponivel: " : "Disponíveis: "}</p>
-          <span>{product.props.stock}</span>
-        </StockContainer>
-        <AddOrRemoveButtons>
-          <AddProductsToCartButton
-            disabled={productNumber! === product.props.stock}
-            onClick={() => handleAddProductsInCart()}
-          >
-            +
-          </AddProductsToCartButton>
-          <span>{productNumber}</span>
-          <RemoveProductsCartButton
-            disabled={productNumber! === 0}
-            onClick={() => handleRemoveProductsOfCart()}
-          >
-            -
-          </RemoveProductsCartButton>
-        </AddOrRemoveButtons>
-      </StockAndAddOrRemoveButtons>
-    </ProductCartContainer>
+    <ProductContainer>
+      {page === "home" ? (
+        <ProductCartContainer>
+          <>
+            <h1>{product.props.name}</h1>
+            <img
+              src={`http://localhost:3333/files/${product.props.image_url}`}
+            />
+            <p>{product.props.description}</p>
+
+            <UnitValueContainer>
+              <p>{`R$: ${product.props.unit_value}`}</p>
+            </UnitValueContainer>
+            <StockAndAddOrRemoveButtons>
+              <StockContainer>
+                <p>
+                  {product.props.stock === 1 ? "Disponivel: " : "Disponíveis: "}
+                </p>
+                <span>{product.props.stock}</span>
+              </StockContainer>
+              <AddOrRemoveButtons>
+                <AddProductsToCartButton
+                  disabled={productNumber! === product.props.stock}
+                  onClick={() => handleAddProductsInCart()}
+                >
+                  +
+                </AddProductsToCartButton>
+                <span>{productNumber}</span>
+                <RemoveProductsCartButton
+                  disabled={productNumber! === 0}
+                  onClick={() => handleRemoveProductsOfCart()}
+                >
+                  -
+                </RemoveProductsCartButton>
+              </AddOrRemoveButtons>
+            </StockAndAddOrRemoveButtons>
+          </>
+        </ProductCartContainer>
+      ) : (
+        <ProductInCartPageContainer>
+          <ImageNameAndDescriptionInCartCard>
+            <img
+              src={`http://localhost:3333/files/${product.props.image_url}`}
+            />
+            <NameAndDescriptionInCartCard>
+              <h1>{product.props.name}</h1>
+              <p>{product.props.description}</p>
+            </NameAndDescriptionInCartCard>
+          </ImageNameAndDescriptionInCartCard>
+          <StockAndAddOrRemoveButtonsAndUnitValueInCart>
+            <StockAndAddOrRemoveButtonsInCart>
+              <AddOrRemoveButtonsInCart>
+                <AddProductsToCartButton
+                  disabled={productNumber! === product.props.stock}
+                  onClick={() => handleAddProductsInCart()}
+                >
+                  +
+                </AddProductsToCartButton>
+                <span>{productNumber}</span>
+                <RemoveProductsCartButton
+                  disabled={productNumber! === 0}
+                  onClick={() => handleRemoveProductsOfCart()}
+                >
+                  -
+                </RemoveProductsCartButton>
+              </AddOrRemoveButtonsInCart>
+              <TotalValueOfProduct>
+                {`R$ ${product.props.quantity! * product.props.unit_value}`}
+              </TotalValueOfProduct>
+            </StockAndAddOrRemoveButtonsInCart>
+            <StockContainerInCart>
+              <p>
+                {product.props.stock === 1 ? "Disponivel: " : "Disponíveis: "}
+              </p>
+              <span>{product.props.stock}</span>
+            </StockContainerInCart>
+          </StockAndAddOrRemoveButtonsAndUnitValueInCart>
+        </ProductInCartPageContainer>
+      )}
+    </ProductContainer>
   );
 }

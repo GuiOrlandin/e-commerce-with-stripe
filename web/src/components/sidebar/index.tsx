@@ -7,7 +7,7 @@ import {
   OptionsButtonsContainer,
   SideBarContainer,
 } from "./styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { IoCartOutline } from "react-icons/io5";
 import { FaRegChartBar } from "react-icons/fa";
@@ -17,43 +17,52 @@ import { useNavigate } from "react-router-dom";
 import { productStore } from "../../store/productStore";
 
 export default function SideBar() {
-  const [buttonSelected, setButtonSelected] = useState("home");
+  const [buttonSelected, setButtonSelected] = useState(() => {
+    return localStorage.getItem("buttonSelected") || "";
+  });
   const navigate = useNavigate();
   const products = productStore((state) => state.products);
 
   function handleSetButtonSelected(button: string) {
-    setButtonSelected(button);
     navigate(`/${button}`);
   }
 
+  useEffect(() => {
+    const currentPath = location.pathname.substring(1);
+    setButtonSelected(currentPath);
+  }, [location.pathname]);
+
   return (
     <SideBarContainer>
-      <HomeButton $variant={buttonSelected}>
-        <h2 onClick={() => setButtonSelected("home")}>Home</h2>
+      <HomeButton
+        onClick={() => handleSetButtonSelected("")}
+        $variant={buttonSelected}
+      >
+        <h2>Home</h2>
       </HomeButton>
       <OptionsButtonsContainer>
-        <CartButton $variant={buttonSelected}>
-          <IoCartOutline
-            size={31}
-            onClick={() => handleSetButtonSelected("cart")}
-          />
+        <CartButton
+          onClick={() => handleSetButtonSelected("cart")}
+          $variant={buttonSelected}
+        >
+          <IoCartOutline size={31} />
           {products.length >= 1 ? (
             <CartLength>{products.length}</CartLength>
           ) : (
             <></>
           )}
         </CartButton>
-        <ChartButton $variant={buttonSelected}>
-          <FaRegChartBar
-            size={31}
-            onClick={() => handleSetButtonSelected("chart")}
-          />
+        <ChartButton
+          onClick={() => handleSetButtonSelected("chart")}
+          $variant={buttonSelected}
+        >
+          <FaRegChartBar size={31} />
         </ChartButton>
-        <DeliveryButton $variant={buttonSelected}>
-          <CiDeliveryTruck
-            size={31}
-            onClick={() => handleSetButtonSelected("delivery")}
-          />
+        <DeliveryButton
+          onClick={() => handleSetButtonSelected("delivery")}
+          $variant={buttonSelected}
+        >
+          <CiDeliveryTruck size={31} />
         </DeliveryButton>
       </OptionsButtonsContainer>
       <PiSignInLight size={31} />

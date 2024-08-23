@@ -12,7 +12,7 @@ export const SideBarContainer = styled.aside`
   flex-direction: column;
   background: #f8f7f7;
   width: 5.5625rem;
-  height: 46rem;
+  height: 50rem;
   border-radius: 8px;
 `;
 
@@ -69,7 +69,7 @@ export const DeliveryButton = styled.button<ButtonSelected>`
 `;
 export const HomeButton = styled.div<ButtonSelected>`
   border-bottom: ${({ $variant }) =>
-    $variant === "home" ? "1px solid #2906b1" : "1px solid transparent"};
+    $variant === "" ? "1px solid #2906b1" : "1px solid transparent"};
 
   h2 {
     margin: 0;

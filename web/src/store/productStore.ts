@@ -10,6 +10,7 @@ export interface Product {
   name: string;
   quantity: number;
   unit_value: number;
+  stock: number;
   user_id: string;
 }
 
@@ -30,12 +31,10 @@ export const productStore = create<ProductStore>()(
         set((state) => ({
           products: state.products.filter((p) => p._id !== productId),
         })),
-        updateProduct: (productId, quantity) =>
+      updateProduct: (productId, quantity) =>
         set((state) => ({
           products: state.products.map((product) =>
-            product._id === productId
-              ? { ...product, quantity }
-              : product
+            product._id === productId ? { ...product, quantity } : product
           ),
         })),
     }),

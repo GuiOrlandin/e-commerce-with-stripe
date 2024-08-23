@@ -14,7 +14,8 @@ export interface ProductsResponse {
     description: string;
     image_url: string;
     name: string;
-    stock: number;
+    stock?: number;
+    quantity?: number;
     unit_value: number;
     user_id: string;
   };
@@ -44,12 +45,7 @@ export default function Home() {
   //   }
   // }, [isSuccess]);
 
-  const {
-    data: products,
-    refetch,
-    isSuccess,
-    isLoading,
-  } = useQuery<ProductsResponse[]>({
+  const { data: products, isLoading } = useQuery<ProductsResponse[]>({
     queryKey: ["products"],
 
     queryFn: async () => {
@@ -72,7 +68,11 @@ export default function Home() {
           {products &&
             products!.map((product) => (
               <>
-                <ProductCart key={product.props._id} product={product} />
+                <ProductCart
+                  page="home"
+                  key={product.props._id}
+                  product={product}
+                />
               </>
             ))}
         </ProductCartContainer>
