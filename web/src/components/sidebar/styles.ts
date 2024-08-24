@@ -96,3 +96,15 @@ export const SignInButton = styled.button<ButtonSelected>`
     border: none;
   }
 `;
+export const UserButton = styled.button<ButtonSelected>`
+  background: ${({ $variant }) => ($variant === "userInfo" ? "#D9D9D9" : "")};
+  border: none;
+
+  padding: 1rem;
+  &:hover {
+    cursor: pointer;
+    background: #d9d9d9;
+    border-radius: 8px;
+    border: none;
+  }
+`;
