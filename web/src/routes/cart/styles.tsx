@@ -21,10 +21,9 @@ export const ProductsInCartContainer = styled.div`
 export const TotalValueAndConfirmPaymentButton = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
-  margin-right: 4rem;
-  margin-top: 2rem;
+  margin: 3rem 0 0 2rem;
   gap: 2rem;
 
   h2 {
@@ -57,7 +56,7 @@ export const TotalValueAndConfirmPaymentButton = styled.div`
 export const TotalValueInformationContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 51rem;
+  justify-content: space-between;
 `;
 export const ProductsAndTotalValueContainer = styled.div`
   display: flex;

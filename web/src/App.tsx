@@ -5,6 +5,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import Home from "./routes/home";
 import Cart from "./routes/cart";
+import Login from "./routes/login";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -15,6 +16,10 @@ export default function App() {
     {
       path: "/cart",
       element: <Cart />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
   ]);
 

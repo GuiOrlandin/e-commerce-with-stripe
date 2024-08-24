@@ -81,6 +81,7 @@ export const StockAndAddOrRemoveButtonsAndUnitValueInCart = styled.div`
 export const StockAndAddOrRemoveButtonsInCart = styled.div`
   display: flex;
   gap: 1rem;
+  align-items: center;
   justify-content: space-between;
   margin-top: 0.3rem;
 `;
@@ -92,12 +93,18 @@ export const TotalValueOfProduct = styled.div`
 `;
 export const AddOrRemoveButtons = styled.div`
   display: flex;
+  padding: 0.2rem;
   align-items: center;
   gap: 0.6rem;
+  border: 1px solid #7462ba;
+  border-radius: 8px;
 `;
 export const AddOrRemoveButtonsInCart = styled.div`
   display: flex;
   position: absolute;
+  padding: 0.2rem;
+  border: 1px solid #7462ba;
+  border-radius: 8px;
   right: 15rem;
   align-items: center;
   gap: 0.6rem;
@@ -117,20 +124,28 @@ export const NameAndDescriptionInCartCard = styled.div`
 `;
 export const AddProductsToCartButton = styled.button`
   display: flex;
-  background: #d9d9d9;
+  color: #7462ba;
   padding: 0.1rem 0.4rem 0.3rem 0.4rem;
 
   &:disabled {
     cursor: not-allowed;
   }
+
+  &:focus {
+    outline: none;
+  }
 `;
 export const RemoveProductsCartButton = styled.button`
   display: flex;
-  background: #d9d9d9;
+  color: #7462ba;
   padding: 0.1rem 0.4rem 0.2rem 0.4rem;
 
   &:disabled {
     cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 export const StockContainer = styled.div`

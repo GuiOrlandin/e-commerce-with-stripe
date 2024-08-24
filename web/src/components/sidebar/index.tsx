@@ -6,6 +6,7 @@ import {
   HomeButton,
   OptionsButtonsContainer,
   SideBarContainer,
+  SignInButton,
 } from "./styles";
 import { useState, useEffect } from "react";
 
@@ -65,7 +66,12 @@ export default function SideBar() {
           <CiDeliveryTruck size={31} />
         </DeliveryButton>
       </OptionsButtonsContainer>
-      <PiSignInLight size={31} />
+      <SignInButton
+        $variant={buttonSelected}
+        onClick={() => handleSetButtonSelected("login")}
+      >
+        <PiSignInLight size={31} />
+      </SignInButton>
     </SideBarContainer>
   );
 }
