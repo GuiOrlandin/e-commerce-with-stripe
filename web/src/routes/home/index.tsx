@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { HomeContainer, ProductCartContainer } from "./styles";
-import { useNavigate } from "react-router-dom";
 
 import SideBar from "../../components/sidebar";
 import ProductCart from "../../components/productCard";
@@ -22,8 +21,6 @@ export interface ProductsResponse {
 }
 
 export default function Home() {
-  const navigate = useNavigate();
-
   // const {
   //   data: success,
   //   refetch,

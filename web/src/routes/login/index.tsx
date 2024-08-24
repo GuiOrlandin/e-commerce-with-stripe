@@ -5,6 +5,7 @@ import { tokenStore } from "../../store/tokenStore";
 import {
   EmailInput,
   EmailInputContainer,
+  ErrorMessageContainer,
   LoginButton,
   LoginContainer,
   LoginContent,
@@ -25,7 +26,9 @@ export default function Login() {
 
   const [userCredentials, setUserCredentials] = useState<UserCredentials>();
   const [errorMessage, setErrorMessage] = useState("");
-  const { data, isSuccess, mutate } = useAuthenticateMutate();
+  const { data, isSuccess, mutate, isError } = useAuthenticateMutate();
+
+  console.log(errorMessage);
 
   const setToken = tokenStore((state) => state.setToken);
 
@@ -59,7 +62,11 @@ export default function Login() {
 
       navigate("/");
     }
-  }, [isSuccess]);
+
+    if (isError) {
+      setErrorMessage("Email ou senha incorretos!");
+    }
+  }, [isSuccess, isError]);
 
   return (
     <LoginContainer>
@@ -84,6 +91,10 @@ export default function Login() {
               handleChangeUserDetailsForLogin(event, "password_hash")
             }
           />
+
+          {errorMessage && (
+            <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
+          )}
         </PasswordInputContainer>
 
         <LoginButton onClick={() => handleAuthenticate(userCredentials!)}>

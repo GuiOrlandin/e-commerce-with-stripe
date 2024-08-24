@@ -39,6 +39,14 @@ export const EmailInputContainer = styled.div`
     margin-bottom: 0.3rem;
   }
 `;
+export const ErrorMessageContainer = styled.div`
+  color: red;
+  position: absolute;
+  margin-top: 5.3rem;
+
+  font-size: 1rem;
+`;
+
 export const PasswordInputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,6 +68,7 @@ export const PasswordInput = styled.input`
   border-radius: 5px;
   border: 1px solid #7462ba;
   padding: 1rem;
+  position: relative;
 `;
 export const LoginButton = styled.button`
   border-radius: 5px;
