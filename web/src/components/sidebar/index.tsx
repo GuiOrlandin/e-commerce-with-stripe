@@ -7,6 +7,7 @@ import {
   OptionsButtonsContainer,
   SideBarContainer,
   SignInButton,
+  SignOutButton,
   UserButton,
 } from "./styles";
 import { useState, useEffect } from "react";
@@ -18,15 +19,21 @@ import { PiSignInLight } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import { productStore } from "../../store/productStore";
 import { tokenStore } from "../../store/tokenStore";
+import { GoSignIn } from "react-icons/go";
 
 export default function SideBar() {
   const [buttonSelected, setButtonSelected] = useState<string>();
   const navigate = useNavigate();
   const products = productStore((state) => state.products);
   const token = tokenStore((state) => state.token);
+  const removeToken = tokenStore((state) => state.removeToken);
 
   function handleSetButtonSelected(button: string) {
     navigate(`/${button}`);
+  }
+
+  function handleLogout() {
+    removeToken();
   }
 
   useEffect(() => {
@@ -66,14 +73,22 @@ export default function SideBar() {
         >
           <CiDeliveryTruck size={31} />
         </DeliveryButton>
+        {token && (
+          <UserButton
+            $variant={buttonSelected!}
+            onClick={() => handleSetButtonSelected("userInfo")}
+          >
+            <IoPersonCircleOutline size={31} />
+          </UserButton>
+        )}
       </OptionsButtonsContainer>
       {token ? (
-        <UserButton
+        <SignOutButton
           $variant={buttonSelected!}
-          onClick={() => handleSetButtonSelected("userInfo")}
+          onClick={() => handleLogout()}
         >
-          <IoPersonCircleOutline size={31} />
-        </UserButton>
+          <GoSignIn size={31} />
+        </SignOutButton>
       ) : (
         <SignInButton
           $variant={buttonSelected!}

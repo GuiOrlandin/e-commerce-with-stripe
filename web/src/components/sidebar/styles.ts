@@ -84,6 +84,18 @@ export const HomeButton = styled.div<ButtonSelected>`
   }
 `;
 
+export const SignOutButton = styled.button<ButtonSelected>`
+  border: none;
+
+  padding: 1rem;
+  &:hover {
+    cursor: pointer;
+    background: #d9d9d9;
+    border-radius: 8px;
+    border: none;
+  }
+`;
+
 export const SignInButton = styled.button<ButtonSelected>`
   background: ${({ $variant }) => ($variant === "login" ? "#D9D9D9" : "")};
   border: none;

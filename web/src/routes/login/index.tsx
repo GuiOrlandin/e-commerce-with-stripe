@@ -100,7 +100,9 @@ export default function Login() {
         <LoginButton onClick={() => handleAuthenticate(userCredentials!)}>
           Entrar
         </LoginButton>
-        <RegisterButton>Cadastrar</RegisterButton>
+        <RegisterButton onClick={() => navigate("/register")}>
+          Cadastrar
+        </RegisterButton>
       </LoginContent>
     </LoginContainer>
   );

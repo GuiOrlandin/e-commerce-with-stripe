@@ -21,7 +21,7 @@ export class CreateUserBody {
   password_hash: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   adress: string;
 
   @IsString()
