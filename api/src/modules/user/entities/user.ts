@@ -108,4 +108,9 @@ export class User {
   get created_at(): Date {
     return this.props.created_at;
   }
+
+  toResponseObject(): Omit<UserSchema, 'password_hash'> {
+    const { password_hash, ...userWithoutPassword } = this.props;
+    return userWithoutPassword;
+  }
 }

@@ -79,8 +79,9 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     const userRaw = PrismaUserMapper.toDomain(user);
+    console.log(userRaw.purchasedProducts);
 
-    return userRaw;
+    return userRaw.toResponseObject();
   }
 
   async SaveCheckoutInUser(
