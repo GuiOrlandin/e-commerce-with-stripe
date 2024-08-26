@@ -2,8 +2,8 @@ import {
   CartButton,
   CartLength,
   ChartButton,
-  DeliveryButton,
   HomeButton,
+  MyPurchasesButton,
   OptionsButtonsContainer,
   SideBarContainer,
   SignInButton,
@@ -67,12 +67,12 @@ export default function SideBar() {
         >
           <FaRegChartBar size={31} />
         </ChartButton>
-        <DeliveryButton
-          onClick={() => handleSetButtonSelected("delivery")}
+        <MyPurchasesButton
+          onClick={() => handleSetButtonSelected("my_purchases")}
           $variant={buttonSelected!}
         >
           <CiDeliveryTruck size={31} />
-        </DeliveryButton>
+        </MyPurchasesButton>
         {token && (
           <UserButton
             $variant={buttonSelected!}

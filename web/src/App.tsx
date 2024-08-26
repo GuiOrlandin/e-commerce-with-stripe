@@ -7,6 +7,7 @@ import Home from "./routes/home";
 import Cart from "./routes/cart";
 import Login from "./routes/login";
 import Register from "./routes/register";
+import MyPurchases from "./routes/myPurchase";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -25,6 +26,10 @@ export default function App() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/my_purchases",
+      element: <MyPurchases />,
     },
   ]);
 

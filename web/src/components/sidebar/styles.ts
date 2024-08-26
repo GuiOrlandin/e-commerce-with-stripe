@@ -55,8 +55,8 @@ export const ChartButton = styled.button<ButtonSelected>`
     border: none;
   }
 `;
-export const DeliveryButton = styled.button<ButtonSelected>`
-  background: ${({ $variant }) => ($variant === "delivery" ? "#D9D9D9" : "")};
+export const MyPurchasesButton = styled.button<ButtonSelected>`
+  background: ${({ $variant }) => ($variant === "my_purchases" ? "#D9D9D9" : "")};
   border: none;
 
   padding: 1rem;
