@@ -51,6 +51,7 @@ export class SuccessCheckOutUseCase {
         unit_amount: item.price?.unit_amount || 0,
         image_url: product.metadata.image_url,
         product_id: product.metadata.product_id,
+        status: "paymentWasSuccessful"
       };
     });
 

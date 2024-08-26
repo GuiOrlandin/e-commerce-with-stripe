@@ -9,6 +9,7 @@ export interface DataItems {
   image_url: string;
   unit_amount: number;
   quantity: number;
+  status: string;
 }
 export interface AdressItems {
   city: string;

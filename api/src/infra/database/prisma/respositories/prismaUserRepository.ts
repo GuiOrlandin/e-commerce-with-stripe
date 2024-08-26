@@ -112,6 +112,7 @@ export class PrismaUserRepository implements UserRepository {
         unit_amount: item.unit_amount,
         quantity: item.quantity,
         created_at: new Date().toISOString(),
+        status: item.status,
         adress: {
           city: AdressItems.city,
           country: AdressItems.country,

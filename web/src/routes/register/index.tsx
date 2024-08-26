@@ -45,7 +45,7 @@ export default function Register() {
     }));
   }
 
-  function handleRegister(userRegisterCredentialsDetails: UserRegisterDetails) {
+  function handleRegister() {
     if (userRegisterCredentials?.email === "") {
       return setErrorMessage("insira o Email!");
     }
@@ -118,9 +118,7 @@ export default function Register() {
         {errorMessage && (
           <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
         )}
-        <RegisterButton
-          onClick={() => handleRegister(userRegisterCredentials!)}
-        >
+        <RegisterButton onClick={() => handleRegister()}>
           Registrar
         </RegisterButton>
       </RegisterContent>

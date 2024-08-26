@@ -1,12 +1,17 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request } from '@nestjs/common';
 import { CreateUserUseCase } from 'src/modules/user/useCase/createUserUseCase';
 import { CreateUserBody } from './dtos/createUserBody';
 import { UserViewModel } from './viewModel/viewModel';
 import { Public } from '../auth/decorators/isPublic';
+import { AuthRequestModel } from '../auth/models/AuthRequestModel';
+import { FindUserByIdUseCase } from 'src/modules/user/useCase/findUserByIdUseCase';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
-  constructor(private createUserUseCase: CreateUserUseCase) {}
+  constructor(
+    private createUserUseCase: CreateUserUseCase,
+    private findUserById: FindUserByIdUseCase,
+  ) {}
 
   @Post()
   @Public()
@@ -30,5 +35,15 @@ export class UserController {
     });
 
     return UserViewModel.toHttp(user);
+  }
+
+  @Get()
+  @Public()
+  async findUser(@Query('id') user_id: string) {
+    const user = await this.findUserById.execute({
+      id: user_id,
+    });
+
+    return user;
   }
 }
