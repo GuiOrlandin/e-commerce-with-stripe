@@ -3,15 +3,15 @@ import { persist } from "zustand/middleware";
 
 export interface Product {
   _id: string;
-  category: string;
-  created_at: Date;
+  category?: string;
+  created_at?: Date;
   description: string;
   image_url: string;
   name: string;
   quantity: number;
   unit_value: number;
-  stock: number;
-  user_id: string;
+  stock?: number;
+  user_id?: string;
 }
 
 interface ProductStore {
@@ -19,6 +19,7 @@ interface ProductStore {
   setProduct: (product: Product) => void;
   removeProduct: (productId: string) => void;
   updateProduct: (productId: string, quantity: number) => void;
+  clearCart: () => void;
 }
 
 export const productStore = create<ProductStore>()(
@@ -30,6 +31,10 @@ export const productStore = create<ProductStore>()(
       removeProduct: (productId) =>
         set((state) => ({
           products: state.products.filter((p) => p._id !== productId),
+        })),
+      clearCart: () =>
+        set(() => ({
+          products: [],
         })),
       updateProduct: (productId, quantity) =>
         set((state) => ({

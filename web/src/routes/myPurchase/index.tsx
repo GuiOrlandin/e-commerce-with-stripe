@@ -43,20 +43,24 @@ export default function MyPurchases() {
       },
     });
 
-  console.log(userInfo);
-
   return (
     <MyPurchasesContainer>
       <SideBar />
-      <MyPurchasesProductsContainer>
-        {userInfo!.purchasedProducts.length >= 1 ? (
-          userInfo!.purchasedProducts.map((product) => (
-            <PurchasedProductCard product={product} key={product.id} />
-          ))
-        ) : (
-          <h1>Nenhum produto comprado!</h1>
-        )}
-      </MyPurchasesProductsContainer>
+      {isLoading ? (
+        <h1>Carregando... </h1>
+      ) : (
+        <MyPurchasesProductsContainer>
+          {userInfo &&
+          userInfo!.purchasedProducts &&
+          userInfo!.purchasedProducts.length >= 1 ? (
+            userInfo!.purchasedProducts.map((product) => (
+              <PurchasedProductCard product={product} key={product.id} />
+            ))
+          ) : (
+            <h1>Nenhum produto comprado!</h1>
+          )}
+        </MyPurchasesProductsContainer>
+      )}
     </MyPurchasesContainer>
   );
 }

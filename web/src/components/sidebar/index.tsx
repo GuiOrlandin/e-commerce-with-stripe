@@ -25,6 +25,7 @@ export default function SideBar() {
   const [buttonSelected, setButtonSelected] = useState<string>();
   const navigate = useNavigate();
   const products = productStore((state) => state.products);
+  const clearCart = productStore((state) => state.clearCart);
   const token = tokenStore((state) => state.token);
   const removeToken = tokenStore((state) => state.removeToken);
 
@@ -34,6 +35,7 @@ export default function SideBar() {
 
   function handleLogout() {
     removeToken();
+    clearCart();
   }
 
   useEffect(() => {

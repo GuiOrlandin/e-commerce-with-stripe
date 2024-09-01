@@ -3,20 +3,28 @@ import styled from "styled-components";
 export const CartContainer = styled.div`
   display: flex;
   background: #f1f1f1;
-  height: 100vh;
-  width: 100vw;
-  padding: 2.3rem 2.3rem 0 2.3rem;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2.6rem 1rem 1.3rem 2.3rem;
 `;
 export const ProductsInCartContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 45rem;
+  width: 100%;
   gap: 1rem;
   margin-left: 1.2rem;
 
   overflow: scroll;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
+
+  h2 {
+    text-align: center;
+    margin: 6rem 0 0 0;
+    font-size: 1.7rem;
+  }
 `;
 export const TotalValueAndConfirmPaymentButton = styled.div`
   display: flex;

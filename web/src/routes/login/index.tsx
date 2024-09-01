@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import SideBar from "../../components/sidebar";
-import { useAuthenticateMutate } from "../../hooks/userAuthenticate";
+import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
 import { tokenStore } from "../../store/tokenStore";
 import {
   EmailInput,

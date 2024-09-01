@@ -8,7 +8,7 @@ export class CheckoutItems {
 
   @IsString()
   @IsNotEmpty()
-  id: string;
+  _id: string;
 
   @IsString()
   @IsNotEmpty()

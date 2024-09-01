@@ -56,7 +56,7 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
       setProductNumber(productAlreadyInCart.quantity);
     }
 
-    if (productNumber > 1 && productInCart) {
+    if (productNumber >= 1 && productInCart) {
       updateProduct(product.props._id, productNumber);
     }
 
@@ -158,9 +158,10 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
             </StockAndAddOrRemoveButtonsInCart>
             <StockContainerInCart>
               <p>
-                {product.props.stock === 1 ? "Disponivel: " : "Disponíveis: "}
+                {product.props.stock === 1
+                  ? ` ${product.props.stock} Disponivel`
+                  : `${product.props.stock} Disponíveis`}
               </p>
-              <span>{product.props.stock}</span>
             </StockContainerInCart>
           </StockAndAddOrRemoveButtonsAndUnitValueInCart>
         </ProductInCartPageContainer>

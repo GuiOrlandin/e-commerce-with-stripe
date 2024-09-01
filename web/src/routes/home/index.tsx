@@ -8,40 +8,19 @@ import ProductCart from "../../components/productCard";
 export interface ProductsResponse {
   props: {
     _id: string;
-    category: string;
-    created_at: Date;
+    category?: string;
+    created_at?: Date;
     description: string;
     image_url: string;
     name: string;
     stock?: number;
     quantity?: number;
     unit_value: number;
-    user_id: string;
+    user_id?: string;
   };
 }
 
 export default function Home() {
-  // const {
-  //   data: success,
-  //   refetch,
-  //   isSuccess,
-  // } = useQuery({
-  //   queryKey: ["checkout-info"],
-  //   enabled: false,
-
-  //   queryFn: async () => {
-  //     return axios
-  //       .post(`http://localhost:3333/checkout`, { items })
-  //       .then((response) => response.data);
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     window.location.href = success.url;
-  //   }
-  // }, [isSuccess]);
-
   const { data: products, isLoading } = useQuery<ProductsResponse[]>({
     queryKey: ["products"],
 
@@ -62,7 +41,7 @@ export default function Home() {
         </>
       ) : (
         <ProductCartContainer>
-          {products &&
+          {products && products.length >= 1 ? (
             products!.map((product) => (
               <>
                 <ProductCart
@@ -71,7 +50,10 @@ export default function Home() {
                   product={product}
                 />
               </>
-            ))}
+            ))
+          ) : (
+            <h1>Não contém produtos cadastrados</h1>
+          )}
         </ProductCartContainer>
       )}
     </HomeContainer>

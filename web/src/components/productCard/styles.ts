@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ProductContainer = styled.div`
   display: flex;
+  width: 100%;
 `;
 export const ProductCartContainer = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ export const ProductInCartPageContainer = styled.div`
   justify-content: space-between;
   background: #ffffff;
   padding: 1.6rem;
-  width: 74rem;
+  width: calc(100vw - 17rem);
   border-radius: 8px;
 
   img {
@@ -69,7 +70,7 @@ export const UnitValueContainer = styled.div`
 export const StockAndAddOrRemoveButtonsAndUnitValueInCart = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
 
   p {
     display: flex;
@@ -87,7 +88,6 @@ export const StockAndAddOrRemoveButtonsInCart = styled.div`
 `;
 export const TotalValueOfProduct = styled.div`
   display: flex;
-  position: relative;
   left: 3.5rem;
   font-weight: bold;
 `;
@@ -101,7 +101,6 @@ export const AddOrRemoveButtons = styled.div`
 `;
 export const AddOrRemoveButtonsInCart = styled.div`
   display: flex;
-  position: absolute;
   padding: 0.2rem;
   border: 1px solid #7462ba;
   border-radius: 8px;
@@ -167,15 +166,11 @@ export const StockContainer = styled.div`
 export const StockContainerInCart = styled.div`
   display: flex;
 
-  padding-top: 0.3rem;
+  padding-top: 1rem;
   p {
     display: flex;
     align-items: center;
+    font-weight: 450;
     margin: 0;
-    font-weight: bold;
-  }
-
-  span {
-    margin-left: 0.4rem;
   }
 `;

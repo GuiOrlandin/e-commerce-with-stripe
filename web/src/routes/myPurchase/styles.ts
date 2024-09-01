@@ -5,7 +5,7 @@ export const MyPurchasesContainer = styled.div`
   background: #f1f1f1;
   height: 100vh;
   width: 100vw;
-  padding: 2.3rem;
+  padding: 2.3rem 0 2.3rem 2.3rem;
 `;
 export const MyPurchasesProductsContainer = styled.div`
   display: flex;

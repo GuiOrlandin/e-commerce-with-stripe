@@ -1,9 +1,6 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import SideBar from "../../components/sidebar";
-import {
-  UserRegisterDetails,
-  useUserRegisterMutate,
-} from "../../hooks/userRegister";
+
 import { EmailInput, PasswordInput } from "../login/styles";
 import {
   EmailInputContainer,
@@ -16,9 +13,13 @@ import {
   RegisterContent,
   SideBarContainer,
 } from "./styles";
-import { useAuthenticateMutate } from "../../hooks/userAuthenticate";
+import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
 import { useNavigate } from "react-router-dom";
 import { tokenStore } from "../../store/tokenStore";
+import {
+  UserRegisterDetails,
+  useUserRegisterMutate,
+} from "../../hooks/useUserRegisterMutate";
 
 export default function Register() {
   const navigate = useNavigate();
