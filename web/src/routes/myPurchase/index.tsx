@@ -3,10 +3,13 @@ import PurchasedProductCard from "../../components/purchaseProductCard";
 import SideBar from "../../components/sidebar";
 import { MyPurchasesContainer, MyPurchasesProductsContainer } from "./styles";
 import { useQuery } from "@tanstack/react-query";
+import { userStore } from "../../store/userStore";
 
 export interface UserWithPurchasedProductsResponse {
   email: string;
   name: string;
+  role: string;
+  token?: string;
 
   purchasedProducts: {
     amount_total: number;
@@ -18,7 +21,6 @@ export interface UserWithPurchasedProductsResponse {
     quantity: number;
     created_at: Date;
     stock: number;
-    role: string;
     adress: {
       city: string;
       country: string;
@@ -30,37 +32,23 @@ export interface UserWithPurchasedProductsResponse {
 }
 
 export default function MyPurchases() {
-  const { data: userInfo, isLoading } =
-    useQuery<UserWithPurchasedProductsResponse>({
-      queryKey: ["products"],
-
-      queryFn: async () => {
-        return axios
-          .get(
-            `http://localhost:3333/user?userId=${"66bbe29601687421bfc7d301"}`
-          )
-          .then((response) => response.data);
-      },
-    });
+  const userInfo = userStore((state) => state.user);
 
   return (
     <MyPurchasesContainer>
       <SideBar />
-      {isLoading ? (
-        <h1>Carregando... </h1>
-      ) : (
-        <MyPurchasesProductsContainer>
-          {userInfo &&
-          userInfo!.purchasedProducts &&
-          userInfo!.purchasedProducts.length >= 1 ? (
-            userInfo!.purchasedProducts.map((product) => (
-              <PurchasedProductCard product={product} key={product.id} />
-            ))
-          ) : (
-            <h1>Nenhum produto comprado!</h1>
-          )}
-        </MyPurchasesProductsContainer>
-      )}
+
+      <MyPurchasesProductsContainer>
+        {userInfo &&
+        userInfo!.purchasedProducts &&
+        userInfo!.purchasedProducts.length >= 1 ? (
+          userInfo!.purchasedProducts.map((product) => (
+            <PurchasedProductCard product={product} key={product.id} />
+          ))
+        ) : (
+          <h1>Nenhum produto comprado!</h1>
+        )}
+      </MyPurchasesProductsContainer>
     </MyPurchasesContainer>
   );
 }

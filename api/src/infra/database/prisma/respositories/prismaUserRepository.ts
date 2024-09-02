@@ -68,6 +68,8 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async findById(id: string): Promise<Partial<User> | null> {
+    console.log(id);
+
     const user = await this.prisma.user.findFirst({
       where: {
         id,
@@ -79,7 +81,8 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     const userRaw = PrismaUserMapper.toDomain(user);
-    console.log(userRaw.purchasedProducts);
+
+    console.log(userRaw);
 
     return userRaw.toResponseObject();
   }

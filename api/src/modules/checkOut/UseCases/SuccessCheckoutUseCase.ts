@@ -32,8 +32,6 @@ export class SuccessCheckOutUseCase {
 
     const metadataUserId = session.metadata.userId;
 
-    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
-
     const user = await this.userRepository.findById(metadataUserId);
 
     if (!user) {
@@ -51,7 +49,7 @@ export class SuccessCheckOutUseCase {
         unit_amount: item.price?.unit_amount || 0,
         image_url: product.metadata.image_url,
         product_id: product.metadata.product_id,
-        status: "paymentWasSuccessful"
+        status: 'paymentWasSuccessful',
       };
     });
 

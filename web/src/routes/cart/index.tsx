@@ -13,6 +13,7 @@ import {
 
 export default function Cart() {
   const products = productStore((state) => state.products);
+  const clearCart = productStore((state) => state.clearCart);
   const { mutate, isSuccess, data } = useCheckoutMutate();
 
   const totalValue = products.reduce((acc, product) => {
@@ -33,6 +34,7 @@ export default function Cart() {
   }
   useEffect(() => {
     if (isSuccess && data) {
+      clearCart();
       window.location.href = data;
     }
   }, [isSuccess, data]);

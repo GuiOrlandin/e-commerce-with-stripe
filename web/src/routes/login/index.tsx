@@ -1,7 +1,6 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import SideBar from "../../components/sidebar";
 import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
-import { tokenStore } from "../../store/tokenStore";
 import {
   EmailInput,
   EmailInputContainer,
@@ -15,6 +14,11 @@ import {
   SideBarContainer,
 } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { UserWithPurchasedProductsResponse } from "../myPurchase";
+import { useQuery } from "@tanstack/react-query";
+
+import axios from "axios";
+import { userStore } from "../../store/userStore";
 
 interface UserCredentials {
   email: string;
@@ -27,10 +31,22 @@ export default function Login() {
   const [userCredentials, setUserCredentials] = useState<UserCredentials>();
   const [errorMessage, setErrorMessage] = useState("");
   const { data, isSuccess, mutate, isError } = useAuthenticateMutate();
+  const setUser = userStore((state) => state.setUser);
 
-  console.log(errorMessage);
+  const {
+    data: userInfo,
+    isSuccess: userFound,
+    refetch,
+  } = useQuery<UserWithPurchasedProductsResponse>({
+    enabled: false,
+    queryKey: ["userInfo"],
 
-  const setToken = tokenStore((state) => state.setToken);
+    queryFn: async () => {
+      return axios
+        .get(`http://localhost:3333/user?userId=${data?.userId}`)
+        .then((response) => response.data);
+    },
+  });
 
   function handleAuthenticate(
     userAuthenticateCredentialsDetails: UserCredentials
@@ -58,15 +74,22 @@ export default function Login() {
 
   useEffect(() => {
     if (isSuccess && data) {
-      setToken(data);
-
-      navigate("/");
+      refetch();
     }
 
     if (isError) {
       setErrorMessage("Email ou senha incorretos!");
     }
-  }, [isSuccess, isError]);
+
+    if (userFound && data && data!.token!) {
+      setUser({
+        ...userInfo,
+        token: data?.token,
+      });
+
+      navigate("/");
+    }
+  }, [isSuccess, isError, userFound, data]);
 
   return (
     <LoginContainer>

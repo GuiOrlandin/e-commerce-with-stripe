@@ -15,25 +15,43 @@ import {
 } from "./styles";
 import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
 import { useNavigate } from "react-router-dom";
-import { tokenStore } from "../../store/tokenStore";
 import {
   UserRegisterDetails,
   useUserRegisterMutate,
 } from "../../hooks/useUserRegisterMutate";
+import { UserWithPurchasedProductsResponse } from "../myPurchase";
+import { useQuery } from "@tanstack/react-query";
+import { userStore } from "../../store/userStore";
+import axios from "axios";
 
 export default function Register() {
   const navigate = useNavigate();
   const [userRegisterCredentials, setUserRegisterCredentials] =
     useState<UserRegisterDetails>();
   const [errorMessage, setErrorMessage] = useState("");
+  const setUser = userStore((state) => state.setUser);
 
-  const setToken = tokenStore((state) => state.setToken);
   const { mutate, isSuccess, isError } = useUserRegisterMutate();
   const {
     mutate: loginMutate,
     isSuccess: loginSuccess,
     data,
   } = useAuthenticateMutate();
+
+  const {
+    data: userInfo,
+    isSuccess: userFound,
+    refetch,
+  } = useQuery<UserWithPurchasedProductsResponse>({
+    enabled: false,
+    queryKey: ["userInfo"],
+
+    queryFn: async () => {
+      return axios
+        .get(`http://localhost:3333/user?userId=${data?.userId}`)
+        .then((response) => response.data);
+    },
+  });
 
   function handleChangeUserRegisterDetails(
     event: ChangeEvent<HTMLInputElement>,
@@ -74,7 +92,14 @@ export default function Register() {
       });
 
       if (loginSuccess) {
-        setToken(data);
+        refetch();
+      }
+
+      if (userFound && data && data!.token!) {
+        setUser({
+          ...userInfo,
+          token: data?.token,
+        });
 
         navigate("/");
       }
@@ -83,7 +108,7 @@ export default function Register() {
     if (isError) {
       setErrorMessage("Email ja em uso!");
     }
-  }, [isSuccess, loginSuccess, isError]);
+  }, [isSuccess, loginSuccess, isError, userFound, data]);
 
   return (
     <RegisterContainer>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { tokenStore } from "../store/tokenStore";
+import { userStore } from "../store/userStore";
 
 export interface ItemsCheckoutDetails {
   name: string;
@@ -34,11 +34,11 @@ async function postData(items: ItemsCheckoutDetails[], authToken: string) {
 
 export function useCheckoutMutate() {
   const queryClient = useQueryClient();
-  const authToken = tokenStore((state) => state.token);
+  const userInfo = userStore((state) => state.user);
 
   const mutate = useMutation({
     mutationFn: ({ items }: { items: ItemsCheckoutDetails[] }) =>
-      postData(items, authToken),
+      postData(items, userInfo!.token!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },

@@ -17,7 +17,6 @@ export interface PurchaseProduct {
   quantity: number;
   created_at: Date;
   stock: number;
-  role: string;
   adress: {
     city: string;
     country: string;

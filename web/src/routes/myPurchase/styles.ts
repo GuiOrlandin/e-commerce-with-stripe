@@ -5,19 +5,19 @@ export const MyPurchasesContainer = styled.div`
   background: #f1f1f1;
   height: 100vh;
   width: 100vw;
-  padding: 2.3rem 0 2.3rem 2.3rem;
+  padding: 2.3rem;
 `;
 export const MyPurchasesProductsContainer = styled.div`
   display: flex;
   text-align: center;
   flex-direction: column;
-  width: calc(100vw - 13rem);
-  margin-left: 1rem;
+  width: 100%;
+  margin-left: 1.5rem;
   border-radius: 8px;
-  height: calc(100vh - 5rem);
   overflow: hidden;
   overflow-y: scroll;
   scrollbar-width: none;
+  gap: 1rem;
 
   h1 {
     margin-top: 5rem;

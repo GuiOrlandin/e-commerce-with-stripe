@@ -4,6 +4,7 @@ import { HomeContainer, ProductCartContainer } from "./styles";
 
 import SideBar from "../../components/sidebar";
 import ProductCart from "../../components/productCard";
+import { useEffect } from "react";
 
 export interface ProductsResponse {
   props: {
@@ -21,7 +22,11 @@ export interface ProductsResponse {
 }
 
 export default function Home() {
-  const { data: products, isLoading } = useQuery<ProductsResponse[]>({
+  const {
+    data: products,
+    isLoading,
+    refetch,
+  } = useQuery<ProductsResponse[]>({
     queryKey: ["products"],
 
     queryFn: async () => {
@@ -30,6 +35,12 @@ export default function Home() {
         .then((response) => response.data);
     },
   });
+
+  useEffect(() => {
+    if (products?.length === 0) {
+      refetch();
+    }
+  }, [products]);
 
   return (
     <HomeContainer>
@@ -52,7 +63,7 @@ export default function Home() {
               </>
             ))
           ) : (
-            <h1>Não contém produtos cadastrados</h1>
+            <h2>Não contém produtos cadastrados</h2>
           )}
         </ProductCartContainer>
       )}

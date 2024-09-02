@@ -39,9 +39,9 @@ export class UserController {
 
   @Get()
   @Public()
-  async findUser(@Query('id') user_id: string) {
+  async findUser(@Query('userId') userId: string) {
     const user = await this.findUserById.execute({
-      id: user_id,
+      id: userId,
     });
 
     return user;

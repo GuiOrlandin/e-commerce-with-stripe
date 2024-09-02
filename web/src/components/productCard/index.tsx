@@ -1,5 +1,6 @@
 import { ProductsResponse } from "../../routes/home";
 import { productStore } from "../../store/productStore";
+import { userStore } from "../../store/userStore";
 import {
   AddOrRemoveButtons,
   AddOrRemoveButtonsInCart,
@@ -29,6 +30,8 @@ interface ProductsCartProps {
 export default function ProductCart({ product, page }: ProductsCartProps) {
   const [productNumber, setProductNumber] = useState<number>(0);
   const [productInCart, setProductInCart] = useState<boolean>(false);
+
+  const userInfo = userStore((state) => state.user);
 
   const setProduct = productStore((state) => state.setProduct);
   const removeProduct = productStore((state) => state.removeProduct);
@@ -108,14 +111,16 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
               </StockContainer>
               <AddOrRemoveButtons>
                 <AddProductsToCartButton
-                  disabled={productNumber! === product.props.stock}
+                  disabled={
+                    productNumber! === product.props.stock || !userInfo.token
+                  }
                   onClick={() => handleAddProductsInCart()}
                 >
                   +
                 </AddProductsToCartButton>
                 <span>{productNumber}</span>
                 <RemoveProductsCartButton
-                  disabled={productNumber! === 0}
+                  disabled={productNumber! === 0 || !userInfo.token}
                   onClick={() => handleRemoveProductsOfCart()}
                 >
                   -

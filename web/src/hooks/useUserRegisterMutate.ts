@@ -8,7 +8,7 @@ export interface UserRegisterDetails {
 }
 
 async function postData(data: UserRegisterDetails) {
-  await axios.post("http://localhost:3333/users", data);
+  await axios.post("http://localhost:3333/user", data);
 }
 
 export function useUserRegisterMutate() {

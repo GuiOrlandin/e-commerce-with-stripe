@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/modules/user/entities/User';
-import { UserRepository } from 'src/modules/user/repositories/userRepository';
 import { UserPayload } from '../models/userPayload';
 
 interface SignInRequest {
@@ -22,6 +21,9 @@ export class SignInUseCase {
 
     const jwtToken = this.jwtService.sign(payload);
 
-    return jwtToken;
+    return {
+      jwtToken,
+      userId: user.id,
+    };
   }
 }
