@@ -33,7 +33,7 @@ interface PurchasedProductCardProps {
 export default function PurchasedProductCard({
   product,
 }: PurchasedProductCardProps) {
-  console.log(product.image_Url);
+  console.log(product);
 
   return (
     <PurchaseCardContainer>
@@ -42,9 +42,11 @@ export default function PurchasedProductCard({
         <ImageQuantityTotalValueAndAdressContainer>
           <img src={`http://localhost:3333/files/${product.image_Url}`} />
           <QuantityTotalValueContainer>
-            <p>Quantidade: 3</p>
-            <p>Valor total: R$60</p>
-            <span>Rua santa ernestina, 70</span>
+            <p>Quantidade: {product.quantity}</p>
+            <p>Valor total: R$ {product.amount_total}</p>
+            <span>{`${product.adress.adress}, ${
+              product.adress.numberAndNeighborhood.split(",")[0]
+            }. `}</span>
           </QuantityTotalValueContainer>
         </ImageQuantityTotalValueAndAdressContainer>
 

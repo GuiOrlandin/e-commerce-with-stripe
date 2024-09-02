@@ -1,8 +1,6 @@
-import axios from "axios";
 import PurchasedProductCard from "../../components/purchaseProductCard";
 import SideBar from "../../components/sidebar";
 import { MyPurchasesContainer, MyPurchasesProductsContainer } from "./styles";
-import { useQuery } from "@tanstack/react-query";
 import { userStore } from "../../store/userStore";
 
 export interface UserWithPurchasedProductsResponse {
@@ -10,6 +8,7 @@ export interface UserWithPurchasedProductsResponse {
   name: string;
   role: string;
   token?: string;
+  id?: string;
 
   purchasedProducts: {
     amount_total: number;

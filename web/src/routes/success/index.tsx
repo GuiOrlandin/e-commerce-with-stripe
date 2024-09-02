@@ -6,9 +6,24 @@ import {
 } from "./styles";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { useUserFetch } from "../../hooks/useUserInfoFetch";
+import { userStore } from "../../store/userStore";
+import { useEffect } from "react";
 
 export default function Success() {
   const navigate = useNavigate();
+  const userInfo = userStore((state) => state.user);
+  const setUser = userStore((state) => state.setUser);
+  const { data: userInfoFetched, isSuccess } = useUserFetch(userInfo!.id!);
+
+  useEffect(() => {
+    if (isSuccess && userInfoFetched) {
+      setUser({
+        ...userInfo,
+        purchasedProducts: userInfoFetched.purchasedProducts,
+      });
+    }
+  }, [isSuccess, userInfoFetched]);
 
   return (
     <SuccessContainer>
