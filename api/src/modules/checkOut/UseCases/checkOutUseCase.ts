@@ -54,8 +54,8 @@ export class CheckOutUseCase {
         userId: user.id,
       },
       mode: 'payment',
-      success_url: `http://localhost:3333/checkout?sessionId={CHECKOUT_SESSION_ID}`, //editar o link
-      cancel_url: 'http://localhost:5173/', //editar o link
+      success_url: `http://localhost:5173/success`,
+      cancel_url: 'http://localhost:5173/',
     });
 
     return session.url;

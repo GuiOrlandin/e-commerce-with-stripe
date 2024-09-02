@@ -8,6 +8,7 @@ import Cart from "./routes/cart";
 import Login from "./routes/login";
 import Register from "./routes/register";
 import MyPurchases from "./routes/myPurchase";
+import Success from "./routes/success";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export default function App() {
     {
       path: "/my_purchases",
       element: <MyPurchases />,
+    },
+    {
+      path: "/success",
+      element: <Success />,
     },
   ]);
 
