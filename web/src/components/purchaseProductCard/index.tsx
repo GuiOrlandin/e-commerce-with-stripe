@@ -35,9 +35,16 @@ export default function PurchasedProductCard({
 }: PurchasedProductCardProps) {
   console.log(product);
 
+  const dateString = product.created_at;
+  const date = new Date(dateString);
+
+  const options: Intl.DateTimeFormatOptions = { day: "2-digit", month: "long" };
+
+  const formattedDate = date.toLocaleDateString("pt-BR", options);
+
   return (
     <PurchaseCardContainer>
-      <PurchaseDataContainer>26 de agosto</PurchaseDataContainer>
+      <PurchaseDataContainer>{formattedDate}</PurchaseDataContainer>
       <PurchaseCardContent>
         <ImageQuantityTotalValueAndAdressContainer>
           <img src={`http://localhost:3333/files/${product.image_Url}`} />
