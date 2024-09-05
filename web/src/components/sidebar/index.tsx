@@ -83,7 +83,7 @@ export default function SideBar() {
             </MyPurchasesButton>
             <UserButton
               $variant={buttonSelected!}
-              onClick={() => handleSetButtonSelected("userInfo")}
+              onClick={() => handleSetButtonSelected("profile")}
             >
               <IoPersonCircleOutline size={31} />
             </UserButton>

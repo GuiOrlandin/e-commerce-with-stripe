@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const ProductContainer = styled.div`
   display: flex;
-  width: 100%;
 `;
 export const ProductCartContainer = styled.div`
   display: flex;
@@ -35,7 +34,7 @@ export const ProductInCartPageContainer = styled.div`
   justify-content: space-between;
   background: #ffffff;
   padding: 1.6rem;
-  width: calc(100vw - 17rem);
+  width: calc(100vw - 12rem);
   border-radius: 8px;
 
   img {

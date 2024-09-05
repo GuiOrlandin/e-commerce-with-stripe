@@ -9,6 +9,7 @@ import Login from "./routes/login";
 import Register from "./routes/register";
 import MyPurchases from "./routes/myPurchase";
 import Success from "./routes/success";
+import Profile from "./routes/profile";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -35,6 +36,10 @@ export default function App() {
     {
       path: "/success",
       element: <Success />,
+    },
+    {
+      path: "/profile",
+      element: <Profile />,
     },
   ]);
 

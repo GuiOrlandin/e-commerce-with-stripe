@@ -82,6 +82,8 @@ export default function Login() {
     }
 
     if (userFound && data && data!.token!) {
+      console.log(userInfo);
+
       setUser({
         ...userInfo,
         token: data?.token,

@@ -13,7 +13,7 @@ export class PrismaUserMapper {
     phone_number,
     role,
     purchasedProducts,
-    items_sold,
+    number,
   }: User): UserRaw {
     return {
       email,
@@ -25,7 +25,7 @@ export class PrismaUserMapper {
       adress,
       phone_number,
       role,
-      items_sold: items_sold ? JSON.parse(JSON.stringify(items_sold)) : null,
+      number,
       purchasedProducts: purchasedProducts
         ? JSON.parse(JSON.stringify(purchasedProducts))
         : null,
@@ -43,7 +43,7 @@ export class PrismaUserMapper {
     profile_picture,
     role,
     purchasedProducts,
-    items_sold,
+    number,
   }: UserRaw): User {
     return new User({
       email,
@@ -54,8 +54,8 @@ export class PrismaUserMapper {
       adress,
       phone_number,
       role,
+      number,
       profile_picture,
-      items_sold: items_sold ? JSON.parse(JSON.stringify(items_sold)) : null,
       purchasedProducts: purchasedProducts
         ? JSON.parse(JSON.stringify(purchasedProducts))
         : null,

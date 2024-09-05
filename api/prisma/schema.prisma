@@ -17,10 +17,11 @@ model User {
     phone_number  String?
     profile_picture String?
     adress         String?
+    number          String?
 
     products Product[]
     purchasedProducts Json?
-    items_sold Json?
+
 
     @@map("users")
 }

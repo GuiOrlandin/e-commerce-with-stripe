@@ -9,6 +9,8 @@ export interface UserWithPurchasedProductsResponse {
   role: string;
   token?: string;
   id?: string;
+  adress?: string;
+  number?: string;
 
   purchasedProducts: {
     amount_total: number;

@@ -3,7 +3,6 @@ import { CreateUserUseCase } from 'src/modules/user/useCase/createUserUseCase';
 import { CreateUserBody } from './dtos/createUserBody';
 import { UserViewModel } from './viewModel/viewModel';
 import { Public } from '../auth/decorators/isPublic';
-import { AuthRequestModel } from '../auth/models/AuthRequestModel';
 import { FindUserByIdUseCase } from 'src/modules/user/useCase/findUserByIdUseCase';
 
 @Controller('user')
