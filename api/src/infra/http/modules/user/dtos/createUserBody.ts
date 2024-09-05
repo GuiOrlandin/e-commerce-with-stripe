@@ -35,8 +35,4 @@ export class CreateUserBody {
   @IsDate()
   @IsOptional()
   created_at?: Date;
-
-  @IsString()
-  @IsOptional()
-  _id?: string;
 }

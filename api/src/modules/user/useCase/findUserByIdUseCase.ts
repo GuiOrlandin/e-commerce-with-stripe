@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories/userRepository';
-import { UserDontFoundIncorrectException } from '../exceptions/userDontFound';
+import { UserNotFoundException } from '../exceptions/userDontFound';
 
 interface FindUserByIdRequest {
   id: string;
@@ -14,7 +14,7 @@ export class FindUserByIdUseCase {
     const user = await this.userRepository.findById(id);
 
     if (!user) {
-      throw new UserDontFoundIncorrectException();
+      throw new UserNotFoundException();
     }
 
     return user;

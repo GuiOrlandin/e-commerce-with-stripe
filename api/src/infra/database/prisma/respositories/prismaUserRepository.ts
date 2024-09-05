@@ -4,6 +4,7 @@ import {
   AdressItems,
   CheckoutItems,
   UserRepository,
+  updateItems,
 } from 'src/modules/user/repositories/userRepository';
 import { PrismaService } from '../prisma.service';
 import { PrismaUserMapper } from '../mappers/prismaUserMapper';
@@ -67,9 +68,10 @@ export class PrismaUserRepository implements UserRepository {
     return userRaw;
   }
 
-  async findById(id: string): Promise<Partial<User> | null> {
-    console.log(id);
-
+  async findById(
+    id: string,
+    editUser?: boolean,
+  ): Promise<Partial<User> | null> {
     const user = await this.prisma.user.findFirst({
       where: {
         id,
@@ -82,7 +84,9 @@ export class PrismaUserRepository implements UserRepository {
 
     const userRaw = PrismaUserMapper.toDomain(user);
 
-    console.log(userRaw);
+    if (editUser) {
+      return userRaw;
+    }
 
     return userRaw.toResponseObject();
   }
@@ -170,7 +174,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async save(user: User): Promise<void> {
+  async save(user: User, data: updateItems): Promise<void> {
     const userRaw = PrismaUserMapper.toPrisma(user);
 
     const userUnmodified = await this.prisma.user.findFirst({
@@ -180,9 +184,15 @@ export class PrismaUserRepository implements UserRepository {
     });
 
     await this.prisma.user.update({
-      data: userRaw,
       where: {
-        id: userUnmodified.id,
+        id: userRaw.id,
+      },
+      data: {
+        adress: data.adress,
+        email: data.email,
+        name: data.name,
+        number: data.number,
+        profile_picture: data.profile_picture,
       },
     });
   }

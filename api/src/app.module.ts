@@ -23,6 +23,11 @@ import { join } from 'path';
       serveRoot: '/files',
       renderPath: '/files/*',
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'uploads', 'userAvatar'),
+      serveRoot: '/files/userAvatar',
+      renderPath: '/files/*',
+    }),
     DatabaseModule,
     UserModule,
     AuthModule,

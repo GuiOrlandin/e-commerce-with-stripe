@@ -16,6 +16,7 @@ export const userStore = create<UserStore>()(
         name: "",
         role: "",
         token: "",
+        profile_picture: "",
 
         purchasedProducts: [],
       },
@@ -27,6 +28,7 @@ export const userStore = create<UserStore>()(
             name: "",
             role: "",
             token: "",
+            profile_picture: "",
             purchasedProducts: [],
           },
         })),

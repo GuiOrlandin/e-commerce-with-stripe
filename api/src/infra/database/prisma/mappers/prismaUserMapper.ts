@@ -17,12 +17,12 @@ export class PrismaUserMapper {
   }: User): UserRaw {
     return {
       email,
+      adress,
       name,
       password_hash,
       created_at,
       id,
       profile_picture,
-      adress,
       phone_number,
       role,
       number,

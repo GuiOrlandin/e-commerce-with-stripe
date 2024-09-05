@@ -11,6 +11,7 @@ export interface UserWithPurchasedProductsResponse {
   id?: string;
   adress?: string;
   number?: string;
+  profile_picture?: string;
 
   purchasedProducts: {
     amount_total: number;

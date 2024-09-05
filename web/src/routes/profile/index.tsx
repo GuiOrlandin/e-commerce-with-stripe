@@ -20,7 +20,10 @@ export default function Profile() {
       <SideBar />
       <ContentWrapper>
         <ProfileContent>
-          <Avatar src="https://via.placeholder.com/150" alt="User Avatar" />
+          <Avatar
+            src={`http://localhost:3333/files/userAvatar/${userInfo.profile_picture}`}
+            alt="User Avatar"
+          />
           <InfoContainer>
             <Label>Nome:</Label>
             <Info>{userInfo.name}</Info>
