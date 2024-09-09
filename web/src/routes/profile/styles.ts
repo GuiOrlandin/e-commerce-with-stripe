@@ -5,7 +5,7 @@ export const ProfileContainer = styled.div`
   height: 100vh;
   width: 100vw;
   background: #f1f1f1;
-  padding: 2rem;
+  padding: 2.3rem;
 `;
 
 export const SideBar = styled.div`
@@ -13,11 +13,68 @@ export const SideBar = styled.div`
   background: #ffffff;
 `;
 
+export const AvatarImageContainer = styled.div`
+  display: flex;
+  position: relative;
+
+  button {
+    position: absolute;
+    border: none;
+    background: none;
+    width: 2rem;
+    height: 2rem;
+    top: 7.5rem;
+    left: -1rem;
+
+    &:focus {
+      outline: none;
+      border: none;
+    }
+  }
+
+  svg {
+    position: absolute;
+    top: 8.2rem;
+    cursor: pointer;
+  }
+`;
+export const AvatarWithoutImageContainer = styled.div`
+  display: flex;
+  position: relative;
+  margin-bottom: 1rem;
+
+  button {
+    position: absolute;
+    border: none;
+    background: none;
+    width: 2rem;
+    height: 2rem;
+    top: 7.5rem;
+    left: -1rem;
+
+    &:focus {
+      outline: none;
+      border: none;
+    }
+  }
+`;
+
 export const ContentWrapper = styled.div`
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  input {
+    border-radius: 5px;
+    padding: 0.3rem;
+    border: 2px solid #f1f1f1;
+
+    &:focus {
+      border-color: #5e4a9e;
+      outline: none;
+    }
+  }
 `;
 
 export const ProfileContent = styled.div`

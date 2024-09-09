@@ -10,6 +10,7 @@ interface EditUserRequest {
   user_id: string;
   email: string;
   number: string;
+  phone_number: string;
 }
 
 @Injectable()
@@ -23,6 +24,7 @@ export class EditUserUseCase {
     adress,
     email,
     number,
+    phone_number,
   }: EditUserRequest) {
     const user = await this.userRepository.findById(user_id, true);
 
@@ -41,6 +43,7 @@ export class EditUserUseCase {
     user.name = name;
     user.profile_picture = profile_picture;
     user.adress = adress;
+    user.phone_number = phone_number;
 
     await this.userRepository.save(user, {
       adress,
@@ -48,6 +51,7 @@ export class EditUserUseCase {
       name,
       number,
       profile_picture,
+      phone_number,
     });
 
     return user;

@@ -83,7 +83,7 @@ export class UserController {
     @Request() request: AuthRequestModel,
     @Body() body: EditUserBody,
   ) {
-    const { name, adress, email, number } = body;
+    const { name, adress, email, number, phone_number } = body;
 
     if (file) {
       const user = await this.editUserUseCase.execute({
@@ -93,6 +93,7 @@ export class UserController {
         number,
         profile_picture: file.filename,
         user_id: request.user.id,
+        phone_number,
       });
 
       return user;
@@ -103,6 +104,7 @@ export class UserController {
         email,
         number,
         user_id: request.user.id,
+        phone_number,
       });
 
       return user;

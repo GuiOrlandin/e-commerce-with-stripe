@@ -74,7 +74,7 @@ export const HomeButton = styled.div<ButtonSelected>`
 
   h2 {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: #2906b1;
     border-bottom: 1px solid transparent;
 

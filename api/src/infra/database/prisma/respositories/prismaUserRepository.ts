@@ -18,18 +18,16 @@ export class PrismaUserRepository implements UserRepository {
 
   private async deleteFile(filePath: string): Promise<void> {
     const fullPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      '..',
-      '..',
-      '..',
+      process.cwd(),
       'uploads',
       'userAvatar',
       filePath,
     );
 
+    console.log(fullPath);
+
     if (fs.existsSync(fullPath)) {
+      console.log('veio');
       fs.unlinkSync(fullPath);
     }
   }
@@ -183,17 +181,38 @@ export class PrismaUserRepository implements UserRepository {
       },
     });
 
-    await this.prisma.user.update({
-      where: {
-        id: userRaw.id,
-      },
-      data: {
-        adress: data.adress,
-        email: data.email,
-        name: data.name,
-        number: data.number,
-        profile_picture: data.profile_picture,
-      },
-    });
+    if (userUnmodified.profile_picture === null) {
+      await this.prisma.user.update({
+        where: {
+          id: userRaw.id,
+        },
+        data: {
+          adress: data.adress,
+          email: data.email,
+          name: data.name,
+          number: data.number,
+          profile_picture: data.profile_picture,
+          phone_number: data.phone_number,
+        },
+      });
+    } else {
+      console.log('oi');
+
+      this.deleteFile(userUnmodified.profile_picture);
+
+      await this.prisma.user.update({
+        where: {
+          id: userRaw.id,
+        },
+        data: {
+          adress: data.adress,
+          email: data.email,
+          name: data.name,
+          number: data.number,
+          profile_picture: data.profile_picture,
+          phone_number: data.phone_number,
+        },
+      });
+    }
   }
 }

@@ -12,24 +12,27 @@ export const userStore = create<UserStore>()(
   persist(
     (set) => ({
       user: {
+        id: "",
         email: "",
         name: "",
         role: "",
         token: "",
         profile_picture: "",
-
+        phone_number: "",
         purchasedProducts: [],
       },
       setUser: (user) => set(() => ({ user: user })),
       clearUser: () =>
         set(() => ({
           user: {
+            id: "",
             email: "",
             name: "",
             role: "",
             token: "",
             profile_picture: "",
             purchasedProducts: [],
+            phone_number: "",
           },
         })),
     }),

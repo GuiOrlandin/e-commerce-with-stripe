@@ -7,11 +7,12 @@ export interface UserWithPurchasedProductsResponse {
   email: string;
   name: string;
   role: string;
-  token?: string;
-  id?: string;
+  token: string;
+  id: string;
   adress?: string;
   number?: string;
   profile_picture?: string;
+  phone_number: string;
 
   purchasedProducts: {
     amount_total: number;

@@ -12,4 +12,7 @@ export class EditUserBody {
 
   @IsString()
   number: string;
+
+  @IsString()
+  phone_number: string;
 }

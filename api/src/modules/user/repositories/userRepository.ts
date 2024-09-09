@@ -25,6 +25,7 @@ export interface updateItems {
   adress: string;
   email: string;
   number: string;
+  phone_number: string;
 }
 
 export interface CheckoutItems {

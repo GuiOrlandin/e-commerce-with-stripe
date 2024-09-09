@@ -11,7 +11,7 @@ async function fetchUserData(userId: string) {
 
 export function useUserFetch(userId: string) {
   return useQuery<UserWithPurchasedProductsResponse>({
-    queryKey: ["userInfo"],
+    queryKey: ["user-Info"],
     queryFn: () => fetchUserData(userId),
     enabled: !!userId,
   });
