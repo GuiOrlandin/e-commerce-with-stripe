@@ -2,12 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/modules/user/repositories/userRepository';
 import Stripe from 'stripe';
 
-interface CheckOutItems {
-  name: string;
-  quantity: number;
-  unitValue: number;
-}
-
 interface CheckOutRequest {
   userId?: string;
   sessionId: string;

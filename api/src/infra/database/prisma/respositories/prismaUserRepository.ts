@@ -103,8 +103,24 @@ export class PrismaUserRepository implements UserRepository {
       },
     });
 
+    const userAdmin = await this.prisma.user.findFirst({
+      where: {
+        role: 'ADMIN',
+      },
+      select: {
+        soldProducts: true,
+        id: true,
+      },
+    });
+
     const existingProducts = Array.isArray(userUnmodified?.purchasedProducts)
       ? userUnmodified.purchasedProducts
+      : [];
+
+    const existingSoldProductsOfUserAdmin = Array.isArray(
+      userAdmin?.soldProducts,
+    )
+      ? userAdmin.soldProducts
       : [];
 
     const newProducts: JsonObject[] = items.data.map((item) => {
@@ -162,12 +178,25 @@ export class PrismaUserRepository implements UserRepository {
 
     const updatedPurchasedProducts = [...existingProducts, ...newProducts];
 
+    const updatedSoldProducts = [
+      ...existingSoldProductsOfUserAdmin,
+      ...newProducts,
+    ];
+
     await this.prisma.user.update({
       where: {
         id: user.id,
       },
       data: {
         purchasedProducts: updatedPurchasedProducts,
+      },
+    });
+    await this.prisma.user.update({
+      where: {
+        id: userAdmin.id,
+      },
+      data: {
+        soldProducts: updatedSoldProducts,
       },
     });
   }

@@ -12,6 +12,7 @@ export interface UserSchema {
   products?: Product[];
   role: string;
   purchasedProducts?: CheckoutItems[];
+  soldProducts?: CheckoutItems[];
   profile_picture: string | null;
   number?: string;
 }
@@ -25,6 +26,7 @@ export class User {
       created_at: props.created_at || new Date(),
       role: props.role || 'USER',
       purchasedProducts: props.purchasedProducts || [],
+      soldProducts: props.soldProducts || [],
       products: props.products || [],
       profile_picture: props.profile_picture || null,
     };
@@ -40,6 +42,9 @@ export class User {
 
   get purchasedProducts(): CheckoutItems[] {
     return this.props.purchasedProducts;
+  }
+  get soldProducts(): CheckoutItems[] {
+    return this.props.soldProducts;
   }
 
   get email(): string {

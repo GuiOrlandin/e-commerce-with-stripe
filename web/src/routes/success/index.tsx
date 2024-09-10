@@ -9,14 +9,19 @@ import { useNavigate } from "react-router-dom";
 import { useUserFetch } from "../../hooks/useUserInfoFetch";
 import { userStore } from "../../store/userStore";
 import { useEffect } from "react";
+import { productStore } from "../../store/productStore";
 
 export default function Success() {
   const navigate = useNavigate();
   const userInfo = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
+  const clearCart = productStore((state) => state.clearCart);
+
   const { data: userInfoFetched, isSuccess } = useUserFetch(userInfo!.id!);
 
   useEffect(() => {
+    clearCart();
+
     if (isSuccess && userInfoFetched) {
       setUser({
         ...userInfo,

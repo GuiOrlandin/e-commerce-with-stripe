@@ -13,10 +13,14 @@ export class PrismaUserMapper {
     phone_number,
     role,
     purchasedProducts,
+    soldProducts,
     number,
   }: User): UserRaw {
     return {
       email,
+      soldProducts: soldProducts
+        ? JSON.parse(JSON.stringify(purchasedProducts))
+        : null,
       adress,
       name,
       password_hash,
