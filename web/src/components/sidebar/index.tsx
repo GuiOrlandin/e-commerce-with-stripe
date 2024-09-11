@@ -68,7 +68,7 @@ export default function SideBar() {
 
             {user && user.token && user.role === "ADMIN" && (
               <ChartButton
-                onClick={() => handleSetButtonSelected("chart")}
+                onClick={() => handleSetButtonSelected("dashboard")}
                 $variant={buttonSelected!}
               >
                 <FaRegChartBar size={31} />

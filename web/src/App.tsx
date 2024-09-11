@@ -10,6 +10,7 @@ import Register from "./routes/register";
 import MyPurchases from "./routes/myPurchase";
 import Success from "./routes/success";
 import Profile from "./routes/profile";
+import Dashboard from "./routes/dashboard";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -40,6 +41,10 @@ export default function App() {
     {
       path: "/profile",
       element: <Profile />,
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
     },
   ]);
 
