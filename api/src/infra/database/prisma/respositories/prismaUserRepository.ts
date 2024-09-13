@@ -3,6 +3,8 @@ import { User } from 'src/modules/user/entities/User';
 import {
   AdressItems,
   CheckoutItems,
+  DashboardItems,
+  DataItems,
   UserRepository,
   updateItems,
 } from 'src/modules/user/repositories/userRepository';
@@ -11,6 +13,8 @@ import { PrismaUserMapper } from '../mappers/prismaUserMapper';
 import * as fs from 'fs';
 import * as path from 'path';
 import { JsonObject } from '@prisma/client/runtime/library';
+import { subMonths, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -243,5 +247,69 @@ export class PrismaUserRepository implements UserRepository {
         },
       });
     }
+  }
+
+  async dashboardInfo(): Promise<DashboardItems[]> {
+    const admin = await this.prisma.user.findFirst({
+      where: {
+        role: 'ADMIN',
+      },
+    });
+
+    const months: string[] = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const monthDate = subMonths(new Date(), i);
+      const monthName = format(monthDate, 'MMMM', { locale: ptBR });
+      months.push(monthName);
+    }
+
+    const sixMonthsAgo = subMonths(new Date(), 6);
+
+    const adminToDomain = PrismaUserMapper.toDomain(admin);
+
+    if (!adminToDomain.soldProducts) {
+      throw new Error('Nao foi encontrado os produtos');
+    }
+
+    const soldItems = adminToDomain.soldProducts.filter((soldItem) => {
+      new Date(soldItem.created_at) >= sixMonthsAgo;
+
+      return soldItem;
+    });
+
+    const dashboardData = months.map((month) => {
+      const productsInMonth = soldItems.filter((soldItemData) => {
+        const soldItemDate = format(new Date(soldItemData.created_at), 'MMMM', {
+          locale: ptBR,
+        });
+
+        return soldItemDate.toLowerCase() === month.toLowerCase();
+      });
+
+      const totalIncome = productsInMonth.reduce((sum, soldItem) => {
+        return sum + soldItem.amount_total;
+      }, 0);
+
+      return {
+        month,
+        soldProducts: productsInMonth,
+        totalIncome,
+      };
+    });
+
+    return dashboardData;
+  }
+
+  async getLastSixMonths(): Promise<string[]> {
+    const months: string[] = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const monthDate = subMonths(new Date(), i);
+      const monthName = format(monthDate, 'MMMM', { locale: ptBR });
+      months.push(monthName.charAt(0).toUpperCase() + monthName.slice(1));
+    }
+
+    return months;
   }
 }

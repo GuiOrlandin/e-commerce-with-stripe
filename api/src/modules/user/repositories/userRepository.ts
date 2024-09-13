@@ -10,6 +10,7 @@ export interface DataItems {
   unit_amount: number;
   quantity: number;
   status: string;
+  created_at?: Date;
 }
 export interface AdressItems {
   city: string;
@@ -31,6 +32,11 @@ export interface updateItems {
 export interface CheckoutItems {
   data: DataItems[];
 }
+export interface DashboardItems {
+  month: string;
+  totalIncome: number;
+  soldProducts: DataItems[];
+}
 
 export abstract class UserRepository {
   abstract create(user: User): Promise<void>;
@@ -40,6 +46,8 @@ export abstract class UserRepository {
     editUser?: boolean,
   ): Promise<Partial<User> | null>;
   abstract save(user: Partial<User>, data: updateItems): Promise<void>;
+  abstract dashboardInfo(): Promise<DashboardItems[]>;
+  abstract getLastSixMonths(): Promise<string[]>;
   abstract SaveCheckoutInUser(
     items: CheckoutItems,
     user: Partial<User>,

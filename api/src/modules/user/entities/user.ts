@@ -1,5 +1,5 @@
 import { Product } from 'src/modules/products/entities/product';
-import { CheckoutItems } from '../repositories/userRepository';
+import { CheckoutItems, DataItems } from '../repositories/userRepository';
 
 export interface UserSchema {
   email: string;
@@ -12,7 +12,7 @@ export interface UserSchema {
   products?: Product[];
   role: string;
   purchasedProducts?: CheckoutItems[];
-  soldProducts?: CheckoutItems[];
+  soldProducts?: DataItems[];
   profile_picture: string | null;
   number?: string;
 }
@@ -43,7 +43,7 @@ export class User {
   get purchasedProducts(): CheckoutItems[] {
     return this.props.purchasedProducts;
   }
-  get soldProducts(): CheckoutItems[] {
+  get soldProducts(): DataItems[] {
     return this.props.soldProducts;
   }
 

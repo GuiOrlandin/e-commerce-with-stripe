@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Put,
   Query,
@@ -20,6 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { EditUserUseCase } from 'src/modules/user/useCase/editUserUseCase';
+import { DashboardInfoUseCase } from 'src/modules/user/useCase/dashboardsInfoUseCase';
 
 @Controller('user')
 export class UserController {
@@ -27,6 +29,7 @@ export class UserController {
     private createUserUseCase: CreateUserUseCase,
     private findUserById: FindUserByIdUseCase,
     private editUserUseCase: EditUserUseCase,
+    private dashboardInfoUseCase: DashboardInfoUseCase,
   ) {}
 
   @Post()
@@ -61,6 +64,14 @@ export class UserController {
     });
 
     return user;
+  }
+
+  @Get('dashboard')
+  @Public()
+  async dashboardInfo(@Param('dashboard') dashboard: string) {
+    const dashboardInfo = await this.dashboardInfoUseCase.execute();
+
+    return dashboardInfo;
   }
 
   @Put()

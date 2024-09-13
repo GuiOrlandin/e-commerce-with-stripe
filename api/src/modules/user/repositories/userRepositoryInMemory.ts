@@ -1,8 +1,19 @@
 import { User } from '../entities/User';
-import { CheckoutItems, UserRepository } from './userRepository';
+import {
+  CheckoutItems,
+  DashboardItems,
+  UserRepository,
+} from './userRepository';
+
+import { subMonths, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export class UserRepositoryInMemory implements UserRepository {
   public users: User[] = [];
+
+  dashboardInfo(): Promise<DashboardItems[]> {
+    throw new Error('Method not implemented.');
+  }
 
   async create(user: User): Promise<void> {
     this.users.push(user);
@@ -39,6 +50,18 @@ export class UserRepositoryInMemory implements UserRepository {
 
     if (userIndex >= 0) {
       this.users[userIndex] = user;
+    }
+  }
+
+  async getLastSixMonths(): Promise<string[]> {
+    const months: string[] = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const monthDate = subMonths(new Date(), i);
+      const monthName = format(monthDate, 'MMMM', { locale: ptBR });
+      months.push(monthName.charAt(0).toUpperCase() + monthName.slice(1));
+
+      return months;
     }
   }
 }
