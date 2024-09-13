@@ -22,9 +22,13 @@ export const SoldItemsContainer = styled.div`
   flex-direction: column;
   border-radius: 5px;
   padding: 1rem;
+  height: 38rem;
   width: 70%;
   gap: 2rem;
   background: white;
+  overflow: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 
   h1 {
     font-size: 1.5rem;
@@ -52,7 +56,7 @@ export const DateContainer = styled.p`
   border-bottom: 1px solid #ededed;
   font-weight: 500;
 `;
-export const NameAndEmailContainer = styled.div`
+export const NameAndQuantityContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;

@@ -8,7 +8,7 @@ interface UserWithoutPermissionExceptionProps {
 export class UserWithoutPermissionException extends AppException {
   constructor({ actionName }: UserWithoutPermissionExceptionProps) {
     super({
-      message: `Sem permissão para ${actionName} o post`,
+      message: `Sem permissão para ${actionName}`,
       status: HttpStatus.UNAUTHORIZED,
     });
   }

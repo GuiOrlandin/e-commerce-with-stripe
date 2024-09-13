@@ -134,7 +134,7 @@ export class PrismaUserRepository implements UserRepository {
         purchase_id: item.purchase_id,
         description: item.description,
         name: item.name,
-        image_Url: item.image_url,
+        image_url: item.image_url,
         unit_amount: item.unit_amount,
         quantity: item.quantity,
         created_at: new Date().toISOString(),
@@ -278,25 +278,31 @@ export class PrismaUserRepository implements UserRepository {
       return soldItem;
     });
 
-    const dashboardData = months.map((month) => {
-      const productsInMonth = soldItems.filter((soldItemData) => {
-        const soldItemDate = format(new Date(soldItemData.created_at), 'MMMM', {
-          locale: ptBR,
+    const dashboardData = months
+      .map((month) => {
+        const productsInMonth = soldItems.filter((soldItemData) => {
+          const soldItemDate = format(
+            new Date(soldItemData.created_at),
+            'MMMM',
+            {
+              locale: ptBR,
+            },
+          );
+
+          return soldItemDate.toLowerCase() === month.toLowerCase();
         });
 
-        return soldItemDate.toLowerCase() === month.toLowerCase();
-      });
+        const totalIncome = productsInMonth.reduce((sum, soldItem) => {
+          return sum + soldItem.amount_total;
+        }, 0);
 
-      const totalIncome = productsInMonth.reduce((sum, soldItem) => {
-        return sum + soldItem.amount_total;
-      }, 0);
-
-      return {
-        month,
-        soldProducts: productsInMonth,
-        totalIncome,
-      };
-    });
+        return {
+          month,
+          soldProducts: productsInMonth,
+          totalIncome,
+        };
+      })
+      .reverse();
 
     return dashboardData;
   }

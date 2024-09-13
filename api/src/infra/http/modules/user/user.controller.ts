@@ -67,9 +67,10 @@ export class UserController {
   }
 
   @Get('dashboard')
-  @Public()
-  async dashboardInfo(@Param('dashboard') dashboard: string) {
-    const dashboardInfo = await this.dashboardInfoUseCase.execute();
+  async dashboardInfo(@Request() request: AuthRequestModel) {
+    const dashboardInfo = await this.dashboardInfoUseCase.execute(
+      request.user.id,
+    );
 
     return dashboardInfo;
   }
