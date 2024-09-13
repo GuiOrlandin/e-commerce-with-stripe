@@ -54,13 +54,9 @@ export default function Home() {
         <ProductCartContainer>
           {products && products.length >= 1 ? (
             products!.map((product) => (
-              <>
-                <ProductCart
-                  page="home"
-                  key={product.props._id}
-                  product={product}
-                />
-              </>
+              <div key={product.props._id}>
+                <ProductCart page="home" product={product} />
+              </div>
             ))
           ) : (
             <h2>Não contém produtos cadastrados</h2>

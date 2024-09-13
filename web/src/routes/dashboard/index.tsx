@@ -51,9 +51,6 @@ export default function Dashboard() {
         const currentMonthTotalIncome =
           data[currentMonthIndex].totalIncome / 100;
 
-        console.log(lastMonthTotalIncome);
-        console.log(currentMonthTotalIncome);
-
         setSalesPercentageComparedToLastMonth(
           ((currentMonthTotalIncome - lastMonthTotalIncome) /
             lastMonthTotalIncome) *
