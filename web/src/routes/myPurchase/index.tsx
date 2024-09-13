@@ -2,6 +2,7 @@ import PurchasedProductCard from "../../components/purchaseProductCard";
 import SideBar from "../../components/sidebar";
 import { MyPurchasesContainer, MyPurchasesProductsContainer } from "./styles";
 import { userStore } from "../../store/userStore";
+import { v4 as uuidv4 } from "uuid";
 
 export interface UserWithPurchasedProductsResponse {
   email: string;
@@ -46,7 +47,10 @@ export default function MyPurchases() {
         userInfo!.purchasedProducts &&
         userInfo!.purchasedProducts.length >= 1 ? (
           userInfo!.purchasedProducts.map((product) => (
-            <PurchasedProductCard product={product} key={product.id} />
+            <PurchasedProductCard
+              product={product}
+              key={product.id + uuidv4()}
+            />
           ))
         ) : (
           <h1>Nenhum produto comprado!</h1>

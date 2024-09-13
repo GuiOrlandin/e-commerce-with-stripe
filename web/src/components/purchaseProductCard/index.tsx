@@ -50,7 +50,7 @@ export default function PurchasedProductCard({
           <img src={`http://localhost:3333/files/${product.image_Url}`} />
           <QuantityTotalValueContainer>
             <p>Quantidade: {product.quantity}</p>
-            <p>Valor total: R$ {product.amount_total}</p>
+            <p>Valor total: R$ {product.amount_total / 100}</p>
             <span>{`${product.adress.adress}, ${
               product.adress.numberAndNeighborhood.split(",")[0]
             }. `}</span>
