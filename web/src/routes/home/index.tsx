@@ -48,7 +48,7 @@ export default function Home() {
 
       {isLoading ? (
         <>
-          <h1>Is loading...</h1>
+          <h1>Carregando...</h1>
         </>
       ) : (
         <ProductCartContainer>
@@ -59,7 +59,7 @@ export default function Home() {
               </div>
             ))
           ) : (
-            <h2>Não contém produtos cadastrados</h2>
+            <h2 role="alert">Não contém produtos cadastrados</h2>
           )}
         </ProductCartContainer>
       )}
