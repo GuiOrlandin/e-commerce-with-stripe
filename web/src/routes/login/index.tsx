@@ -82,7 +82,6 @@ export default function Login() {
     }
 
     if (userFound && data && data!.token!) {
-
       setUser({
         ...userInfo,
         token: data?.token,
@@ -102,6 +101,7 @@ export default function Login() {
           <span>Email</span>
           <EmailInput
             type="email"
+            placeholder="Digite o email"
             onChange={(event) =>
               handleChangeUserDetailsForLogin(event, "email")
             }
@@ -111,6 +111,7 @@ export default function Login() {
           <span>Senha</span>
           <PasswordInput
             type="password"
+            placeholder="Digite a senha"
             onChange={(event) =>
               handleChangeUserDetailsForLogin(event, "password_hash")
             }

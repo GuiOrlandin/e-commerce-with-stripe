@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Routes, Route } from "react-router-dom";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
@@ -32,13 +27,9 @@ function renderComponent() {
 
 describe("Home component", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     mock.reset();
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("should render loading and then the product", async () => {
     mock.onGet("http://localhost:3333/product").reply(200, [
       {
