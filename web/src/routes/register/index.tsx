@@ -65,48 +65,52 @@ export default function Register() {
   }
 
   function handleRegister() {
-    if (userRegisterCredentials?.email === "") {
+    if (!userRegisterCredentials?.email) {
       return setErrorMessage("insira o Email!");
     }
-    if (userRegisterCredentials?.password_hash === "") {
+    if (!userRegisterCredentials?.password_hash) {
       return setErrorMessage("insira a Senha!");
     }
-    if (userRegisterCredentials?.name === "") {
+    if (!userRegisterCredentials?.name) {
       return setErrorMessage("insira o nome!");
     }
-
-    mutate({
-      email: userRegisterCredentials!.email,
-      name: userRegisterCredentials!.name,
-      password_hash: userRegisterCredentials!.password_hash,
-    });
+    if (
+      userRegisterCredentials?.password_hash &&
+      userRegisterCredentials?.name &&
+      userRegisterCredentials?.email
+    ) {
+      mutate({
+        email: userRegisterCredentials!.email,
+        name: userRegisterCredentials!.name,
+        password_hash: userRegisterCredentials!.password_hash,
+      });
+    }
   }
 
   useEffect(() => {
-    if (isSuccess && userRegisterCredentials) {
+    if (isSuccess && !loginSuccess && userRegisterCredentials) {
       loginMutate({
         data: {
           email: userRegisterCredentials?.email,
           password_hash: userRegisterCredentials?.password_hash,
         },
       });
+    }
 
-      if (loginSuccess) {
-        refetch();
-      }
+    if (loginSuccess && !userFound) {
+      refetch();
+    }
 
-      if (userFound && data && data!.token!) {
-        setUser({
-          ...userInfo,
-          token: data?.token,
-        });
-
-        navigate("/");
-      }
+    if (userFound && data && data.token) {
+      setUser({
+        ...userInfo,
+        token: data?.token,
+      });
+      navigate("/");
     }
 
     if (isError) {
-      setErrorMessage("Email ja em uso!");
+      setErrorMessage("Email já em uso!");
     }
   }, [isSuccess, loginSuccess, isError, userFound, data]);
 
@@ -119,6 +123,7 @@ export default function Register() {
         <EmailInputContainer>
           <span>Email</span>
           <EmailInput
+            placeholder="Digite o email"
             type="email"
             onChange={(event) =>
               handleChangeUserRegisterDetails(event, "email")
@@ -129,6 +134,7 @@ export default function Register() {
           <span>Senha</span>
           <PasswordInput
             type="password"
+            placeholder="Digite a senha"
             onChange={(event) =>
               handleChangeUserRegisterDetails(event, "password_hash")
             }
@@ -137,6 +143,7 @@ export default function Register() {
         <NameInputContainer>
           <span>Nome</span>
           <NameInput
+            placeholder="Digite seu nome"
             type="text"
             onChange={(event) => handleChangeUserRegisterDetails(event, "name")}
           />

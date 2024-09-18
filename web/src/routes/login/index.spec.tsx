@@ -11,6 +11,7 @@ import MockAdapter from "axios-mock-adapter";
 import Login from "./index";
 import { userStore } from "../../store/userStore";
 import Home from "../home";
+import Register from "../register";
 
 let mock = new MockAdapter(axios);
 
@@ -23,6 +24,7 @@ function renderComponent() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </MemoryRouter>
     </QueryClientProvider>
@@ -110,6 +112,18 @@ describe("Login component", () => {
       expect(
         screen.getByText("Email ou senha incorretos!")
       ).toBeInTheDocument();
+    });
+  });
+
+  it("should  redirect to the register page after click on Cadastrar", async () => {
+    renderComponent();
+
+    const registerButton = screen.getByText("Cadastrar");
+
+    await userEvent.click(registerButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Nome")).toBeInTheDocument();
     });
   });
 });

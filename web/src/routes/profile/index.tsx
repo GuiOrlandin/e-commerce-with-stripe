@@ -111,8 +111,6 @@ export default function Profile() {
     userInfoFetched,
   ]);
 
-  console.log(toggleEditProfile);
-
   return (
     <ProfileContainer>
       <SideBar />
