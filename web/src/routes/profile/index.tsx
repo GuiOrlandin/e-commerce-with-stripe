@@ -81,6 +81,7 @@ export default function Profile() {
         phone_number: userInfo.phone_number,
       });
     }
+
     if (isSuccess && toggleEditProfile) {
       refetch().then((res) => {
         if (res.data) {
@@ -119,7 +120,7 @@ export default function Profile() {
           <ProfileContent>
             {imagePreview ? (
               <AvatarImageContainer {...avatarImageUpload.getRootProps()}>
-                <Avatar src={imagePreview} />
+                <Avatar role="img" src={imagePreview} />
 
                 <button onClick={() => setImagePreview("")}>x</button>
               </AvatarImageContainer>
@@ -129,10 +130,11 @@ export default function Profile() {
               >
                 {userInfo && userInfo.profile_picture ? (
                   <Avatar
+                    role="img"
                     src={`http://localhost:3333/files/userAvatar/${userInfo.profile_picture}`}
                   />
                 ) : (
-                  <RxAvatar size={150} />
+                  <RxAvatar role="img" size={150} />
                 )}
                 <button>
                   <MdFileUpload height={24} />
@@ -214,12 +216,13 @@ export default function Profile() {
             {userInfo && userInfo.profile_picture ? (
               <>
                 <Avatar
+                  role="img"
                   src={`http://localhost:3333/files/userAvatar/${userInfo.profile_picture}`}
                 />
               </>
             ) : (
               <>
-                <RxAvatar size={96} />
+                <RxAvatar role="img" size={96} />
               </>
             )}
 

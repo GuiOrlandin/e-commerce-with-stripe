@@ -72,9 +72,9 @@ describe("Login component", () => {
     const passwordInput = screen.getByPlaceholderText("Digite a senha");
     const loginButton = screen.getByText("Entrar");
 
-    await userEvent.type(emailInput, "gui@gmail.com"),
-      await userEvent.type(passwordInput, "123456"),
-      await userEvent.click(loginButton);
+    await userEvent.type(emailInput, "gui@gmail.com");
+    await userEvent.type(passwordInput, "123456");
+    await userEvent.click(loginButton);
 
     await waitFor(() => {
       expect(mock.history.post.length).toBe(1);
@@ -104,9 +104,9 @@ describe("Login component", () => {
     const passwordInput = screen.getByPlaceholderText("Digite a senha");
     const loginButton = screen.getByText("Entrar");
 
-    await userEvent.type(emailInput, "gui@gmail.com"),
-      await userEvent.type(passwordInput, "123456"),
-      await userEvent.click(loginButton);
+    await userEvent.type(emailInput, "gui@gmail.com");
+    await userEvent.type(passwordInput, "123456");
+    await userEvent.click(loginButton);
 
     await waitFor(() => {
       expect(

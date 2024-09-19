@@ -8,7 +8,6 @@ import "@testing-library/jest-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import Login from "./index";
 import { userStore } from "../../store/userStore";
 import Home from "../home";
 import Register from "../register";

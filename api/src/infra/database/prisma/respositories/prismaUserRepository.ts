@@ -31,7 +31,6 @@ export class PrismaUserRepository implements UserRepository {
     console.log(fullPath);
 
     if (fs.existsSync(fullPath)) {
-      console.log('veio');
       fs.unlinkSync(fullPath);
     }
   }
@@ -228,9 +227,8 @@ export class PrismaUserRepository implements UserRepository {
           phone_number: data.phone_number,
         },
       });
-    } else {
-      console.log('oi');
-
+    }
+    if (userUnmodified.profile_picture && user.profile_picture) {
       this.deleteFile(userUnmodified.profile_picture);
 
       await this.prisma.user.update({
