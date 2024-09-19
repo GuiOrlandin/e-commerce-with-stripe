@@ -64,18 +64,11 @@ describe("Profile component", () => {
     expect(screen.getByText("Numero:")).toBeInTheDocument();
     expect(screen.getByText("Telefone:")).toBeInTheDocument();
   });
-  it("should redirect to the home page after a successful register", async () => {
-    mock.onPut("http://localhost:3333/user").reply(200, {
-      name: "Guilherme",
-      email: "guilherme@example.com",
-      adress: "Rua Exemplo, 123",
-      number: "123",
-      phone_number: "43984858757",
-      profile_picture: "",
-    });
+  it("Should re-render after successfully editing a user, even without changes.", async () => {
+    mock.onPut("http://localhost:3333/user").reply(200);
 
     mock.onGet(`http://localhost:3333/user?userId=1`).reply(200, {
-      name: "User",
+      name: "Guilherme Orlandin",
       email: "gui@gmail.com",
       adress: "Rua Exemplo, 456",
       number: "456",
@@ -102,6 +95,58 @@ describe("Profile component", () => {
     await waitFor(() => {
       expect(screen.queryByText("Confirme")).not.toBeInTheDocument();
       expect(screen.getByText("Editar Perfil")).toBeInTheDocument();
+    });
+  });
+  it("Should re-render after successfully editing a user with changes.", async () => {
+    mock.onPut("http://localhost:3333/user").reply(200);
+
+    mock.onGet(`http://localhost:3333/user?userId=1`).reply(200, {
+      name: "Guilherme Orlandin",
+      email: "gui@gmail.com",
+      adress: "Rua Exemplo, 456",
+      number: "456",
+      phone_number: "987654321",
+      profile_picture: "new_picture_url",
+      purchasedProducts: [],
+      role: "user",
+    });
+
+    renderComponent();
+
+    const toggleButton = screen.getByText("Editar Perfil");
+    await userEvent.click(toggleButton);
+
+    const inputName = await screen.findByTestId("name-input");
+
+    await userEvent.clear(inputName);
+    await userEvent.type(inputName, "Guilherme Orlandin");
+
+    const confirmButton = screen.getByText("Confirme");
+    await userEvent.click(confirmButton);
+
+    await waitFor(() => {
+      expect(mock.history.put.length).toBe(1);
+    });
+
+    userStore.setState({
+      user: {
+        id: "1",
+        name: "Guilherme Orlandin",
+        email: "gui@gmail.com",
+        adress: "Rua Exemplo",
+        number: "456",
+        phone_number: "987654321",
+        profile_picture: "new_picture_url",
+        role: "user",
+        token: "jwtToken",
+        purchasedProducts: [],
+      },
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText("Confirme")).not.toBeInTheDocument();
+      expect(screen.getByText("Editar Perfil")).toBeInTheDocument();
+      expect(screen.getByText("Guilherme Orlandin")).toBeInTheDocument();
     });
   });
 });

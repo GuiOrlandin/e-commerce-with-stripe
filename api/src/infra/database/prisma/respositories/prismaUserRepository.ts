@@ -228,6 +228,21 @@ export class PrismaUserRepository implements UserRepository {
         },
       });
     }
+    if (!user.profile_picture) {
+      await this.prisma.user.update({
+        where: {
+          id: userRaw.id,
+        },
+        data: {
+          adress: data.adress,
+          email: data.email,
+          name: data.name,
+          number: data.number,
+          profile_picture: userUnmodified.profile_picture,
+          phone_number: data.phone_number,
+        },
+      });
+    }
     if (userUnmodified.profile_picture && user.profile_picture) {
       this.deleteFile(userUnmodified.profile_picture);
 
