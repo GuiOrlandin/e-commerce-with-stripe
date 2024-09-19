@@ -12,7 +12,7 @@ export interface PurchaseProduct {
   id: string;
   description: string;
   name: string;
-  image_Url: string;
+  image_url: string;
   unit_amount: number;
   quantity: number;
   created_at: Date;
@@ -33,8 +33,6 @@ interface PurchasedProductCardProps {
 export default function PurchasedProductCard({
   product,
 }: PurchasedProductCardProps) {
-  console.log(product);
-
   const dateString = product.created_at;
   const date = new Date(dateString);
 
@@ -47,7 +45,7 @@ export default function PurchasedProductCard({
       <PurchaseDataContainer>{formattedDate}</PurchaseDataContainer>
       <PurchaseCardContent>
         <ImageQuantityTotalValueAndAdressContainer>
-          <img src={`http://localhost:3333/files/${product.image_Url}`} />
+          <img src={`http://localhost:3333/files/${product.image_url}`} />
           <QuantityTotalValueContainer>
             <p>Quantidade: {product.quantity}</p>
             <p>Valor total: R$ {product.amount_total / 100}</p>

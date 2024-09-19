@@ -97,7 +97,6 @@ export default function Profile() {
             role: res.data.role,
           });
 
-          console.log("passou por aqui");
           setToggleEditProfile(false);
         }
       });
@@ -112,10 +111,6 @@ export default function Profile() {
     toggleEditProfile,
     userInfoFetched,
   ]);
-
-  console.log(userInfoFetched);
-  console.log(userInfoFetched);
-  console.log(userInfo);
 
   return (
     <ProfileContainer>

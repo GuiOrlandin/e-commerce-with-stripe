@@ -1,5 +1,5 @@
 import React from "react";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Routes, Route } from "react-router-dom";
 import { MemoryRouter } from "react-router-dom";
@@ -18,10 +18,8 @@ function renderComponent() {
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={["/profile"]}>
-        <Routes>
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
+      <MemoryRouter>
+        <Profile />
       </MemoryRouter>
     </QueryClientProvider>
   );
@@ -128,19 +126,21 @@ describe("Profile component", () => {
       expect(mock.history.put.length).toBe(1);
     });
 
-    userStore.setState({
-      user: {
-        id: "1",
-        name: "Guilherme Orlandin",
-        email: "gui@gmail.com",
-        adress: "Rua Exemplo",
-        number: "456",
-        phone_number: "987654321",
-        profile_picture: "new_picture_url",
-        role: "user",
-        token: "jwtToken",
-        purchasedProducts: [],
-      },
+    await act(async () => {
+      userStore.setState({
+        user: {
+          id: "1",
+          name: "Guilherme Orlandin",
+          email: "gui@gmail.com",
+          adress: "Rua Exemplo",
+          number: "456",
+          phone_number: "987654321",
+          profile_picture: "new_picture_url",
+          role: "user",
+          token: "jwtToken",
+          purchasedProducts: [],
+        },
+      });
     });
 
     await waitFor(() => {

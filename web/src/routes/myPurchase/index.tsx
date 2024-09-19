@@ -20,7 +20,7 @@ export interface UserWithPurchasedProductsResponse {
     id: string;
     description: string;
     name: string;
-    image_Url: string;
+    image_url: string;
     unit_amount: number;
     quantity: number;
     created_at: Date;
@@ -38,6 +38,7 @@ export interface UserWithPurchasedProductsResponse {
 export default function MyPurchases() {
   const userInfo = userStore((state) => state.user);
 
+  console.log(userInfo);
   return (
     <MyPurchasesContainer>
       <SideBar />
