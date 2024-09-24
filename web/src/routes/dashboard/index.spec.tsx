@@ -28,7 +28,7 @@ function renderComponent() {
   );
 }
 
-describe("Dashboard component", () => {
+describe("Dashboard Page", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mock.reset();
@@ -49,7 +49,7 @@ describe("Dashboard component", () => {
       setUser: jest.fn(),
     });
   });
-  it("should render the dashboard with informations", async () => {
+  it("should render the dashboard with information", async () => {
     mock.onGet("http://localhost:3333/user/dashboard").reply(
       200,
       [

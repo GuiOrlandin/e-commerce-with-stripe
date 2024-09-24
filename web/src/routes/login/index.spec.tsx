@@ -31,7 +31,7 @@ function renderComponent() {
   );
 }
 
-describe("Login component", () => {
+describe("Login Page", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mock.reset();

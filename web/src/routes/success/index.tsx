@@ -38,10 +38,16 @@ export default function Success() {
         <SuccessMessage>
           Obrigado pela sua compra! Seu pedido será processado em breve.
         </SuccessMessage>
-        <SuccessButton onClick={() => navigate("/my_purchases")}>
+        <SuccessButton
+          data-testid="see-purchases"
+          onClick={() => navigate("/my_purchases")}
+        >
           Ver Pedidos
         </SuccessButton>
-        <SuccessButton onClick={() => navigate("/")}>
+        <SuccessButton
+          data-testid="home-page-button"
+          onClick={() => navigate("/")}
+        >
           Continuar Comprando
         </SuccessButton>
       </SuccessContent>
