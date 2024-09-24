@@ -23,7 +23,6 @@ async function putData(
       },
     };
 
-    console.log(authToken);
     const formData = new FormData();
 
     formData.append("name", data.name);
