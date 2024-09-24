@@ -31,6 +31,8 @@ export default function Dashboard() {
   const userInfo = userStore((state) => state.user);
   const currentMonthName = format(new Date(), "MMMM", { locale: ptBR });
 
+  console.log(data);
+
   useEffect(() => {
     if (!userInfo.token) {
       navigate("/");
