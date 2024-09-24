@@ -28,8 +28,6 @@ export class PrismaUserRepository implements UserRepository {
       filePath,
     );
 
-    console.log(fullPath);
-
     if (fs.existsSync(fullPath)) {
       fs.unlinkSync(fullPath);
     }
