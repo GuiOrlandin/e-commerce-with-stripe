@@ -25,7 +25,7 @@ function renderComponent() {
   );
 }
 
-describe("Profile component", () => {
+describe("Profile page", () => {
   afterEach(() => {
     cleanup();
   });

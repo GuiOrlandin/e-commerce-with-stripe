@@ -32,7 +32,10 @@ export default function Cart() {
     });
   }
   useEffect(() => {
+    console.log("isSuccess:", isSuccess, "data:", data);
     if (isSuccess && data) {
+      console.log("checkoutFoi");
+
       window.location.href = data;
     }
   }, [isSuccess, data]);

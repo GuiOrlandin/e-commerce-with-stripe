@@ -1,6 +1,5 @@
 import React from "react";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
@@ -24,7 +23,7 @@ function renderComponent() {
   );
 }
 
-describe("My purchases component", () => {
+describe("My purchases Page", () => {
   afterEach(() => {
     cleanup();
   });
@@ -72,7 +71,6 @@ describe("My purchases component", () => {
 
   it("should render the page with de component", async () => {
     renderComponent();
-    screen.debug();
 
     await waitFor(() => {
       expect(screen.getByText("Quantidade:", { exact: false }));

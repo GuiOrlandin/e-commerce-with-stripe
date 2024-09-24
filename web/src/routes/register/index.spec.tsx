@@ -29,7 +29,7 @@ function renderComponent() {
   );
 }
 
-describe("Register component", () => {
+describe("Register Page", () => {
   afterEach(() => {
     cleanup();
   });
