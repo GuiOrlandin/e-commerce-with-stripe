@@ -1,6 +1,7 @@
 import { ProductsResponse } from "../../routes/home";
 import { productStore } from "../../store/productStore";
 import { userStore } from "../../store/userStore";
+import DeleteDialog from "../deleteDialog";
 import {
   AddOrRemoveButtons,
   AddOrRemoveButtonsInCart,
@@ -79,14 +80,12 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
 
       setProductInCart(true);
     }
-
-    if (productNumber === 0 && productInCart) {
-      removeProduct(product.props._id);
-      setProductInCart(false);
-    }
   }, [productNumber]);
 
-  console.log(product);
+  function handleRemoveProduct() {
+    removeProduct(product.props._id);
+    setProductInCart(false);
+  }
 
   return (
     <ProductContainer>
@@ -100,7 +99,11 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
             <p>{product.props.description}</p>
 
             <UnitValueContainer>
-              <p>{`R$: ${product.props.unit_value}`}</p>
+              <p>{`${product.props.unit_value.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+                minimumFractionDigits: 2,
+              })}`}</p>
             </UnitValueContainer>
             <StockAndAddOrRemoveButtons>
               <StockContainer>
@@ -150,15 +153,31 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
                   +
                 </AddProductsToCartButton>
                 <span>{productNumber}</span>
-                <RemoveProductsCartButton
-                  disabled={productNumber! === 0}
-                  onClick={() => handleRemoveProductsOfCart()}
-                >
-                  -
-                </RemoveProductsCartButton>
+                {productNumber === 1 ? (
+                  <>
+                    <DeleteDialog
+                      deleteButtonText="-"
+                      title="Deseja deletar o produto do carrinho?"
+                      handleDeleteAction={() => handleRemoveProduct()}
+                    />
+                  </>
+                ) : (
+                  <RemoveProductsCartButton
+                    disabled={productNumber! === 0}
+                    onClick={() => handleRemoveProductsOfCart()}
+                  >
+                    -
+                  </RemoveProductsCartButton>
+                )}
               </AddOrRemoveButtonsInCart>
               <TotalValueOfProduct>
-                {`R$ ${product.props.quantity! * product.props.unit_value}`}
+                {`${(
+                  product.props.quantity! * product.props.unit_value
+                ).toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                  minimumFractionDigits: 2,
+                })}`}
               </TotalValueOfProduct>
             </StockAndAddOrRemoveButtonsInCart>
             <StockContainerInCart>

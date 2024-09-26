@@ -21,19 +21,11 @@ export class CreateUserUseCase {
     email,
     name,
     password_hash,
-    profile_picture,
-    adress,
-    phone_number,
-    role,
   }: CreatedUserRequest) {
     const user = new User({
-      phone_number,
       email,
       name,
       password_hash: await hash(password_hash, 10),
-      profile_picture,
-      adress,
-      role,
     });
 
     await this.userRepository.create(user);

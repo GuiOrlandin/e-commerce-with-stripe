@@ -19,6 +19,8 @@ export default function Success() {
 
   const { data: userInfoFetched, isSuccess } = useUserFetch(userInfo!.id!);
 
+  console.log(userInfoFetched);
+
   useEffect(() => {
     clearCart();
 

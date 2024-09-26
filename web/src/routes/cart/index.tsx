@@ -78,7 +78,11 @@ export default function Cart() {
         <TotalValueAndConfirmPaymentButton>
           <TotalValueInformationContainer>
             <span>Valor total: </span>
-            <h2>{` R$${totalValue}`}</h2>
+            <h2>{` ${totalValue.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+              minimumFractionDigits: 2,
+            })}`}</h2>
           </TotalValueInformationContainer>
           <button onClick={() => handleCheckout()}>Confirmar Pagamento</button>
         </TotalValueAndConfirmPaymentButton>

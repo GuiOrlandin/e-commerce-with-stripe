@@ -20,18 +20,6 @@ export class CreateUserBody {
   @IsNotEmpty()
   password_hash: string;
 
-  @IsString()
-  @IsOptional()
-  adress: string;
-
-  @IsString()
-  @IsOptional()
-  profile_picture?: string;
-
-  @IsString()
-  @IsOptional()
-  phone_number?: string;
-
   @IsDate()
   @IsOptional()
   created_at?: Date;

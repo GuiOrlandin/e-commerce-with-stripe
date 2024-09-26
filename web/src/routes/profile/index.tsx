@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import SideBar from "../../components/sidebar";
 import { userStore } from "../../store/userStore";
 import {
@@ -20,6 +20,8 @@ import { MdFileUpload } from "react-icons/md";
 import { useUpdateUserMutate } from "../../hooks/useUserUpdateMutate";
 import { useUserFetch } from "../../hooks/useUserInfoFetch";
 import { RxAvatar } from "react-icons/rx";
+
+import InputMask from "react-input-mask";
 
 interface ProfileUpdateInfoProps {
   name: string;
@@ -112,6 +114,8 @@ export default function Profile() {
     userInfoFetched,
   ]);
 
+  console.log(userInfo);
+
   return (
     <ProfileContainer>
       <SideBar />
@@ -195,8 +199,8 @@ export default function Profile() {
             </InfoContainer>
             <InfoContainer>
               <Label>Telefone:</Label>
-              <input
-                type="text"
+              <InputMask
+                mask="(99) 99999-9999"
                 value={profileUpdateInfo!.phone_number}
                 onChange={(e) =>
                   setProfileUpdateInfo({
@@ -244,12 +248,18 @@ export default function Profile() {
               </Info>
               <Label>Numero:</Label>
               <Info>
-                {userInfo.number ? userInfo.number : "nenhum numero fornecido."}
+                {userInfo.number !== null
+                  ? userInfo.number
+                  : "nenhum numero fornecido."}
               </Info>
             </InfoContainer>
             <InfoContainer>
               <Label>Telefone:</Label>
-              <Info>43 9848587457</Info>
+              <Info>
+                {userInfo.phone_number !== null
+                  ? userInfo.phone_number
+                  : "nenhum numero fornecido."}
+              </Info>
             </InfoContainer>
             <ButtonContainer>
               <EditButton onClick={() => setToggleEditProfile(true)}>

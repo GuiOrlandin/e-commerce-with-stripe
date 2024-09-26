@@ -44,10 +44,19 @@ export class PrismaUserRepository implements UserRepository {
       throw new Error('Usuário em uso!');
     }
 
+    console.log(user);
+
     const userRaw = PrismaUserMapper.toPrisma(user);
 
+    console.log(userRaw);
+
     await this.prisma.user.create({
-      data: userRaw,
+      data: {
+        ...userRaw,
+        phone_number: null,
+        number: null,
+        adress: null,
+      },
     });
   }
 
@@ -86,6 +95,8 @@ export class PrismaUserRepository implements UserRepository {
     if (editUser) {
       return userRaw;
     }
+
+    console.log(userRaw);
 
     return userRaw.toResponseObject();
   }

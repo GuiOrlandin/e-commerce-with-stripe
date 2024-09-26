@@ -38,7 +38,6 @@ export const RegisterContent = styled.div`
   flex-direction: column;
   background: #f8f7f7;
   width: 40rem;
-  height: 21rem;
   border-radius: 8px;
 
   span {

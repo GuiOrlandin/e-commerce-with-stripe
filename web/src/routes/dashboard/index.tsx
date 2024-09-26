@@ -73,7 +73,13 @@ export default function Dashboard() {
             {data
               ? data!
                   .filter((monthData) => monthData.month === currentMonthName)
-                  .map((monthFiltered) => monthFiltered.totalIncome / 100)
+                  .map((monthFiltered) =>
+                    (monthFiltered.totalIncome / 100).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                      minimumFractionDigits: 2,
+                    })
+                  )
               : []}
           </span>
           <p>
@@ -138,7 +144,16 @@ export default function Dashboard() {
                         </NameAndQuantityContainer>
                       </ImageAndNameContainer>
 
-                      <p>R$ {soldProductsData.amount_total / 100}</p>
+                      <p>
+                        {(soldProductsData.amount_total / 100).toLocaleString(
+                          "pt-BR",
+                          {
+                            style: "currency",
+                            currency: "BRL",
+                            minimumFractionDigits: 2,
+                          }
+                        )}
+                      </p>
                     </ImageNameAndEmailCardContainer>
                   </CardOfSoldItemContainer>
                 ))

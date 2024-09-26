@@ -9,11 +9,12 @@ export const ProductCartContainer = styled.div`
   background: #ffffff;
   padding: 1.6rem;
   border-radius: 8px;
-  max-height: 25rem;
+  max-height: 30rem;
   max-width: 23.3125rem;
+
   img {
     width: 19.3125rem;
-    height: 10.625rem;
+    height: 15.625rem;
     border-radius: 8px;
   }
 
@@ -24,6 +25,7 @@ export const ProductCartContainer = styled.div`
 
   p {
     height: 3.1rem;
+    margin-top: 1rem;
     overflow: hidden;
     overflow-y: scroll;
     scrollbar-width: none;

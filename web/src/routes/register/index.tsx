@@ -114,6 +114,8 @@ export default function Register() {
     }
   }, [isSuccess, loginSuccess, isError, userFound, data]);
 
+  console.log(userInfo);
+
   return (
     <RegisterContainer>
       <SideBarContainer>

@@ -5,15 +5,15 @@ export interface UserSchema {
   email: string;
   password_hash: string;
   name: string;
-  adress: string;
+  adress?: string;
   id?: string;
-  phone_number: string;
+  phone_number?: string;
   created_at?: Date;
   products?: Product[];
-  role: string;
+  role?: string;
   purchasedProducts?: CheckoutItems[];
   soldProducts?: DataItems[];
-  profile_picture: string | null;
+  profile_picture?: string | null;
   number?: string;
 }
 
@@ -28,6 +28,7 @@ export class User {
       purchasedProducts: props.purchasedProducts || [],
       soldProducts: props.soldProducts || [],
       products: props.products || [],
+      adress: props.adress || '',
       profile_picture: props.profile_picture || null,
     };
   }
