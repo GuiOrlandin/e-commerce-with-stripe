@@ -1,6 +1,5 @@
 import PurchasedProductCard from "../../components/purchaseProductCard";
-import SideBar from "../../components/sidebar";
-import { MyPurchasesContainer, MyPurchasesProductsContainer } from "./styles";
+import { MyPurchasesProductsContainer } from "./styles";
 import { userStore } from "../../store/userStore";
 import { v4 as uuidv4 } from "uuid";
 
@@ -40,10 +39,7 @@ export default function MyPurchases() {
   console.log(userInfo);
 
   return (
-    <MyPurchasesContainer>
-      <SideBar />
-
-      <MyPurchasesProductsContainer>
+    <MyPurchasesProductsContainer>
         {userInfo &&
         userInfo!.purchasedProducts &&
         userInfo!.purchasedProducts.length >= 1 ? (
@@ -56,7 +52,6 @@ export default function MyPurchases() {
         ) : (
           <h1>Nenhum produto comprado!</h1>
         )}
-      </MyPurchasesProductsContainer>
-    </MyPurchasesContainer>
+    </MyPurchasesProductsContainer>
   );
 }

@@ -1,19 +1,9 @@
 import styled from "styled-components";
 
-export const DashboardContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  background: #f1f1f1;
-  padding: 2.3rem;
-`;
-
 export const ContentContainer = styled.div`
   display: flex;
-  width: 100vw;
-
+  width: 100%;
   flex-direction: column;
-  padding-left: 1rem;
   gap: 3rem;
 `;
 

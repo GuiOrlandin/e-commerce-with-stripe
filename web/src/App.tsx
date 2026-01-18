@@ -1,27 +1,20 @@
-import "./App.css";
-import { queryClient } from "./lib/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { createBrowserRouter } from "react-router-dom";
-import { RouterProvider } from "react-router-dom";
-import Home from "./routes/home";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App.css";
+import Layout from "./components/Layout";
+import { queryClient } from "./lib/react-query";
 import Cart from "./routes/cart";
-import Login from "./routes/login";
-import Register from "./routes/register";
-import MyPurchases from "./routes/myPurchase";
-import Success from "./routes/success";
-import Profile from "./routes/profile";
 import Dashboard from "./routes/dashboard";
+import Home from "./routes/home";
+import Login from "./routes/login";
+import MyPurchases from "./routes/myPurchase";
+import Products from "./routes/products";
+import Profile from "./routes/profile";
+import Register from "./routes/register";
+import Success from "./routes/success";
 
 export default function App() {
   const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/cart",
-      element: <Cart />,
-    },
     {
       path: "/login",
       element: <Login />,
@@ -31,20 +24,38 @@ export default function App() {
       element: <Register />,
     },
     {
-      path: "/my_purchases",
-      element: <MyPurchases />,
-    },
-    {
-      path: "/success",
-      element: <Success />,
-    },
-    {
-      path: "/profile",
-      element: <Profile />,
-    },
-    {
-      path: "/dashboard",
-      element: <Dashboard />,
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "/",
+          element: <Home />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
+        },
+        {
+          path: "/my_purchases",
+          element: <MyPurchases />,
+        },
+        {
+          path: "/success",
+          element: <Success />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "/products",
+          element: <Products />,
+        },
+      ],
     },
   ]);
 

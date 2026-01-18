@@ -2,10 +2,8 @@ import styled from "styled-components";
 
 export const CartContainer = styled.div`
   display: flex;
-  background: #f1f1f1;
-  width: 100vw;
-  height: 100vh;
-  padding: 2.3rem;
+  width: 100%;
+  height: 100%;
 `;
 
 export const ProductsInCartContainer = styled.div`

@@ -4,10 +4,9 @@ export const SuccessContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f1f1f1;
-  height: 100vh;
-  width: 100vw;
-  padding: 2.3rem;
+  width: 100%;
+  height: 100%;
+  min-height: 60vh;
 `;
 
 export const SuccessContent = styled.div`
@@ -15,11 +14,13 @@ export const SuccessContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 20px;
   background: white;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 3rem 4rem;
+  box-shadow: 0 20px 60px rgba(116, 98, 186, 0.15),
+    0 8px 24px rgba(0, 0, 0, 0.08);
   text-align: center;
+  max-width: 500px;
 `;
 
 export const SuccessMessage = styled.p`

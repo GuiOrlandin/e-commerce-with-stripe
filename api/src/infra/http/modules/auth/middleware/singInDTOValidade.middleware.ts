@@ -3,9 +3,9 @@ import {
   Injectable,
   NestMiddleware,
 } from '@nestjs/common';
-import { NextFunction, Request, Response } from 'express';
-import { SignInBody } from '../dtos/SignInBody';
 import { validate } from 'class-validator';
+import { NextFunction, Request, Response } from 'express';
+import { SignInBody } from 'src/infra/http/modules/auth/dtos/signInBody';
 
 @Injectable()
 export class SignInDTOValidateMiddleware implements NestMiddleware {

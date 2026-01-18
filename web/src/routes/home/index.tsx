@@ -1,10 +1,9 @@
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { HomeContainer, ProductCartContainer } from "./styles";
+import axios from "axios";
+import { ProductCartContainer } from "./styles";
 
-import SideBar from "../../components/sidebar";
-import ProductCart from "../../components/productCard";
 import { useEffect } from "react";
+import ProductCart from "../../components/productCard";
 
 export interface ProductsResponse {
   props: {
@@ -43,9 +42,7 @@ export default function Home() {
   }, [products]);
 
   return (
-    <HomeContainer>
-      <SideBar />
-
+    <>
       {isLoading ? (
         <>
           <h1>Carregando...</h1>
@@ -63,6 +60,6 @@ export default function Home() {
           )}
         </ProductCartContainer>
       )}
-    </HomeContainer>
+    </>
   );
 }

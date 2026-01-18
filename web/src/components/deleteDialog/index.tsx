@@ -45,7 +45,9 @@ export default function DeleteDialog({
               >
                 Confirmar
               </ConfirmButton>
-              <CancelButton>Cancelar</CancelButton>
+              <CancelButton onClick={() => setOpen(false)}>
+                Cancelar
+              </CancelButton>
             </ButtonsOfDialogContainer>
           </DialogDeleteCommentContainer>
         </Content>

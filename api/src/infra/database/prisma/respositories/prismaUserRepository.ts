@@ -1,20 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/modules/user/entities/User';
+import { JsonObject } from '@prisma/client/runtime/library';
+import { format, subMonths } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import * as fs from 'fs';
+import * as path from 'path';
+import { User } from 'src/modules/user/entities/user';
 import {
   AdressItems,
   CheckoutItems,
-  DashboardItems,
-  DataItems,
-  UserRepository,
-  updateItems,
+  DashboardItems, UserRepository,
+  updateItems
 } from 'src/modules/user/repositories/userRepository';
-import { PrismaService } from '../prisma.service';
 import { PrismaUserMapper } from '../mappers/prismaUserMapper';
-import * as fs from 'fs';
-import * as path from 'path';
-import { JsonObject } from '@prisma/client/runtime/library';
-import { subMonths, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -44,11 +42,7 @@ export class PrismaUserRepository implements UserRepository {
       throw new Error('Usuário em uso!');
     }
 
-    console.log(user);
-
     const userRaw = PrismaUserMapper.toPrisma(user);
-
-    console.log(userRaw);
 
     await this.prisma.user.create({
       data: {

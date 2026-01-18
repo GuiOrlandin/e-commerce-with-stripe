@@ -1,6 +1,9 @@
-import { useEffect, useState, ChangeEvent } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SideBar from "../../components/sidebar";
 import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
+import { UserWithPurchasedProductsResponse } from "../myPurchase";
 import {
   EmailInput,
   EmailInputContainer,
@@ -8,14 +11,13 @@ import {
   LoginButton,
   LoginContainer,
   LoginContent,
+  LoginSubtitle,
+  LoginTitle,
   PasswordInput,
   PasswordInputContainer,
   RegisterButton,
   SideBarContainer,
 } from "./styles";
-import { useNavigate } from "react-router-dom";
-import { UserWithPurchasedProductsResponse } from "../myPurchase";
-import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
 import { userStore } from "../../store/userStore";
@@ -97,6 +99,8 @@ export default function Login() {
         <SideBar />
       </SideBarContainer>
       <LoginContent>
+        <LoginTitle>Bem-vindo</LoginTitle>
+        <LoginSubtitle>Faça login para continuar</LoginSubtitle>
         <EmailInputContainer>
           <span>Email</span>
           <EmailInput

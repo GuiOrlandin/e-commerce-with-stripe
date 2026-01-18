@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   CartButton,
   CartLength,
@@ -5,20 +6,20 @@ import {
   HomeButton,
   MyPurchasesButton,
   OptionsButtonsContainer,
+  ProductsButton,
   SideBarContainer,
   SignInButton,
   SignOutButton,
   UserButton,
 } from "./styles";
-import { useState, useEffect } from "react";
 
-import { IoCartOutline, IoPersonCircleOutline } from "react-icons/io5";
-import { FaRegChartBar } from "react-icons/fa";
 import { CiDeliveryTruck } from "react-icons/ci";
+import { FaRegChartBar } from "react-icons/fa";
+import { GoSignIn } from "react-icons/go";
+import { IoAddCircleOutline, IoCartOutline, IoPersonCircleOutline } from "react-icons/io5";
 import { PiSignInLight } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import { productStore } from "../../store/productStore";
-import { GoSignIn } from "react-icons/go";
 import { userStore } from "../../store/userStore";
 
 export default function SideBar() {
@@ -57,6 +58,7 @@ export default function SideBar() {
             <CartButton
               onClick={() => handleSetButtonSelected("cart")}
               $variant={buttonSelected!}
+              $activePath="cart"
             >
               <IoCartOutline size={31} />
               {products.length >= 1 ? (
@@ -67,22 +69,34 @@ export default function SideBar() {
             </CartButton>
 
             {user && user.token && user.role === "ADMIN" && (
-              <ChartButton
-                onClick={() => handleSetButtonSelected("dashboard")}
-                $variant={buttonSelected!}
-              >
-                <FaRegChartBar size={31} />
-              </ChartButton>
+              <>
+                <ProductsButton
+                  onClick={() => handleSetButtonSelected("products")}
+                  $variant={buttonSelected!}
+                  $activePath="products"
+                >
+                  <IoAddCircleOutline size={31} />
+                </ProductsButton>
+                <ChartButton
+                  onClick={() => handleSetButtonSelected("dashboard")}
+                  $variant={buttonSelected!}
+                  $activePath="dashboard"
+                >
+                  <FaRegChartBar size={31} />
+                </ChartButton>
+              </>
             )}
 
             <MyPurchasesButton
               onClick={() => handleSetButtonSelected("my_purchases")}
               $variant={buttonSelected!}
+              $activePath="my_purchases"
             >
               <CiDeliveryTruck size={31} />
             </MyPurchasesButton>
             <UserButton
               $variant={buttonSelected!}
+              $activePath="profile"
               onClick={() => handleSetButtonSelected("profile")}
             >
               <IoPersonCircleOutline size={31} />
@@ -100,6 +114,7 @@ export default function SideBar() {
       ) : (
         <SignInButton
           $variant={buttonSelected!}
+          $activePath="login"
           onClick={() => handleSetButtonSelected("login")}
         >
           <PiSignInLight size={31} />

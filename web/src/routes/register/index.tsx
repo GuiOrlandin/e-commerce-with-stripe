@@ -1,28 +1,33 @@
-import { useState, ChangeEvent, useEffect } from "react";
-import SideBar from "../../components/sidebar";
-
-import { EmailInput, PasswordInput } from "../login/styles";
-import {
-  EmailInputContainer,
-  ErrorMessageContainer,
-  NameInput,
-  NameInputContainer,
-  PasswordInputContainer,
-  RegisterButton,
-  RegisterContainer,
-  RegisterContent,
-  SideBarContainer,
-} from "./styles";
-import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SideBar from "../../components/sidebar";
+import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
 import {
   UserRegisterDetails,
   useUserRegisterMutate,
 } from "../../hooks/useUserRegisterMutate";
-import { UserWithPurchasedProductsResponse } from "../myPurchase";
-import { useQuery } from "@tanstack/react-query";
 import { userStore } from "../../store/userStore";
-import axios from "axios";
+import {
+  EmailInput,
+  EmailInputContainer,
+  ErrorMessageContainer,
+  RegisterButton as LoginRegisterButton,
+  PasswordInput,
+  PasswordInputContainer,
+} from "../login/styles";
+import { UserWithPurchasedProductsResponse } from "../myPurchase";
+import {
+  NameInput,
+  NameInputContainer,
+  RegisterButton,
+  RegisterContainer,
+  RegisterContent,
+  RegisterSubtitle,
+  RegisterTitle,
+  SideBarContainer,
+} from "./styles";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -122,6 +127,16 @@ export default function Register() {
         <SideBar />
       </SideBarContainer>
       <RegisterContent>
+        <RegisterTitle>Criar Conta</RegisterTitle>
+        <RegisterSubtitle>Preencha os dados para se cadastrar</RegisterSubtitle>
+        <NameInputContainer>
+          <span>Nome</span>
+          <NameInput
+            placeholder="Digite seu nome"
+            type="text"
+            onChange={(event) => handleChangeUserRegisterDetails(event, "name")}
+          />
+        </NameInputContainer>
         <EmailInputContainer>
           <span>Email</span>
           <EmailInput
@@ -141,21 +156,18 @@ export default function Register() {
               handleChangeUserRegisterDetails(event, "password_hash")
             }
           />
+
+          {errorMessage && (
+            <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
+          )}
         </PasswordInputContainer>
-        <NameInputContainer>
-          <span>Nome</span>
-          <NameInput
-            placeholder="Digite seu nome"
-            type="text"
-            onChange={(event) => handleChangeUserRegisterDetails(event, "name")}
-          />
-        </NameInputContainer>
-        {errorMessage && (
-          <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
-        )}
+
         <RegisterButton onClick={() => handleRegister()}>
           Registrar
         </RegisterButton>
+        <LoginRegisterButton onClick={() => navigate("/login")}>
+          Já tenho conta
+        </LoginRegisterButton>
       </RegisterContent>
     </RegisterContainer>
   );

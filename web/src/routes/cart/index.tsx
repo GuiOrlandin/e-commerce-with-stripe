@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import ProductCart from "../../components/productCard";
-import SideBar from "../../components/sidebar";
 import { useCheckoutMutate } from "../../hooks/useCheckoutMutate";
 import { productStore } from "../../store/productStore";
 import {
@@ -42,7 +41,6 @@ export default function Cart() {
 
   return (
     <CartContainer>
-      <SideBar />
       <ProductsAndTotalValueContainer>
         <ProductsInCartContainer>
           {products && products.length >= 1 ? (

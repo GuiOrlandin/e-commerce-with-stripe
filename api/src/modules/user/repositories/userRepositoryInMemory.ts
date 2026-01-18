@@ -1,11 +1,11 @@
-import { User } from '../entities/User';
+import { User } from 'src/modules/user/entities/user';
 import {
   CheckoutItems,
   DashboardItems,
   UserRepository,
 } from './userRepository';
 
-import { subMonths, format } from 'date-fns';
+import { format, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 export class UserRepositoryInMemory implements UserRepository {

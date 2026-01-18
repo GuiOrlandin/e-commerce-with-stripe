@@ -3,7 +3,6 @@ import {
   CardOfSoldItemContainer,
   ChartContainer,
   ContentContainer,
-  DashboardContainer,
   DateContainer,
   ImageAndNameContainer,
   ImageNameAndEmailCardContainer,
@@ -12,7 +11,6 @@ import {
   SoldItemsContainer,
   TotalIncomeValueContainer,
 } from "./styles";
-import SideBar from "../../components/sidebar";
 import { useDashboardFetch } from "../../hooks/useDashboardInfoFetch";
 import { useEffect, useState } from "react";
 import { userStore } from "../../store/userStore";
@@ -63,9 +61,7 @@ export default function Dashboard() {
   }, [userInfo, data]);
 
   return (
-    <DashboardContainer>
-      <SideBar />
-      <ContentContainer>
+    <ContentContainer>
         <TotalIncomeValueContainer>
           <h2>Rendimento Total</h2>
           <span>
@@ -163,7 +159,6 @@ export default function Dashboard() {
             )}
           </SoldItemsContainer>
         </SoldItemsAndChartContainer>
-      </ContentContainer>
-    </DashboardContainer>
+    </ContentContainer>
   );
 }

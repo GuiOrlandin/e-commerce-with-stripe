@@ -21,7 +21,7 @@ import {
   UnitValueContainer,
 } from "./styles";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ProductsCartProps {
   product: ProductsResponse;

@@ -1,4 +1,4 @@
-import { User } from '../entities/User';
+import { User } from 'src/modules/user/entities/user';
 
 export interface DataItems {
   amount_total: number;

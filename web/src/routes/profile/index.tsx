@@ -1,5 +1,4 @@
 import { forwardRef, useEffect, useState } from "react";
-import SideBar from "../../components/sidebar";
 import { userStore } from "../../store/userStore";
 import {
   ProfileContent,
@@ -118,7 +117,6 @@ export default function Profile() {
 
   return (
     <ProfileContainer>
-      <SideBar />
       <ContentWrapper>
         {toggleEditProfile ? (
           <ProfileContent>
