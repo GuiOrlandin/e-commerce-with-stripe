@@ -1,7 +1,7 @@
-import PurchasedProductCard from "../../components/purchaseProductCard";
-import { MyPurchasesProductsContainer } from "./styles";
-import { userStore } from "../../store/userStore";
 import { v4 as uuidv4 } from "uuid";
+import PurchasedProductCard from "../../components/purchaseProductCard";
+import { userStore } from "../../store/userStore";
+import { MyPurchasesProductsContainer } from "./styles";
 
 export interface UserWithPurchasedProductsResponse {
   email: string;
@@ -36,7 +36,6 @@ export interface UserWithPurchasedProductsResponse {
 
 export default function MyPurchases() {
   const userInfo = userStore((state) => state.user);
-  console.log(userInfo);
 
   return (
     <MyPurchasesProductsContainer>

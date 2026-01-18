@@ -8,6 +8,9 @@ import {
   ProductsInCartContainer,
   TotalValueAndConfirmPaymentButton,
   TotalValueInformationContainer,
+  TotalValueCard,
+  ConfirmPaymentButton,
+  CartHeader,
 } from "./styles";
 
 export default function Cart() {
@@ -42,6 +45,9 @@ export default function Cart() {
   return (
     <CartContainer>
       <ProductsAndTotalValueContainer>
+        <CartHeader>
+          <h1>Carrinho de Compras</h1>
+        </CartHeader>
         <ProductsInCartContainer>
           {products && products.length >= 1 ? (
             <>
@@ -73,17 +79,25 @@ export default function Cart() {
             </>
           )}
         </ProductsInCartContainer>
-        <TotalValueAndConfirmPaymentButton>
-          <TotalValueInformationContainer>
-            <span>Valor total: </span>
-            <h2>{` ${totalValue.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-              minimumFractionDigits: 2,
-            })}`}</h2>
-          </TotalValueInformationContainer>
-          <button onClick={() => handleCheckout()}>Confirmar Pagamento</button>
-        </TotalValueAndConfirmPaymentButton>
+        {products && products.length >= 1 && (
+          <TotalValueCard>
+            <TotalValueAndConfirmPaymentButton>
+              <TotalValueInformationContainer>
+                <span>Valor total:</span>
+                <h2>
+                  {totalValue.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                    minimumFractionDigits: 2,
+                  })}
+                </h2>
+              </TotalValueInformationContainer>
+              <ConfirmPaymentButton onClick={() => handleCheckout()}>
+                Confirmar Pagamento
+              </ConfirmPaymentButton>
+            </TotalValueAndConfirmPaymentButton>
+          </TotalValueCard>
+        )}
       </ProductsAndTotalValueContainer>
     </CartContainer>
   );

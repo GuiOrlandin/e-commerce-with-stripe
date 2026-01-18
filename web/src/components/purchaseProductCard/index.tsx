@@ -56,7 +56,7 @@ export default function PurchasedProductCard({
                 minimumFractionDigits: 2,
               })}
             </p>
-            <span>{`${product.adress.adress}, ${
+            <span>{ product.adress.adress && product.adress.numberAndNeighborhood && `${product.adress.adress}, ${
               product.adress.numberAndNeighborhood.split(",")[0]
             }. `}</span>
           </QuantityTotalValueContainer>

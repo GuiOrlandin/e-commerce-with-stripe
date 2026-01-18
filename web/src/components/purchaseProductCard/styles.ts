@@ -6,12 +6,6 @@ export const PurchaseCardContainer = styled.div`
   background: #ffffff;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.02);
-  }
 `;
 
 export const PurchaseDataContainer = styled.div`

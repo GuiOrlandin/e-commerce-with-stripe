@@ -1,8 +1,14 @@
 import { BarChart } from "@mui/x-charts/BarChart";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { useEffect, useState } from "react";
+import { useDashboardFetch } from "../../hooks/useDashboardInfoFetch";
+import { userStore } from "../../store/userStore";
 import {
   CardOfSoldItemContainer,
   ChartContainer,
   ContentContainer,
+  DashboardHeader,
   DateContainer,
   ImageAndNameContainer,
   ImageNameAndEmailCardContainer,
@@ -11,11 +17,6 @@ import {
   SoldItemsContainer,
   TotalIncomeValueContainer,
 } from "./styles";
-import { useDashboardFetch } from "../../hooks/useDashboardInfoFetch";
-import { useEffect, useState } from "react";
-import { userStore } from "../../store/userStore";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 import { useNavigate } from "react-router-dom";
 
@@ -62,10 +63,10 @@ export default function Dashboard() {
 
   return (
     <ContentContainer>
+      <DashboardHeader>
         <TotalIncomeValueContainer>
           <h2>Rendimento Total</h2>
           <span>
-            R${" "}
             {data
               ? data!
                   .filter((monthData) => monthData.month === currentMonthName)
@@ -76,17 +77,19 @@ export default function Dashboard() {
                       minimumFractionDigits: 2,
                     })
                   )
-              : []}
+              : "R$ 0,00"}
           </span>
           <p>
-            {salesPercentageComparedToLastMonth
-              ? `${salesPercentageComparedToLastMonth!.toString()}% `
+            {Number(salesPercentageComparedToLastMonth) >= 0 && Number(salesPercentageComparedToLastMonth) !== Infinity
+              ? `${Math.round(Number(salesPercentageComparedToLastMonth)) > 0 ? "+" : ""}${Math.round(Number(salesPercentageComparedToLastMonth))}%`
               : "sem valores do ultimo mês"}
-            a mais que o mês passado
+            {Number(salesPercentageComparedToLastMonth) >= 0 && Number(salesPercentageComparedToLastMonth) !== Infinity ? " a mais que o mês passado" : ""}
           </p>
         </TotalIncomeValueContainer>
-        <SoldItemsAndChartContainer>
+      </DashboardHeader>
+      <SoldItemsAndChartContainer>
           <ChartContainer>
+            <h2>Vendas por Mês</h2>
             <BarChart
               xAxis={[
                 {
@@ -109,12 +112,12 @@ export default function Dashboard() {
                   data: data
                     ? data!.map((MonthData) => MonthData.totalIncome / 100)
                     : [],
-                  color: "#2906b1",
+                  color: "#7462ba",
                 },
               ]}
-              width={650}
-              height={600}
-              margin={{ left: 80 }}
+              width={600}
+              height={450}
+              margin={{ left: 80, top: 20, right: 20, bottom: 60 }}
             />
           </ChartContainer>
           <SoldItemsContainer>
@@ -158,7 +161,7 @@ export default function Dashboard() {
               <h1>Sem nenhuma venda!</h1>
             )}
           </SoldItemsContainer>
-        </SoldItemsAndChartContainer>
+      </SoldItemsAndChartContainer>
     </ContentContainer>
   );
 }

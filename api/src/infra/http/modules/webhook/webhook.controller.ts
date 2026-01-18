@@ -1,18 +1,18 @@
 import {
   Controller,
-  Post,
   Headers,
   HttpCode,
   HttpStatus,
-  Req,
+  Post,
   RawBodyRequest,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { SuccessCheckOutUseCase } from 'src/modules/checkOut/UseCases/SuccessCheckoutUseCase';
 import { Stripe } from 'stripe';
 import { Public } from '../auth/decorators/isPublic';
-import { Request } from 'express';
 
-@Controller('webhook')
+  @Controller('webhook')
 export class WebhookController {
   private readonly stripe: Stripe;
   private readonly endpointSecret: string =

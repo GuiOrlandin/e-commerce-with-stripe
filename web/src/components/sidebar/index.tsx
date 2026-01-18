@@ -37,6 +37,8 @@ export default function SideBar() {
   function handleLogout() {
     clearUser();
     clearCart();
+
+    navigate("/login");
   }
 
   useEffect(() => {

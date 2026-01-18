@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 export const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #f8f7f7 100%);
   min-height: 100vh;
   width: 100vw;
@@ -21,6 +20,7 @@ export const SideBarContainer = styled.div`
 export const LoginContent = styled.div`
   display: flex;
   padding: 3.5rem 4rem;
+  max-height: 70vh;
   flex-direction: column;
   box-shadow: 0 20px 60px rgba(116, 98, 186, 0.15),
     0 8px 24px rgba(0, 0, 0, 0.08);
