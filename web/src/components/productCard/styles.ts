@@ -168,6 +168,10 @@ const addRemoveButtonsBase = css`
 
 export const AddOrRemoveButtons = styled.div`
   ${addRemoveButtonsBase}
+  button {
+    height: 9px;
+    width: 9px;
+  }
   margin-bottom: 0.5rem;
 `;
 
@@ -266,7 +270,7 @@ export const StockContainer = styled.div`
   padding: 0.5rem 1rem;
   background: rgba(116, 98, 186, 0.05);
   border-radius: 8px;
-  max-height: 3rem;
+  max-height: 3.5rem;
   border: 1px solid rgba(116, 98, 186, 0.1);
 
   p {
