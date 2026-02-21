@@ -1,5 +1,28 @@
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Smooth scroll and consistent focus for app shell */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Page transition base – content can fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-content-enter {
+  animation: fadeIn 0.25s ease-out forwards;
 }

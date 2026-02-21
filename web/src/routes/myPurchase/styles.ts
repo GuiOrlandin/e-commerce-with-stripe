@@ -5,15 +5,17 @@ export const MyPurchasesProductsContainer = styled.div`
   text-align: center;
   flex-direction: column;
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(116, 98, 186, 0.3) transparent;
-  gap: 1rem;
+  scrollbar-color: var(--color-primary-border) transparent;
+  gap: var(--space-4);
 
   h1 {
-    margin-top: 5rem;
+    margin-top: 4rem;
     font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
   }
 `;

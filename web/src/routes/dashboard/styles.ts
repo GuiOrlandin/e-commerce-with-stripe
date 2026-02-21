@@ -18,10 +18,9 @@ export const TotalIncomeValueContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(116, 98, 186, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
   min-width: 300px;
@@ -34,13 +33,13 @@ export const TotalIncomeValueContainer = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 50%, #7462ba 100%);
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-hover) 50%, var(--color-primary) 100%);
   }
 
   h2 {
     font-size: 1rem;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--color-text-muted);
     margin: 0 0 0.75rem 0;
     letter-spacing: 0.3px;
   }
@@ -48,7 +47,7 @@ export const TotalIncomeValueContainer = styled.div`
   span {
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -57,7 +56,7 @@ export const TotalIncomeValueContainer = styled.div`
 
   p {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
     margin: 0;
     font-weight: 500;
 
@@ -82,10 +81,9 @@ export const ChartContainer = styled.div`
   flex-direction: column;
   flex: 1;
   min-height: 500px;
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 4px 16px rgba(116, 98, 186, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
   padding: 2rem;
   position: relative;
   overflow: hidden;
@@ -97,14 +95,14 @@ export const ChartContainer = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 50%, #7462ba 100%);
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-hover) 50%, var(--color-primary) 100%);
   }
 
   h2 {
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0 0 1.5rem 0;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -129,16 +127,15 @@ export const ChartContainer = styled.div`
 export const SoldItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   padding: 2rem;
   min-height: 500px;
   max-height: 600px;
   width: 100%;
   max-width: 500px;
   gap: 1.5rem;
-  background: #ffffff;
-  box-shadow: 0 4px 16px rgba(116, 98, 186, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
@@ -150,11 +147,11 @@ export const SoldItemsContainer = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 50%, #7462ba 100%);
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-hover) 50%, var(--color-primary) 100%);
   }
 
   scrollbar-width: thin;
-  scrollbar-color: rgba(116, 98, 186, 0.3) transparent;
+  scrollbar-color: var(--color-primary-border) transparent;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -165,19 +162,19 @@ export const SoldItemsContainer = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(116, 98, 186, 0.3);
+    background: var(--color-primary-border);
     border-radius: 4px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(116, 98, 186, 0.5);
+    background: var(--color-primary-muted);
   }
 
   h1 {
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -186,8 +183,8 @@ export const SoldItemsContainer = styled.div`
 
   > h1:last-child {
     margin-top: 3rem;
-    color: #9ca3af;
-    -webkit-text-fill-color: #9ca3af;
+    color: var(--color-text-subtle);
+    -webkit-text-fill-color: var(--color-text-subtle);
     font-weight: 500;
     text-align: center;
   }
@@ -197,21 +194,21 @@ export const CardOfSoldItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
-  background: rgb(245, 243, 255);
-  border-radius: 12px;
-  border: 2px solid rgba(116, 98, 186, 0.1);
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-primary-light);
   transition: all 0.2s ease;
   gap: 1rem;
 
   &:hover {
-    border-color: rgba(116, 98, 186, 0.3);
-    box-shadow: 0 4px 12px rgba(116, 98, 186, 0.15);
+    border-color: var(--color-primary-border);
+    box-shadow: 0 4px 12px var(--color-primary-muted);
     transform: translateY(-2px);
   }
 
   p {
     font-weight: 600;
-    color: #1f2937;
+    color: var(--color-text);
   }
 `;
 
@@ -219,10 +216,10 @@ export const DateContainer = styled.p`
   display: flex;
   padding-bottom: 0.75rem;
   margin-bottom: 0.5rem;
-  border-bottom: 2px solid rgba(116, 98, 186, 0.2);
+  border-bottom: 2px solid var(--color-primary-border);
   font-weight: 600;
   font-size: 0.875rem;
-  color: #7462ba;
+  color: var(--color-primary);
   letter-spacing: 0.3px;
 `;
 
@@ -236,15 +233,15 @@ export const ImageNameAndEmailCardContainer = styled.div`
     width: 5rem;
     height: 5rem;
     object-fit: cover;
-    border-radius: 12px;
-    border: 2px solid rgba(116, 98, 186, 0.1);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-primary-light);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   > p {
     font-size: 1.25rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -267,14 +264,14 @@ export const NameAndQuantityContainer = styled.div`
   p {
     font-size: 1rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--color-text);
     margin: 0;
     line-height: 1.3;
   }
 
   span {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
     font-weight: 500;
   }
 `;

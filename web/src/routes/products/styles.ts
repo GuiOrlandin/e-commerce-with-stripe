@@ -4,13 +4,12 @@ export const ProductsContent = styled.div`
   display: flex;
   flex-direction: column;
   padding: 3.5rem 4rem;
-  box-shadow: 0 20px 60px rgba(116, 98, 186, 0.15),
-    0 8px 24px rgba(0, 0, 0, 0.08);
-  background: #ffffff;
+  box-shadow: var(--shadow-lg);
+  background: var(--color-surface);
   width: 100%;
   max-width: 700px;
   margin: 0 auto;
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   position: relative;
   overflow: hidden;
 
@@ -21,14 +20,14 @@ export const ProductsContent = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 50%, #7462ba 100%);
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-hover) 50%, var(--color-primary) 100%);
   }
 
   h1 {
     font-size: 2rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -36,7 +35,7 @@ export const ProductsContent = styled.div`
 
   > p {
     font-size: 1rem;
-    color: #6b7280;
+    color: var(--color-text-muted);
     margin: 0 0 2rem 0;
     font-weight: 400;
   }
@@ -61,17 +60,17 @@ export const ImageUploadButton = styled.div`
   justify-content: center;
   width: 100%;
   min-height: 200px;
-  border: 2px dashed rgba(116, 98, 186, 0.3);
-  border-radius: 12px;
-  background: rgb(245, 243, 255);
+  border: 2px dashed var(--color-primary-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-alt);
   cursor: pointer;
-  color: #7462ba;
+  color: var(--color-primary);
   gap: 1rem;
   padding: 2rem;
 
   &:hover {
-    border-color: #7462ba;
-    background: rgb(250, 249, 255);
+    border-color: var(--color-primary);
+    background: var(--color-surface);
   }
 
   span {
@@ -89,7 +88,7 @@ export const ProductImagePreview = styled.div`
   position: relative;
   width: 100%;
   max-width: 300px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
@@ -132,7 +131,7 @@ export const InputContainer = styled.div`
 export const Label = styled.label`
   font-size: 1rem;
   font-weight: 600;
-  color: #7462ba;
+  color: var(--color-primary);
   letter-spacing: 0.3px;
 
   span {
@@ -141,30 +140,30 @@ export const Label = styled.label`
 `;
 
 const inputStyles = css`
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1rem 1.25rem;
   font-size: 1rem;
-  background: rgb(245, 243, 255);
-  color: #7462ba;
-  border: 2px solid rgba(116, 98, 186, 0.2);
+  background: var(--color-surface-alt);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary-border);
   width: 100%;
   font-weight: 500;
   font-family: inherit;
 
   &:focus {
     outline: none;
-    border-color: #7462ba;
-    background: rgb(250, 249, 255);
-    box-shadow: 0 0 0 4px rgba(116, 98, 186, 0.1);
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-focus);
   }
 
   &:hover:not(:focus) {
-    border-color: rgba(116, 98, 186, 0.4);
-    background: rgb(248, 247, 255);
+    border-color: var(--color-primary-border);
+    background: var(--color-surface-alt);
   }
 
   &::placeholder {
-    color: rgba(116, 98, 186, 0.5);
+    color: var(--color-text-subtle);
     font-weight: 400;
   }
 `;
@@ -180,7 +179,7 @@ export const TextArea = styled.textarea`
 `;
 
 export const SubmitButton = styled.button`
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: none;
   padding: 1rem 2rem;
   font-size: 1.1rem;
@@ -190,13 +189,13 @@ export const SubmitButton = styled.button`
   position: relative;
   overflow: hidden;
   letter-spacing: 0.3px;
-  box-shadow: 0 4px 12px rgba(116, 98, 186, 0.3);
-  background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+  box-shadow: 0 4px 12px var(--color-primary-border);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
   margin-top: 1rem;
 
   &:hover {
-    box-shadow: 0 6px 20px rgba(116, 98, 186, 0.4);
-    background: linear-gradient(135deg, #5e4a9e 0%, #7462ba 100%);
+    box-shadow: 0 6px 20px var(--color-primary-border);
+    background: linear-gradient(135deg, var(--color-primary-hover) 0%, var(--color-primary) 100%);
   }
 
   &:active {

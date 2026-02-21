@@ -29,9 +29,9 @@ export const ProfileContent = styled.div`
   padding: 3.5rem 4rem;
   width: 100%;
   max-width: 700px;
-  box-shadow: 0 20px 60px rgba(116, 98, 186, 0.15),
-    0 8px 24px rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
 
@@ -41,25 +41,23 @@ export const ProfileContent = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 50%, #7462ba 100%);
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 `;
 
 export const ProfileTitle = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 600;
   margin: 0 0 0.5rem 0;
-  background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-text);
   text-align: center;
 `;
 
 export const ProfileSubtitle = styled.p`
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   margin: 0 0 2rem 0;
   text-align: center;
   font-weight: 400;
@@ -90,7 +88,7 @@ export const AvatarImageContainer = styled.div`
     transition: all 0.2s ease;
 
     &:hover {
-      background: #dc2626;
+      background: var(--color-error-hover);
       transform: scale(1.1);
     }
 
@@ -111,8 +109,8 @@ export const AvatarWithoutImageContainer = styled.div`
 
   svg[role="img"] {
     border-radius: 50%;
-    border: 4px solid rgba(116, 98, 186, 0.1);
-    box-shadow: 0 4px 16px rgba(116, 98, 186, 0.15);
+    border: 4px solid var(--color-primary-light);
+    box-shadow: 0 4px 16px var(--color-primary-muted);
   }
 
   button {
@@ -120,7 +118,7 @@ export const AvatarWithoutImageContainer = styled.div`
     bottom: 0;
     right: calc(50% - 75px);
     border: none;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
     color: white;
     width: 3rem;
     height: 3rem;
@@ -129,17 +127,17 @@ export const AvatarWithoutImageContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(116, 98, 186, 0.4);
+    box-shadow: 0 4px 12px var(--color-primary-border);
     transition: all 0.2s ease;
 
     &:hover {
       transform: scale(1.1);
-      box-shadow: 0 6px 16px rgba(116, 98, 186, 0.5);
+      box-shadow: 0 6px 16px var(--color-text-subtle);
     }
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(116, 98, 186, 0.3);
+      box-shadow: 0 0 0 3px var(--color-primary-border);
     }
 
     svg {
@@ -154,8 +152,8 @@ export const Avatar = styled.img`
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid rgba(116, 98, 186, 0.1);
-  box-shadow: 0 4px 16px rgba(116, 98, 186, 0.15);
+  border: 4px solid var(--color-primary-light);
+  box-shadow: 0 4px 16px var(--color-primary-muted);
 `;
 
 export const InfoContainer = styled.div`
@@ -192,18 +190,18 @@ export const InfoRow = styled.div`
 export const Label = styled.label`
   font-size: 1rem;
   font-weight: 600;
-  color: #7462ba;
+  color: var(--color-primary);
   letter-spacing: 0.3px;
 `;
 
 export const Info = styled.p`
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--color-text);
   margin: 0;
   padding: 0.75rem 1rem;
-  background: rgb(245, 243, 255);
+  background: var(--color-surface-alt);
   border-radius: 12px;
-  border: 2px solid rgba(116, 98, 186, 0.1);
+  border: 2px solid var(--color-primary-light);
   min-height: 1.5rem;
   word-break: break-word;
 `;
@@ -212,27 +210,27 @@ const inputStyles = css`
   border-radius: 12px;
   padding: 1rem 1.25rem;
   font-size: 1rem;
-  background: rgb(245, 243, 255);
-  color: #7462ba;
-  border: 2px solid rgba(116, 98, 186, 0.2);
+  background: var(--color-surface-alt);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary-border);
   width: 100%;
   font-weight: 500;
   font-family: inherit;
 
   &:focus {
     outline: none;
-    border-color: #7462ba;
-    background: rgb(250, 249, 255);
-    box-shadow: 0 0 0 4px rgba(116, 98, 186, 0.1);
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+    box-shadow: 0 0 0 4px var(--color-primary-light);
   }
 
   &:hover:not(:focus) {
-    border-color: rgba(116, 98, 186, 0.4);
-    background: rgb(248, 247, 255);
+    border-color: var(--color-primary-border);
+    background: var(--color-surface-alt);
   }
 
   &::placeholder {
-    color: rgba(116, 98, 186, 0.5);
+    color: var(--color-text-subtle);
     font-weight: 400;
   }
 
@@ -240,10 +238,10 @@ const inputStyles = css`
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px rgb(245, 243, 255) inset !important;
-    -webkit-text-fill-color: #7462ba !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-surface-alt) inset !important;
+    -webkit-text-fill-color: var(--color-primary) !important;
     transition: background-color 5000s ease-in-out 0s;
-    border-color: rgba(116, 98, 186, 0.2);
+    border-color: var(--color-primary-border);
   }
 `;
 
@@ -274,13 +272,13 @@ export const EditButton = styled.button`
   position: relative;
   overflow: hidden;
   letter-spacing: 0.3px;
-  box-shadow: 0 4px 12px rgba(116, 98, 186, 0.3);
-  background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+  box-shadow: 0 4px 12px var(--color-primary-border);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
   transition: all 0.2s ease;
 
   &:hover {
-    background: linear-gradient(135deg, #5e4a9e 0%, #7462ba 100%);
-    box-shadow: 0 6px 20px rgba(116, 98, 186, 0.4);
+    background: linear-gradient(135deg, var(--color-primary-hover) 0%, var(--color-primary) 100%);
+    box-shadow: 0 6px 20px var(--color-primary-border);
   }
 
   &:active {
@@ -289,8 +287,8 @@ export const EditButton = styled.button`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(116, 98, 186, 0.3),
-      0 4px 12px rgba(116, 98, 186, 0.3);
+    box-shadow: 0 0 0 3px var(--color-primary-border),
+      0 4px 12px var(--color-primary-border);
   }
 
   &:disabled {
@@ -301,19 +299,19 @@ export const EditButton = styled.button`
 
 export const CancelButton = styled.button`
   border-radius: 12px;
-  border: 2px solid rgba(116, 98, 186, 0.3);
+  border: 2px solid var(--color-primary-border);
   padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #7462ba;
+  color: var(--color-primary);
   background: transparent;
   cursor: pointer;
   letter-spacing: 0.3px;
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(116, 98, 186, 0.1);
-    border-color: #7462ba;
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
   }
 
   &:active {
@@ -322,6 +320,6 @@ export const CancelButton = styled.button`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(116, 98, 186, 0.2);
+    box-shadow: 0 0 0 3px var(--color-primary-border);
   }
 `;

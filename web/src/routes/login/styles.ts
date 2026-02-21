@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 export const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
-  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #f8f7f7 100%);
+  background: var(--color-bg);
   min-height: 100vh;
   width: 100vw;
   padding: 2.3rem;
@@ -22,12 +22,12 @@ export const LoginContent = styled.div`
   padding: 3.5rem 4rem;
   max-height: 70vh;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(116, 98, 186, 0.15),
-    0 8px 24px rgba(0, 0, 0, 0.08);
-  background: #ffffff;
+  box-shadow: var(--shadow-lg);
+  background: var(--color-surface);
   width: 42rem;
   max-width: 90vw;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
 
@@ -37,25 +37,23 @@ export const LoginContent = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 50%, #7462ba 100%);
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   }
 `;
 
 export const LoginTitle = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 600;
   margin: 0 0 0.5rem 0;
-  background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-text);
   text-align: center;
 `;
 
 export const LoginSubtitle = styled.p`
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   margin: 0 0 2.5rem 0;
   text-align: center;
   font-weight: 400;
@@ -64,69 +62,91 @@ export const LoginSubtitle = styled.p`
 export const EmailInputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
 
   span {
-    margin-bottom: 0.75rem;
-    color: #7462ba;
-    font-size: 1rem;
-    letter-spacing: 0.3px;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
   }
 `;
 
 export const ErrorMessageContainer = styled.div`
-  color: #ef4444;
-  position: absolute;
-  margin-top: 5.3rem;
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: 0.9375rem;
   font-weight: 500;
-  background: rgba(239, 68, 68, 0.1);
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  border-left: 3px solid #ef4444;
+  line-height: 1.4;
+  animation: errorFadeIn 0.25s ease-out;
+
+  svg {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    opacity: 0.9;
+  }
+
+  @keyframes errorFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 export const PasswordInputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
   position: relative;
 
   span {
-    margin-bottom: 0.75rem;
-    color: #7462ba;
-    font-size: 1rem;
-    letter-spacing: 0.3px;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
   }
 `;
 
 const inputStyles = css`
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
   font-size: 1rem;
-  background: rgb(245, 243, 255);
-  color: #7462ba;
-  border: 2px solid rgba(116, 98, 186, 0.2);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   width: 100%;
   font-weight: 500;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:focus {
     outline: none;
-    border-color: #7462ba;
-    background: rgb(250, 249, 255);
-    box-shadow: 0 0 0 4px rgba(116, 98, 186, 0.1);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-focus);
   }
 
   &:hover:not(:focus) {
-    border-color: rgba(116, 98, 186, 0.4);
-    background: rgb(248, 247, 255);
+    border-color: var(--color-text-subtle);
   }
 
   &::placeholder {
-    color: rgba(116, 98, 186, 0.5);
+    color: var(--color-text-subtle);
     font-weight: 400;
   }
 
@@ -134,10 +154,9 @@ const inputStyles = css`
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px rgb(245, 243, 255) inset !important;
-    -webkit-text-fill-color: #7462ba !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-surface-alt) inset !important;
+    -webkit-text-fill-color: var(--color-text) !important;
     transition: background-color 5000s ease-in-out 0s;
-    border-color: rgba(116, 98, 186, 0.2);
   }
 `;
 
@@ -150,48 +169,44 @@ export const PasswordInput = styled(EmailInput)`
 `;
 
 const buttonBaseStyles = css`
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
   color: white;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
-  letter-spacing: 0.3px;
-  box-shadow: 0 4px 12px rgba(116, 98, 186, 0.3);
-
+  letter-spacing: 0.01em;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    box-shadow: 0 6px 20px rgba(116, 98, 186, 0.4);
+    box-shadow: var(--shadow-md);
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
   }
 `;
 
 export const LoginButton = styled.button`
   ${buttonBaseStyles}
-  margin-top: 2.5rem;
-  background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+  margin-top: 2rem;
+  background: var(--color-primary);
 
   &:hover {
-    background: linear-gradient(135deg, #5e4a9e 0%, #7462ba 100%);
+    background: var(--color-primary-hover);
   }
 `;
 
 export const RegisterButton = styled.button`
   ${buttonBaseStyles}
   margin-top: 1rem;
-  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
-  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+  background: var(--color-primary);
 
   &:hover {
-    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
+    background: var(--color-primary-hover);
   }
 `;

@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <LayoutContainer>
       <SideBar />
-      <LayoutContent>
+      <LayoutContent className="app-content-enter">
         <Outlet />
       </LayoutContent>
     </LayoutContainer>

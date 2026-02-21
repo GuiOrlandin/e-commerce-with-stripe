@@ -10,6 +10,7 @@ import {
   NameAndDescriptionInCartCard,
   ProductCartContainer,
   ProductContainer,
+  ProductImageWrapper,
   ProductInCartPageContainer,
   RemoveProductsCartButton,
   StockAndAddOrRemoveButtons,
@@ -91,46 +92,46 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
     <ProductContainer>
       {page === "home" ? (
         <ProductCartContainer>
-          <>
-            <h1>{product.props.name}</h1>
+          <ProductImageWrapper>
             <img
               src={`http://localhost:3333/files/${product.props.image_url}`}
+              alt={product.props.name}
             />
-            <p>{product.props.description}</p>
-
-            <UnitValueContainer>
-              <p>{`${product.props.unit_value.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-                minimumFractionDigits: 2,
-              })}`}</p>
-            </UnitValueContainer>
-            <StockAndAddOrRemoveButtons>
-              <StockContainer>
-                <p>
-                  {product.props.stock === 1 ? "Disponivel: " : "Disponíveis: "}
-                </p>
-                <span>{product.props.stock}</span>
-              </StockContainer>
-              <AddOrRemoveButtons>
-                <AddProductsToCartButton
-                  disabled={
-                    productNumber! === product.props.stock || !userInfo.token
-                  }
-                  onClick={() => handleAddProductsInCart()}
-                >
-                  +
-                </AddProductsToCartButton>
-                <span>{productNumber}</span>
-                <RemoveProductsCartButton
-                  disabled={productNumber! === 0 || !userInfo.token}
-                  onClick={() => handleRemoveProductsOfCart()}
-                >
-                  -
-                </RemoveProductsCartButton>
-              </AddOrRemoveButtons>
-            </StockAndAddOrRemoveButtons>
-          </>
+          </ProductImageWrapper>
+          <h1>{product.props.name}</h1>
+          <p>{product.props.description}</p>
+          <UnitValueContainer>
+            <p>{`${product.props.unit_value.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+              minimumFractionDigits: 2,
+            })}`}</p>
+          </UnitValueContainer>
+          <StockAndAddOrRemoveButtons>
+            <StockContainer>
+              <p>
+                {product.props.stock === 1 ? "Disponível: " : "Disponíveis: "}
+              </p>
+              <span>{product.props.stock}</span>
+            </StockContainer>
+            <AddOrRemoveButtons>
+              <RemoveProductsCartButton
+                disabled={productNumber! === 0 || !userInfo.token}
+                onClick={() => handleRemoveProductsOfCart()}
+              >
+                −
+              </RemoveProductsCartButton>
+              <span>{productNumber}</span>
+              <AddProductsToCartButton
+                disabled={
+                  productNumber! === product.props.stock || !userInfo.token
+                }
+                onClick={() => handleAddProductsInCart()}
+              >
+                +
+              </AddProductsToCartButton>
+            </AddOrRemoveButtons>
+          </StockAndAddOrRemoveButtons>
         </ProductCartContainer>
       ) : (
         <ProductInCartPageContainer>
@@ -183,7 +184,7 @@ export default function ProductCart({ product, page }: ProductsCartProps) {
             <StockContainerInCart>
               <p>
                 {product.props.stock === 1
-                  ? ` ${product.props.stock} Disponivel`
+                  ? `${product.props.stock} Disponível`
                   : `${product.props.stock} Disponíveis`}
               </p>
             </StockContainerInCart>

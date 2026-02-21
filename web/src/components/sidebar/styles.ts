@@ -6,216 +6,197 @@ interface ButtonSelected {
 
 export const SideBarContainer = styled.aside`
   display: flex;
-  justify-content: space-between;
-  padding: 1.5rem 0.75rem;
-  align-items: center;
   flex-direction: column;
-  box-shadow: 0 8px 32px rgba(116, 98, 186, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.08);
-  background: linear-gradient(180deg, #ffffff 0%, #faf9ff 100%);
-  height: 700px;
-  height: 700px;
-  border-radius: 20px;
-  border-right: 2px solid rgba(116, 98, 186, 0.1);
+  align-items: center;
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  flex-shrink: 0;
+  position: fixed;
+  left: 0;
   top: 0;
-`;
+  z-index: 100;
+  padding: var(--space-5) var(--space-3);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sidebar);
 
-export const OptionsButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-`;
-
-export const CartLength = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-  border: 2px solid white;
-  animation: pulse 2s infinite;
-
-  @keyframes pulse {
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.05);
-    }
+  /* Thin accent on right edge */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--color-primary);
+    opacity: 0.35;
+    border-radius: 2px 0 0 2px;
   }
 `;
 
-const baseButtonStyles = css<ButtonSelected & { $activePath?: string }>`
+export const SidebarBrand = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--space-6);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: #fff;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  span {
+    color: inherit;
+  }
+`;
+
+export const OptionsButtonsContainer = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  flex: 1;
+`;
+
+export const CartLength = styled.span`
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--color-error);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 2px solid var(--color-surface);
+  box-shadow: var(--shadow-xs);
+`;
+
+const navButtonStyles = css<ButtonSelected & { $activePath?: string }>`
   border: none;
   background: ${({ $variant, $activePath }) =>
-    $variant === $activePath
-      ? "linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%)"
-      : "transparent"};
+    $variant === $activePath ? "var(--color-primary)" : "transparent"};
   color: ${({ $variant, $activePath }) =>
-    $variant === $activePath ? "#ffffff" : "#6b7280"};
-  padding: 0.875rem;
-  border-radius: 12px;
-  position: relative;
+    $variant === $activePath ? "#ffffff" : "var(--color-text-muted)"};
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: ${({ $variant, $activePath }) =>
-      $variant === $activePath ? "60%" : "0%"};
-    background: linear-gradient(180deg, #7462ba 0%, #5e4a9e 100%);
-    border-radius: 0 4px 4px 0;
-    transition: height 0.3s ease;
-  }
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 
   &:focus {
     outline: none;
+    box-shadow: var(--shadow-focus);
   }
 
   &:hover {
     background: ${({ $variant, $activePath }) =>
       $variant === $activePath
-        ? "linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%)"
-        : "rgba(116, 98, 186, 0.1)"};
+        ? "var(--color-primary-hover)"
+        : "var(--color-primary-light)"};
     color: ${({ $variant, $activePath }) =>
-      $variant === $activePath ? "#ffffff" : "#7462ba"};
-    box-shadow: ${({ $variant, $activePath }) =>
-      $variant === $activePath
-        ? "0 4px 12px rgba(116, 98, 186, 0.3)"
-        : "none"};
+      $variant === $activePath ? "#ffffff" : "var(--color-primary)"};
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 
   svg {
-    transition: transform 0.3s ease;
-  }
-
-  &:hover svg {
-    transform: scale(1.1);
+    flex-shrink: 0;
   }
 `;
 
 export const CartButton = styled.button<ButtonSelected & { $activePath: string }>`
-  ${baseButtonStyles}
-  ${({ $variant }) =>
-    $variant === "cart" &&
-    css`
-      box-shadow: 0 4px 16px rgba(116, 98, 186, 0.3);
-    `}
+  ${navButtonStyles}
 `;
 
 export const ProductsButton = styled.button<
   ButtonSelected & { $activePath: string }
 >`
-  ${baseButtonStyles}
+  ${navButtonStyles}
 `;
 
 export const ChartButton = styled.button<
   ButtonSelected & { $activePath: string }
 >`
-  ${baseButtonStyles}
+  ${navButtonStyles}
 `;
 
 export const MyPurchasesButton = styled.button<
   ButtonSelected & { $activePath: string }
 >`
-  ${baseButtonStyles}
+  ${navButtonStyles}
 `;
 
 export const UserButton = styled.button<ButtonSelected & { $activePath: string }>`
-  ${baseButtonStyles}
+  ${navButtonStyles}
 `;
 
-export const HomeButton = styled.div<ButtonSelected>`
-  padding: 0.75rem;
-  margin-bottom: 1.5rem;
-  cursor: pointer;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  width: 100%;
-  position: relative;
-
-  h2 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    background: ${({ $variant }) =>
-      $variant === ""
-        ? "linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%)"
-        : "linear-gradient(135deg, #6b7280 0%, #4b5563 100%)"};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: center;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: ${({ $variant }) => ($variant === "" ? "80%" : "0%")};
-    height: 3px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 100%);
-    border-radius: 2px;
-    transition: width 0.3s ease;
-  }
+export const HomeButton = styled.button<ButtonSelected>`
+  ${navButtonStyles}
+  width: 52px;
+  margin-bottom: var(--space-2);
+  background: ${({ $variant }) =>
+    $variant === "" ? "var(--color-primary)" : "transparent"};
+  color: ${({ $variant }) =>
+    $variant === "" ? "#ffffff" : "var(--color-text-muted)"};
 
   &:hover {
-    background: rgba(116, 98, 186, 0.08);
-
-    h2 {
-      background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    &::after {
-      width: 80%;
-    }
+    background: ${({ $variant }) =>
+      $variant === ""
+        ? "var(--color-primary-hover)"
+        : "var(--color-primary-light)"};
+    color: ${({ $variant }) =>
+      $variant === "" ? "#ffffff" : "var(--color-primary)"};
   }
+`;
+
+export const SidebarDivider = styled.div`
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-3) 0;
+  flex-shrink: 0;
 `;
 
 export const SignOutButton = styled.button<
   ButtonSelected & { $activePath?: string }
 >`
-  ${baseButtonStyles}
+  ${navButtonStyles}
   margin-top: auto;
-  color: #ef4444;
+  color: var(--color-error);
 
   &:hover {
-    background: rgba(239, 68, 68, 0.1);
-    color: #dc2626;
-    box-shadow: none;
+    background: rgba(239, 68, 68, 0.08);
+    color: var(--color-error-hover);
   }
 `;
 
 export const SignInButton = styled.button<
   ButtonSelected & { $activePath: string }
 >`
-  ${baseButtonStyles}
+  ${navButtonStyles}
   margin-top: auto;
 `;

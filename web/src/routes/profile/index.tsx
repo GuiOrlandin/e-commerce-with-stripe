@@ -151,7 +151,7 @@ export default function Profile() {
                     src={`http://localhost:3333/files/userAvatar/${userInfo.profile_picture}`}
                   />
                 ) : (
-                  <RxAvatar role="img" size={150} color="#7462ba" />
+                  <RxAvatar role="img" size={150} color="#6366f1" />
                 )}
                 <button type="button">
                   <MdFileUpload size={24} />
@@ -252,7 +252,7 @@ export default function Profile() {
                 src={`http://localhost:3333/files/userAvatar/${userInfo.profile_picture}`}
               />
             ) : (
-              <RxAvatar role="img" size={150} color="#7462ba" />
+              <RxAvatar role="img" size={150} color="#6366f1" />
             )}
 
             <InfoContainer>

@@ -3,23 +3,23 @@ import styled, { css } from "styled-components";
 
 export const DeleteButton = styled.button`
   background: none;
-  color: #7462ba;
+  color: var(--color-primary);
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid transparent;
 
   &:hover {
-    border: 1px solid #7462ba;
-    background: rgba(116, 98, 186, 0.1);
+    border: 1px solid var(--color-primary);
+    background: var(--color-primary-light);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(116, 98, 186, 0.3);
+    box-shadow: 0 0 0 2px var(--color-primary-border);
   }
 `;
 
@@ -48,11 +48,10 @@ export const Content = styled(Dialog.Content)`
   flex-direction: column;
   min-width: 400px;
   max-width: 90vw;
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   padding: 2.5rem;
-  background: #ffffff;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
-    0 8px 24px rgba(116, 98, 186, 0.15);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
 
   position: fixed;
   top: 50%;
@@ -96,7 +95,7 @@ const buttonBaseStyles = css`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(116, 98, 186, 0.3);
+    box-shadow: 0 0 0 3px var(--color-primary-border);
   }
 
   &:disabled {

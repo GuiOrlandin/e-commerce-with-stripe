@@ -23,13 +23,10 @@ export const CartHeader = styled.div`
   margin-bottom: 1rem;
 
   h1 {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 1.75rem;
+    font-weight: 600;
     margin: 0;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-text);
   }
 `;
 
@@ -47,24 +44,24 @@ export const ProductsInCartContainer = styled.div`
   }
 
   &::-webkit-scrollbar-track {
-    background: rgb(245, 243, 255);
-    border-radius: 10px;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-md);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(116, 98, 186, 0.3);
-    border-radius: 10px;
+    background: var(--color-border);
+    border-radius: var(--radius-md);
 
     &:hover {
-      background: rgba(116, 98, 186, 0.5);
+      background: var(--color-text-subtle);
     }
   }
 
   h2 {
     text-align: center;
     margin: 4rem 0;
-    font-size: 1.5rem;
-    color: #6b7280;
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
     font-weight: 500;
   }
 `;
@@ -73,11 +70,11 @@ export const TotalValueCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 2rem;
-  box-shadow: 0 20px 60px rgba(116, 98, 186, 0.15),
-    0 8px 24px rgba(0, 0, 0, 0.08);
-  background: #ffffff;
-  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
 
@@ -87,8 +84,9 @@ export const TotalValueCard = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #7462ba 0%, #5e4a9e 50%, #7462ba 100%);
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 `;
 
@@ -113,36 +111,32 @@ export const TotalValueInformationContainer = styled.div`
   span {
     font-size: 1rem;
     font-weight: 500;
-    color: #6b7280;
+    color: var(--color-text-muted);
   }
 
   h2 {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 1.75rem;
+    font-weight: 600;
     margin: 0;
-    background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-text);
   }
 `;
 
 const buttonBaseStyles = css`
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
   color: white;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
-  letter-spacing: 0.3px;
-  box-shadow: 0 4px 12px rgba(116, 98, 186, 0.3);
-  transition: all 0.3s ease;
+  letter-spacing: 0.01em;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    box-shadow: 0 6px 20px rgba(116, 98, 186, 0.4);
+    box-shadow: var(--shadow-md);
   }
 
   &:active {
@@ -158,7 +152,7 @@ const buttonBaseStyles = css`
 
 export const ConfirmPaymentButton = styled.button`
   ${buttonBaseStyles}
-  background: linear-gradient(135deg, #7462ba 0%, #5e4a9e 100%);
+  background: var(--color-primary);
   min-width: 200px;
 
   @media (max-width: 768px) {
@@ -166,6 +160,6 @@ export const ConfirmPaymentButton = styled.button`
   }
 
   &:hover {
-    background: linear-gradient(135deg, #5e4a9e 0%, #7462ba 100%);
+    background: var(--color-primary-hover);
   }
 `;

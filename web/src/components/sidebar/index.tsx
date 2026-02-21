@@ -8,6 +8,8 @@ import {
   OptionsButtonsContainer,
   ProductsButton,
   SideBarContainer,
+  SidebarBrand,
+  SidebarDivider,
   SignInButton,
   SignOutButton,
   UserButton,
@@ -16,7 +18,12 @@ import {
 import { CiDeliveryTruck } from "react-icons/ci";
 import { FaRegChartBar } from "react-icons/fa";
 import { GoSignIn } from "react-icons/go";
-import { IoAddCircleOutline, IoCartOutline, IoPersonCircleOutline } from "react-icons/io5";
+import {
+  IoAddCircleOutline,
+  IoCartOutline,
+  IoHomeOutline,
+  IoPersonCircleOutline,
+} from "react-icons/io5";
 import { PiSignInLight } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import { productStore } from "../../store/productStore";
@@ -48,11 +55,14 @@ export default function SideBar() {
 
   return (
     <SideBarContainer>
+      <SidebarBrand>
+        <span>D</span>
+      </SidebarBrand>
       <HomeButton
         onClick={() => handleSetButtonSelected("")}
         $variant={buttonSelected!}
       >
-        <h2>Home</h2>
+        <IoHomeOutline size={28} />
       </HomeButton>
       <OptionsButtonsContainer>
         {user && user.token && (
@@ -106,6 +116,7 @@ export default function SideBar() {
           </>
         )}
       </OptionsButtonsContainer>
+      <SidebarDivider />
       {user && user.token ? (
         <SignOutButton
           $variant={buttonSelected!}

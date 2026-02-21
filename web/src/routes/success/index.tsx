@@ -37,7 +37,7 @@ export default function Success() {
     <SuccessContainer>
       <SuccessContent>
         <SuccessIconWrapper>
-          <IoMdCheckmarkCircle size={80} color="#7462ba" />
+          <IoMdCheckmarkCircle size={48} color="currentColor" />
         </SuccessIconWrapper>
         <h1>Compra efetuada!</h1>
         <SuccessMessage>

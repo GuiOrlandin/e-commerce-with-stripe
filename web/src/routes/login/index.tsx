@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
+import { MdOutlineErrorOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SideBar from "../../components/sidebar";
 import { useAuthenticateMutate } from "../../hooks/useAuthenticateMutate";
@@ -54,10 +55,10 @@ export default function Login() {
     userAuthenticateCredentialsDetails: UserCredentials
   ) {
     if (userCredentials?.email === "") {
-      return setErrorMessage("insira o Email!");
+      return setErrorMessage("Insira o email.");
     }
     if (userCredentials?.password_hash === "") {
-      return setErrorMessage("insira a Senha!");
+      return setErrorMessage("Insira a senha.");
     }
 
     mutate({ data: userAuthenticateCredentialsDetails });
@@ -68,6 +69,7 @@ export default function Login() {
     inputTitle: string
   ) {
     const { value } = event.target;
+    setErrorMessage("");
     setUserCredentials((prevDetails) => ({
       ...prevDetails!,
       [inputTitle]: value,
@@ -80,7 +82,7 @@ export default function Login() {
     }
 
     if (isError) {
-      setErrorMessage("Email ou senha incorretos!");
+      setErrorMessage("Email ou senha incorretos. Tente novamente.");
     }
 
     if (userFound && data && data!.token!) {
@@ -101,6 +103,14 @@ export default function Login() {
       <LoginContent>
         <LoginTitle>Bem-vindo</LoginTitle>
         <LoginSubtitle>Faça login para continuar</LoginSubtitle>
+
+        {errorMessage && (
+          <ErrorMessageContainer role="alert">
+            <MdOutlineErrorOutline aria-hidden />
+            <span>{errorMessage}</span>
+          </ErrorMessageContainer>
+        )}
+
         <EmailInputContainer>
           <span>Email</span>
           <EmailInput
@@ -120,10 +130,6 @@ export default function Login() {
               handleChangeUserDetailsForLogin(event, "password_hash")
             }
           />
-
-          {errorMessage && (
-            <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
-          )}
         </PasswordInputContainer>
 
         <LoginButton onClick={() => handleAuthenticate(userCredentials!)}>

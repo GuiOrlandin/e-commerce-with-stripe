@@ -112,7 +112,7 @@ export default function Dashboard() {
                   data: data
                     ? data!.map((MonthData) => MonthData.totalIncome / 100)
                     : [],
-                  color: "#7462ba",
+                  color: "#6366f1",
                 },
               ]}
               width={600}

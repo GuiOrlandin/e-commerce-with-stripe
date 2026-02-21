@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { ProductCartContainer } from "./styles";
+import { LoadingContainer, ProductCartContainer } from "./styles";
 
 import { useEffect } from "react";
 import ProductCart from "../../components/productCard";
@@ -44,9 +44,9 @@ export default function Home() {
   return (
     <>
       {isLoading ? (
-        <>
+        <LoadingContainer>
           <h1>Carregando...</h1>
-        </>
+        </LoadingContainer>
       ) : (
         <ProductCartContainer>
           {products && products.length >= 1 ? (
