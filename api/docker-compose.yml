@@ -1,23 +1,17 @@
 services:
-  mongodb:
-    image: bitnami/mongodb:latest
-    container_name: mongodb
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: postgres
     ports:
-      - "27017:27017"
+      - "5433:5432"
     environment:
-      - MONGODB_ROOT_USERNAME=root
-      - MONGODB_ROOT_PASSWORD=admin
-      - MONGODB_USERNAME=guilherme
-      - MONGODB_PASSWORD=123456
-      - MONGODB_DATABASE=e-commerce-db
-      - MONGODB_REPLICA_SET_MODE=primary
-      - MONGODB_REPLICA_SET_KEY=replicasetkey123
-      - MONGODB_REPLICA_SET_NAME=rs0
-      - MONGODB_ADVERTISED_HOSTNAME=localhost
+      POSTGRES_USER: guilherme
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_DB: e-commerce-db
     volumes:
-      - mongodb_data:/bitnami/mongodb
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD-SHELL", "pg_isready -U guilherme -d e-commerce-db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,7 +20,7 @@ services:
       - e-commerce-network
 
 volumes:
-  mongodb_data:
+  postgres_data:
     driver: local
 
 networks:
