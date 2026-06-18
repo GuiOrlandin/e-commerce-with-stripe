@@ -1,46 +1,43 @@
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
+    provider = "postgresql"
 }
 
 generator client {
-    provider = "prisma-client-js"
+    provider = "prisma-client"
+    output   = "../generated"
 }
 
 model User {
-    id            String   @id @default(auto()) @map("_id") @db.ObjectId
-    created_at    DateTime @default(now())
-    email         String   @unique
-    password_hash String
-    role          String?
-    name          String
-    phone_number  String?
+    id              String   @id @default(cuid())
+    created_at      DateTime @default(now())
+    email           String   @unique
+    password_hash   String
+    role            String?
+    name            String
+    phone_number    String?
     profile_picture String?
-    adress         String?
+    adress          String?
     number          String?
 
-    products Product[]
+    products          Product[]
     purchasedProducts Json?
-    soldProducts Json?
-
+    soldProducts      Json?
 
     @@map("users")
 }
 
 model Product {
-    id            String   @id @default(auto()) @map("_id") @db.ObjectId
-    created_at    DateTime @default(now())
-    name          String
-    description  String?
-    image_url      String
-    user          User      @relation(fields: [user_id], references: [id])
-    user_id       String    @db.ObjectId
+    id          String   @id @default(cuid())
+    created_at  DateTime @default(now())
+    name        String
+    description String?
+    image_url   String
+    user        User     @relation(fields: [user_id], references: [id])
+    user_id     String
     unit_value  Float
     stock       Float
-    category String
+    category    String
 
+    @@index([user_id])
     @@map("products")
 }
-
-
-

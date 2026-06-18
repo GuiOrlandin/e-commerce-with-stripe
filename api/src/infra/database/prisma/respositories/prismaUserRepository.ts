@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { JsonObject } from '@prisma/client/runtime/library';
 import { format, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import * as fs from 'fs';
+import { Prisma } from 'generated/client';
 import * as path from 'path';
 import { User } from 'src/modules/user/entities/user';
 import {
   AdressItems,
   CheckoutItems,
-  DashboardItems, UserRepository,
-  updateItems
+  DashboardItems,
+  UserRepository,
+  updateItems,
 } from 'src/modules/user/repositories/userRepository';
 import { PrismaUserMapper } from '../mappers/prismaUserMapper';
 import { PrismaService } from '../prisma.service';
@@ -129,7 +130,7 @@ export class PrismaUserRepository implements UserRepository {
       ? userAdmin.soldProducts
       : [];
 
-    const newProducts: JsonObject[] = items.data.map((item) => {
+    const newProducts: Prisma.JsonObject[] = items.data.map((item) => {
       return {
         amount_total: item.amount_total,
         id: item.product_id,

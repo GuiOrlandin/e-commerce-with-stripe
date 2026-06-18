@@ -1,4 +1,4 @@
-import { User as UserRaw } from '@prisma/client';
+import { User as UserRaw } from 'generated/client';
 import { User } from 'src/modules/user/entities/user';
 
 export class PrismaUserMapper {

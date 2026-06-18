@@ -1,4 +1,4 @@
-import { Product as ProductRaw } from '@prisma/client';
+import { Product as ProductRaw } from 'generated/client';
 import { Product } from 'src/modules/products/entities/product';
 
 export class PrismaProductMapper {
