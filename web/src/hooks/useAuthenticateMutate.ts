@@ -15,7 +15,7 @@ async function postData(data?: UserAuthenticationDetails) {
       token: accessToken.jwtToken,
       userId: accessToken.userId,
     };
-  } catch (error) {
+  } catch {
     throw new Error("Falha ao autenticar usuário");
   }
 }

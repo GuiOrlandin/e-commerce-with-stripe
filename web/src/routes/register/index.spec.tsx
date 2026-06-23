@@ -12,7 +12,7 @@ import { userStore } from "../../store/userStore";
 import Home from "../home";
 import Register from "../register";
 
-let mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
 
 function renderComponent() {
   const queryClient = new QueryClient();
@@ -83,10 +83,10 @@ describe("Register Page", () => {
 
     const registerButton = screen.getByText("Registrar");
 
-    await userEvent.type(emailInput, "gui@gmail.com"),
-      await userEvent.type(passwordInput, "123456"),
-      await userEvent.type(nameInput, "guilherme"),
-      await userEvent.click(registerButton);
+    await userEvent.type(emailInput, "gui@gmail.com");
+    await userEvent.type(passwordInput, "123456");
+    await userEvent.type(nameInput, "guilherme");
+    await userEvent.click(registerButton);
 
     await waitFor(() => {
       expect(mock.history.post.length).toBe(2);
@@ -119,10 +119,10 @@ describe("Register Page", () => {
 
     const registerButton = screen.getByText("Registrar");
 
-    await userEvent.type(emailInput, "gui@gmail.com"),
-      await userEvent.type(passwordInput, "123456"),
-      await userEvent.type(nameInput, "guilherme"),
-      await userEvent.click(registerButton);
+    await userEvent.type(emailInput, "gui@gmail.com");
+    await userEvent.type(passwordInput, "123456");
+    await userEvent.type(nameInput, "guilherme");
+    await userEvent.click(registerButton);
 
     await waitFor(() => {
       expect(mock.history.post.length).toBe(1);

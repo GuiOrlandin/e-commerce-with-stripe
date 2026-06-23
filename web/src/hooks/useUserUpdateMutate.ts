@@ -38,7 +38,7 @@ async function putData(
     }
 
     await axios.put("http://localhost:3333/user", formData, config);
-  } catch (error) {
+  } catch {
     throw new Error("Falha ao fazer checkout");
   }
 }

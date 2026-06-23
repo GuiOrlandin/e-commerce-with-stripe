@@ -27,7 +27,7 @@ async function postData(items: ItemsCheckoutDetails[], authToken: string) {
     );
 
     return response.data.url;
-  } catch (error) {
+  } catch {
     throw new Error("Falha ao fazer checkout");
   }
 }

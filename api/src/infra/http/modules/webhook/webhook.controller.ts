@@ -12,7 +12,7 @@ import { SuccessCheckOutUseCase } from 'src/modules/checkOut/UseCases/SuccessChe
 import { Stripe } from 'stripe';
 import { Public } from '../auth/decorators/isPublic';
 
-  @Controller('webhook')
+@Controller('webhook')
 export class WebhookController {
   private readonly stripe: Stripe;
   private readonly endpointSecret: string =
@@ -46,7 +46,7 @@ export class WebhookController {
     }
 
     switch (event.type) {
-      case "checkout.session.completed":
+      case 'checkout.session.completed':
         const session = event.data.object as Stripe.Checkout.Session;
 
         await this.successCheckoutUseCase.execute({

@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { CreateProductBody } from './dtos/createProductBody';
+import { EmbeddingIndexService } from 'src/infra/ai/embedding-index.service';
 import { CreateProductUseCase } from 'src/modules/products/useCase/createProductUseCase';
 import { AuthRequestModel } from '../auth/models/AuthRequestModel';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -25,6 +26,7 @@ export class ProductController {
     private createProductUseCase: CreateProductUseCase,
     private deleteProductUseCase: DeleteProductUserUseCase,
     private findAllProductsUseCase: FindAllProductUseCase,
+    private embeddingIndexService: EmbeddingIndexService,
   ) {}
 
   @Post()
@@ -61,6 +63,12 @@ export class ProductController {
       image_url: file.filename,
       user_id: request.user.id,
       category,
+    });
+
+    await this.embeddingIndexService.indexProductText(product._id, {
+      name: product.name,
+      description: product.description,
+      category: product.category,
     });
 
     return product;

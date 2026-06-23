@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { compare } from 'bcrypt';
 import { UserRepository } from 'src/modules/user/repositories/userRepository';
 import { AuthValueIncorrectException } from '../execptions/authValueIncorrectException';

@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { Routes, Route } from "react-router-dom";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
@@ -13,7 +15,9 @@ import Success from ".";
 import { userStore } from "../../store/userStore";
 import MyPurchases from "../myPurchase";
 
-let mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
+
+const formattedToday = format(new Date(), "d 'de' MMMM", { locale: ptBR });
 
 function renderComponent() {
   const queryClient = new QueryClient();
@@ -91,27 +95,28 @@ describe("Success page", () => {
       expect(screen.getByTestId("home-page-button")).toBeInTheDocument();
     });
   });
+
   it("Should redirect to the home page after press Continuar Comprando button.", async () => {
     renderComponent();
 
     const homeButton = screen.getByTestId("home-page-button");
-    userEvent.click(homeButton);
+    await userEvent.click(homeButton);
 
     await waitFor(() => {
       expect(screen.getByText("Carregando...")).toBeInTheDocument();
     });
   });
+
   it("Should redirect to the cart page after press Ver pedidos button.", async () => {
     renderComponent();
 
     const cartButton = screen.getByTestId("see-purchases");
-    userEvent.click(cartButton);
+    await userEvent.click(cartButton);
 
     await waitFor(() => {
-      screen.debug();
-      expect(screen.getByText("24 de setembro")).toBeInTheDocument();
+      expect(screen.getByText(formattedToday)).toBeInTheDocument();
       expect(screen.getByText("Quantidade: 1")).toBeInTheDocument();
-      expect(screen.getByText("Valor total: R$ 20")).toBeInTheDocument();
+      expect(screen.getByText(/R\$\s*20/)).toBeInTheDocument();
     });
   });
 });

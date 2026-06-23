@@ -9,7 +9,7 @@ import axios from "axios";
 import Home from "./index";
 import MockAdapter from "axios-mock-adapter";
 
-let mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
 
 function renderComponent() {
   const queryClient = new QueryClient();

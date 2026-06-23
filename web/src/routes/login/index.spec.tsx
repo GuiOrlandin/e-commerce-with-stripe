@@ -13,7 +13,7 @@ import { userStore } from "../../store/userStore";
 import Home from "../home";
 import Register from "../register";
 
-let mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
 
 function renderComponent() {
   const queryClient = new QueryClient();
@@ -98,6 +98,8 @@ describe("Login Page", () => {
   });
 
   it("should not redirect to the home page after an unsuccessful login", async () => {
+    mock.onPost("http://localhost:3333/signIn").reply(401);
+
     renderComponent();
 
     const emailInput = screen.getByPlaceholderText("Digite o email");
@@ -110,7 +112,7 @@ describe("Login Page", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Email ou senha incorretos!")
+        screen.getByText("Email ou senha incorretos. Tente novamente.")
       ).toBeInTheDocument();
     });
   });

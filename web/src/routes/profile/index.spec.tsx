@@ -1,7 +1,6 @@
 import React from "react";
 import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Routes, Route } from "react-router-dom";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
@@ -11,7 +10,7 @@ import MockAdapter from "axios-mock-adapter";
 import { userStore } from "../../store/userStore";
 import Profile from ".";
 
-let mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
 
 function renderComponent() {
   const queryClient = new QueryClient();
@@ -55,13 +54,14 @@ describe("Profile page", () => {
   it("should render inputs and buttons", async () => {
     renderComponent();
 
-    expect(screen.getByText("Nome:")).toBeInTheDocument();
+    expect(screen.getByText("Nome")).toBeInTheDocument();
     expect(screen.getByRole("img")).toBeInTheDocument();
-    expect(screen.getByText("Email:")).toBeInTheDocument();
-    expect(screen.getByText("Endereço de Entrega:")).toBeInTheDocument();
-    expect(screen.getByText("Numero:")).toBeInTheDocument();
-    expect(screen.getByText("Telefone:")).toBeInTheDocument();
+    expect(screen.getByText("Email")).toBeInTheDocument();
+    expect(screen.getByText("Endereço de Entrega")).toBeInTheDocument();
+    expect(screen.getByText("Número")).toBeInTheDocument();
+    expect(screen.getByText("Telefone")).toBeInTheDocument();
   });
+
   it("Should re-render after successfully editing a user, even without changes.", async () => {
     mock.onPut("http://localhost:3333/user").reply(200);
 
@@ -81,9 +81,9 @@ describe("Profile page", () => {
     const toggleButton = screen.getByText("Editar Perfil");
     await userEvent.click(toggleButton);
 
-    expect(screen.getByText("Confirme")).toBeInTheDocument();
+    expect(screen.getByText("Salvar Alterações")).toBeInTheDocument();
 
-    const confirmButton = screen.getByText("Confirme");
+    const confirmButton = screen.getByText("Salvar Alterações");
     await userEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -91,10 +91,11 @@ describe("Profile page", () => {
     });
 
     await waitFor(() => {
-      expect(screen.queryByText("Confirme")).not.toBeInTheDocument();
+      expect(screen.queryByText("Salvar Alterações")).not.toBeInTheDocument();
       expect(screen.getByText("Editar Perfil")).toBeInTheDocument();
     });
   });
+
   it("Should re-render after successfully editing a user with changes.", async () => {
     mock.onPut("http://localhost:3333/user").reply(200);
 
@@ -119,7 +120,7 @@ describe("Profile page", () => {
     await userEvent.clear(inputName);
     await userEvent.type(inputName, "Guilherme Orlandin");
 
-    const confirmButton = screen.getByText("Confirme");
+    const confirmButton = screen.getByText("Salvar Alterações");
     await userEvent.click(confirmButton);
 
     await waitFor(() => {
@@ -144,7 +145,7 @@ describe("Profile page", () => {
     });
 
     await waitFor(() => {
-      expect(screen.queryByText("Confirme")).not.toBeInTheDocument();
+      expect(screen.queryByText("Salvar Alterações")).not.toBeInTheDocument();
       expect(screen.getByText("Editar Perfil")).toBeInTheDocument();
       expect(screen.getByText("Guilherme Orlandin")).toBeInTheDocument();
     });

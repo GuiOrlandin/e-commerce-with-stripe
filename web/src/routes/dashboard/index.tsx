@@ -26,7 +26,7 @@ export default function Dashboard() {
   const [
     salesPercentageComparedToLastMonth,
     setSalesPercentageComparedToLastMonth,
-  ] = useState<Number | undefined>();
+  ] = useState<number | undefined>();
   const userInfo = userStore((state) => state.user);
   const currentMonthName = format(new Date(), "MMMM", { locale: ptBR });
 
