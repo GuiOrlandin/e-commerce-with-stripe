@@ -27,16 +27,18 @@ model User {
 }
 
 model Product {
-    id          String   @id @default(cuid())
-    created_at  DateTime @default(now())
-    name        String
-    description String?
-    image_url   String
-    user        User     @relation(fields: [user_id], references: [id])
-    user_id     String
-    unit_value  Float
-    stock       Float
-    category    String
+    id               String   @id @default(cuid())
+    created_at       DateTime @default(now())
+    name             String
+    description      String?
+    image_url        String
+    user             User     @relation(fields: [user_id], references: [id])
+    user_id          String
+    unit_value       Float
+    stock            Float
+    category         String
+    text_embedding   Unsupported("vector(768)")?
+    image_embedding  Unsupported("vector(512)")?
 
     @@index([user_id])
     @@map("products")
