@@ -49,6 +49,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.21.0",
+    "pgvector": "^0.3.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "stripe": "^16.6.0"
@@ -96,6 +97,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }

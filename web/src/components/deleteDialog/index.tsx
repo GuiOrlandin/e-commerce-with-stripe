@@ -40,7 +40,8 @@ export default function DeleteDialog({
             <ButtonsOfDialogContainer>
               <ConfirmButton
                 onClick={() => {
-                  handleDeleteAction(), setOpen(false);
+                  handleDeleteAction();
+                  setOpen(false);
                 }}
               >
                 Confirmar

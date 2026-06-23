@@ -50,7 +50,7 @@ async function postData(
     );
 
     return response.data;
-  } catch (error) {
+  } catch {
     throw new Error("Falha ao criar produto");
   }
 }

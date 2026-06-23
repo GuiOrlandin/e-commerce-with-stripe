@@ -17,11 +17,7 @@ interface CreatedUserRequest {
 export class CreateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute({
-    email,
-    name,
-    password_hash,
-  }: CreatedUserRequest) {
+  async execute({ email, name, password_hash }: CreatedUserRequest) {
     const user = new User({
       email,
       name,

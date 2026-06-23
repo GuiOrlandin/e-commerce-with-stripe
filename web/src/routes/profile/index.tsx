@@ -68,10 +68,10 @@ export default function Profile() {
       file: avatarImage!,
       data: {
         adress: profileUpdateInfo?.adress,
-        email: profileUpdateInfo?.email!,
-        name: profileUpdateInfo?.name!,
+        email: profileUpdateInfo?.email ?? '',
+        name: profileUpdateInfo?.name ?? '',
         number: profileUpdateInfo?.number,
-        phone_number: profileUpdateInfo?.phone_number!,
+        phone_number: profileUpdateInfo?.phone_number ?? '',
       },
     });
   }

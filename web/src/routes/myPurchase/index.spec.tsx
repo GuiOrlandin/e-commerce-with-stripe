@@ -9,7 +9,7 @@ import MockAdapter from "axios-mock-adapter";
 import { userStore } from "../../store/userStore";
 import MyPurchases from ".";
 
-let mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
 
 function renderComponent() {
   const queryClient = new QueryClient();
@@ -73,10 +73,11 @@ describe("My purchases Page", () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText("Quantidade:", { exact: false }));
-      expect(screen.getByText("Rua Exemplo, 123.", { exact: false }));
-      expect(screen.getByText("Valor total: R$", { exact: false }));
-      expect(screen.getByText("Pagamento concluido!", { exact: false }));
+      expect(screen.getByText("Quantidade:", { exact: false })).toBeInTheDocument();
+      expect(screen.getByText("Rua Exemplo, 123.", { exact: false })).toBeInTheDocument();
+      expect(screen.getByText("Valor total:", { exact: false })).toBeInTheDocument();
+      expect(screen.getByText(/R\$\s*20/)).toBeInTheDocument();
+      expect(screen.getByText("Pagamento concluido!", { exact: false })).toBeInTheDocument();
     });
   });
   it("should not render the component with empty purchasedProducts", async () => {

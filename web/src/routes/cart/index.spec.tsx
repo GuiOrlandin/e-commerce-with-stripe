@@ -10,9 +10,7 @@ import { productStore } from "../../store/productStore";
 import Cart from ".";
 import userEvent from "@testing-library/user-event";
 
-let mock = new MockAdapter(axios);
-
-let assignMock = jest.fn();
+const mock = new MockAdapter(axios);
 
 function renderComponent() {
   const queryClient = new QueryClient();
@@ -37,9 +35,6 @@ describe("Cart Page", () => {
     jest.clearAllMocks();
     mock.reset();
     mock.resetHistory();
-    assignMock.mockClear();
-
-    const checkoutUrl = "https://checkout.stripe.com/some-session-id";
 
     productStore.setState({
       products: [
@@ -61,11 +56,12 @@ describe("Cart Page", () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText("Valor total:", { exact: false }));
-      expect(screen.getByText("R$20", { exact: false }));
-      expect(screen.getByText("Confirmar Pagamento"));
+      expect(screen.getByText("Valor total:", { exact: false })).toBeInTheDocument();
+      expect(screen.getAllByText(/R\$\s*20/).length).toBeGreaterThan(0);
+      expect(screen.getByText("Confirmar Pagamento")).toBeInTheDocument();
     });
   });
+
   it("should display the empty cart message when the cart is empty", async () => {
     await act(async () => {
       productStore.setState({
@@ -77,21 +73,25 @@ describe("Cart Page", () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText("Sem produtos no carrinho!"));
+      expect(screen.getByText("Sem produtos no carrinho!")).toBeInTheDocument();
     });
   });
+
   it("should display empty cart message after deleting the last product", async () => {
     renderComponent();
 
     const removeButton = screen.getByText("-");
-
     await userEvent.click(removeButton);
 
+    const confirmButton = await screen.findByText("Confirmar");
+    await userEvent.click(confirmButton);
+
     await waitFor(() => {
-      expect(screen.getByText("Sem produtos no carrinho!"));
+      expect(screen.getByText("Sem produtos no carrinho!")).toBeInTheDocument();
     });
   });
-  it("should display empty cart message after deleting the last product", async () => {
+
+  it("should redirect to checkout after confirming payment", async () => {
     const checkoutUrl = "https://checkout.stripe.com/some-session-id";
 
     mock.onPost("http://localhost:3333/checkout").reply(200, {

@@ -3,6 +3,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { Routes, Route } from "react-router-dom";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
@@ -11,7 +13,8 @@ import Dashboard from "./index";
 import Home from "../home";
 import { userStore } from "../../store/userStore";
 
-let mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios);
+const currentMonthName = format(new Date(), "MMMM", { locale: ptBR });
 
 function renderComponent() {
   const queryClient = new QueryClient();
@@ -49,12 +52,13 @@ describe("Dashboard Page", () => {
       setUser: jest.fn(),
     });
   });
+
   it("should render the dashboard with information", async () => {
     mock.onGet("http://localhost:3333/user/dashboard").reply(
       200,
       [
         {
-          month: "setembro",
+          month: currentMonthName,
           soldProducts: [
             {
               amount_total: 2000,
@@ -111,9 +115,8 @@ describe("Dashboard Page", () => {
     await waitFor(() => {
       expect(screen.getByText("Pug")).toBeInTheDocument();
       expect(screen.getByText("Cachorro")).toBeInTheDocument();
-      expect(screen.getByText("R$ 40")).toBeInTheDocument();
+      expect(screen.getAllByText(/R\$\s*40/).length).toBeGreaterThan(0);
       expect(screen.getByText("Rendimento Total")).toBeInTheDocument();
-      screen.debug();
     });
   });
 });

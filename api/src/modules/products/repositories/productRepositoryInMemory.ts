@@ -4,8 +4,15 @@ import { ProductRepository } from './productRepository';
 export class ProductRepositoryInMemory implements ProductRepository {
   public products: Product[] = [];
 
-  async create(product: Product): Promise<void> {
+  async create(product: Product): Promise<string> {
     this.products.push(product);
+    return product._id;
+  }
+
+  async updateTextEmbedding(): Promise<void> {}
+
+  async searchByTextEmbedding(): Promise<never[]> {
+    return [];
   }
 
   async findById(id: string): Promise<Product> {

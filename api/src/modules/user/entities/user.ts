@@ -120,7 +120,8 @@ export class User {
   }
 
   toResponseObject(): Omit<UserSchema, 'password_hash'> {
-    const { password_hash, ...userWithoutPassword } = this.props;
+    const userWithoutPassword = { ...this.props };
+    delete userWithoutPassword.password_hash;
     return userWithoutPassword;
   }
 }

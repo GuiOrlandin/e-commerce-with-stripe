@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
+import { DatabaseModule } from '../database/database.module';
+import { EmbeddingIndexService } from './embedding-index.service';
 import { OllamaService } from './ollama.service';
 
 @Module({
-  providers: [OllamaService],
-  exports: [OllamaService],
+  imports: [DatabaseModule],
+  providers: [OllamaService, EmbeddingIndexService],
+  exports: [OllamaService, EmbeddingIndexService],
 })
 export class AiModule {}

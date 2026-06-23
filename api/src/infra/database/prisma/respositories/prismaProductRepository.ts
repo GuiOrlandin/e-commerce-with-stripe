@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { vectorToSql } from '../pgvector';
 
-import { PrismaUserMapper } from '../mappers/prismaUserMapper';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ProductRepository } from 'src/modules/products/repositories/productRepository';
+import {
+  ProductRepository,
+  ProductTextSearchResult,
+} from 'src/modules/products/repositories/productRepository';
 import { Product } from 'src/modules/products/entities/product';
 import { PrismaService } from '../prisma.service';
 import { PrismaProductMapper } from '../mappers/prismaProductMapper';
@@ -30,12 +33,40 @@ export class PrismaProductRepository implements ProductRepository {
     }
   }
 
-  async create(product: Product): Promise<void> {
+  async create(product: Product): Promise<string> {
     const productRaw = PrismaProductMapper.toPrisma(product);
 
-    await this.prisma.product.create({
+    const created = await this.prisma.product.create({
       data: productRaw,
     });
+
+    return created.id;
+  }
+
+  async updateTextEmbedding(
+    productId: string,
+    embedding: number[],
+  ): Promise<void> {
+    const vectorSql = vectorToSql(embedding);
+    await this.prisma.$executeRaw`
+      UPDATE products SET text_embedding = ${vectorSql}::vector WHERE id = ${productId}
+    `;
+  }
+
+  async searchByTextEmbedding(
+    embedding: number[],
+    topK: number,
+  ): Promise<ProductTextSearchResult[]> {
+    const vectorSql = vectorToSql(embedding);
+    return this.prisma.$queryRaw<ProductTextSearchResult[]>`
+      SELECT
+        id, name, description, image_url, unit_value, stock, category,
+        1 - (text_embedding <=> ${vectorSql}::vector) AS score
+      FROM products
+      WHERE text_embedding IS NOT NULL AND stock >= 1
+      ORDER BY text_embedding <=> ${vectorSql}::vector
+      LIMIT ${topK}
+    `;
   }
 
   async findById(id: string): Promise<Partial<Product> | null> {
@@ -88,5 +119,7 @@ export class PrismaProductRepository implements ProductRepository {
     return products;
   }
 
-  async save(product: Product): Promise<void> {}
+  async save(product: Product): Promise<void> {
+    void product;
+  }
 }

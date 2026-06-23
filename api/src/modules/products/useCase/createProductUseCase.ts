@@ -39,8 +39,18 @@ export class CreateProductUseCase {
       category,
     });
 
-    await this.productRepository.create(product);
+    const productId = await this.productRepository.create(product);
 
-    return product;
+    return new Product({
+      _id: productId,
+      created_at,
+      image_url,
+      name,
+      description,
+      unit_value,
+      stock,
+      user_id,
+      category,
+    });
   }
 }
