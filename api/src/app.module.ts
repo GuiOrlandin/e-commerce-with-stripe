@@ -9,6 +9,7 @@ import { CheckoutModule } from './infra/http/modules/checkOut/checkout.module';
 import { WebhookModule } from './infra/http/modules/webhook/webhook.module';
 import configs from 'config/config';
 import { ProductModule } from './infra/http/modules/product/product.module';
+import { ChatModule } from './infra/http/modules/chat/chat.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
@@ -34,6 +35,7 @@ import { join } from 'path';
     CheckoutModule,
     WebhookModule,
     ProductModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [

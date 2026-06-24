@@ -8,6 +8,7 @@ import {
   ProductTextSearchResult,
 } from 'src/modules/products/repositories/productRepository';
 import { Product } from 'src/modules/products/entities/product';
+import { Prisma } from 'generated/client';
 import { PrismaService } from '../prisma.service';
 import { PrismaProductMapper } from '../mappers/prismaProductMapper';
 
@@ -65,6 +66,33 @@ export class PrismaProductRepository implements ProductRepository {
       FROM products
       WHERE text_embedding IS NOT NULL AND stock >= 1
       ORDER BY text_embedding <=> ${vectorSql}::vector
+      LIMIT ${topK}
+    `;
+  }
+
+  async searchByKeywords(
+    terms: string[],
+    topK: number,
+  ): Promise<ProductTextSearchResult[]> {
+    if (terms.length === 0) {
+      return [];
+    }
+
+    const termConditions = terms.map(
+      (term) => Prisma.sql`(
+        name ILIKE ${'%' + term + '%'}
+        OR description ILIKE ${'%' + term + '%'}
+        OR category ILIKE ${'%' + term + '%'}
+      )`,
+    );
+
+    return this.prisma.$queryRaw<ProductTextSearchResult[]>`
+      SELECT
+        id, name, description, image_url, unit_value, stock, category,
+        1.0::double precision AS score
+      FROM products
+      WHERE stock >= 1
+        AND ${Prisma.join(termConditions, ' AND ')}
       LIMIT ${topK}
     `;
   }
