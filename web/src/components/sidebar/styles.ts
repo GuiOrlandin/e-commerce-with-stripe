@@ -144,6 +144,12 @@ export const ChartButton = styled.button<
   ${navButtonStyles}
 `;
 
+export const ChatButton = styled.button<
+  ButtonSelected & { $activePath: string }
+>`
+  ${navButtonStyles}
+`;
+
 export const MyPurchasesButton = styled.button<
   ButtonSelected & { $activePath: string }
 >`

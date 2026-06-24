@@ -25,4 +25,8 @@ export abstract class ProductRepository {
     embedding: number[],
     topK: number,
   ): Promise<ProductTextSearchResult[]>;
+  abstract searchByKeywords(
+    terms: string[],
+    topK: number,
+  ): Promise<ProductTextSearchResult[]>;
 }

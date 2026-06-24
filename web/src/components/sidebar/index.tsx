@@ -3,6 +3,7 @@ import {
   CartButton,
   CartLength,
   ChartButton,
+  ChatButton,
   HomeButton,
   MyPurchasesButton,
   OptionsButtonsContainer,
@@ -21,6 +22,7 @@ import { GoSignIn } from "react-icons/go";
 import {
   IoAddCircleOutline,
   IoCartOutline,
+  IoChatbubbleOutline,
   IoHomeOutline,
   IoPersonCircleOutline,
 } from "react-icons/io5";
@@ -98,6 +100,14 @@ export default function SideBar() {
                 </ChartButton>
               </>
             )}
+
+            <ChatButton
+              onClick={() => handleSetButtonSelected("chat")}
+              $variant={buttonSelected!}
+              $activePath="chat"
+            >
+              <IoChatbubbleOutline size={31} />
+            </ChatButton>
 
             <MyPurchasesButton
               onClick={() => handleSetButtonSelected("my_purchases")}

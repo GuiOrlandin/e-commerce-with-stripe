@@ -15,6 +15,31 @@ export class ProductRepositoryInMemory implements ProductRepository {
     return [];
   }
 
+  async searchByKeywords(terms: string[], topK: number) {
+    if (terms.length === 0) {
+      return [];
+    }
+
+    return this.products
+      .filter((product) => product.stock >= 1)
+      .filter((product) => {
+        const text =
+          `${product.name} ${product.description ?? ''} ${product.category}`.toLowerCase();
+        return terms.every((term) => text.includes(term.toLowerCase()));
+      })
+      .slice(0, topK)
+      .map((product) => ({
+        id: product._id,
+        name: product.name,
+        description: product.description ?? null,
+        image_url: product.image_url,
+        unit_value: product.unit_value,
+        stock: product.stock,
+        category: product.category,
+        score: 1,
+      }));
+  }
+
   async findById(id: string): Promise<Product> {
     const product = this.products.find((product) => product._id === id);
 

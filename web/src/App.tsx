@@ -4,6 +4,7 @@ import "./App.css";
 import Layout from "./components/Layout";
 import { queryClient } from "./lib/react-query";
 import Cart from "./routes/cart";
+import Chat from "./routes/chat";
 import Dashboard from "./routes/dashboard";
 import Home from "./routes/home";
 import Login from "./routes/login";
@@ -54,6 +55,10 @@ export default function App() {
         {
           path: "/products",
           element: <Products />,
+        },
+        {
+          path: "/chat",
+          element: <Chat />,
         },
       ],
     },
