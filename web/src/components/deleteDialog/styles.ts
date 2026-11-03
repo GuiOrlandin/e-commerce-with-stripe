@@ -41,10 +41,12 @@ export const DialogDeleteCommentContainer = styled.div`
 
 export const DialogClose = styled(Dialog.Close)`
   border: none;
-  margin: -1rem 0 1rem 12rem;
+  display: block;
+  margin: 0 0 var(--space-4) auto;
 `;
 
 export const Content = styled(Dialog.Content)`
+  display: flex;
   flex-direction: column;
   min-width: 400px;
   max-width: 90vw;

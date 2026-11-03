@@ -6,8 +6,8 @@ export const ProductContainer = styled.div`
 
 export const ProductImageWrapper = styled.div`
   position: relative;
-  width: calc(100% + 2.5rem);
-  margin: -1.25rem -1.25rem 1rem -1.25rem;
+  width: 100%;
+  margin: 0;
   aspect-ratio: 1;
   overflow: hidden;
   background: var(--color-surface-alt);
@@ -25,12 +25,13 @@ export const ProductCartContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: var(--color-surface);
-  padding: 1.25rem;
+  padding: 0 0 1.25rem;
   border-radius: var(--radius-lg);
   max-width: 20rem;
   min-width: 0;
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
   transition: box-shadow 0.35s ease-out, border-color 0.35s ease-out;
 
   &:hover {
@@ -45,7 +46,7 @@ export const ProductCartContainer = styled.div`
   h1 {
     font-size: 1.125rem;
     font-weight: 600;
-    margin: 0 0 0.5rem 0;
+    margin: 1rem 1.25rem 0.5rem;
     color: var(--color-text);
     line-height: 1.35;
     display: -webkit-box;
@@ -55,7 +56,7 @@ export const ProductCartContainer = styled.div`
   }
 
   p {
-    margin: 0 0 1rem 0;
+    margin: 0 1.25rem 1rem;
     color: var(--color-text-muted);
     font-size: 0.875rem;
     line-height: 1.5;
@@ -103,6 +104,7 @@ export const StockAndAddOrRemoveButtons = styled.div`
   justify-content: space-between;
   gap: 0.75rem;
   flex-wrap: wrap;
+  padding: 0 1.25rem;
 `;
 
 export const ImageNameAndDescriptionInCartCard = styled.div`
@@ -113,7 +115,7 @@ export const ImageNameAndDescriptionInCartCard = styled.div`
 
 export const UnitValueContainer = styled.div`
   display: flex;
-  margin-bottom: 1rem;
+  margin: 0 1.25rem 1rem;
 
   p {
     margin: 0;

@@ -1,29 +1,29 @@
-/* Design system – modern SaaS palette, harmonious and clean */
+/* Design system – charcoal dark + teal accent */
 :root {
-  /* Primary – indigo (SaaS standard) */
-  --color-primary: #6366f1;
-  --color-primary-hover: #4f46e5;
-  --color-primary-active: #4338ca;
-  --color-primary-light: rgba(99, 102, 241, 0.08);
-  --color-primary-muted: rgba(99, 102, 241, 0.12);
-  --color-primary-border: rgba(99, 102, 241, 0.2);
+  /* Primary – teal */
+  --color-primary: #2dd4bf;
+  --color-primary-hover: #14b8a6;
+  --color-primary-active: #0d9488;
+  --color-primary-light: rgba(45, 212, 191, 0.12);
+  --color-primary-muted: rgba(45, 212, 191, 0.18);
+  --color-primary-border: rgba(45, 212, 191, 0.35);
 
-  /* Surfaces & background – neutral, clean */
-  --color-surface: #ffffff;
-  --color-surface-elevated: #ffffff;
-  --color-surface-alt: #f8fafc;
-  --color-bg: #f1f5f9;
-  --color-bg-subtle: #f8fafc;
+  /* Surfaces & background – charcoal (not pure black) */
+  --color-surface: #232a33;
+  --color-surface-elevated: #2a323c;
+  --color-surface-alt: #1e252e;
+  --color-bg: #1a1f26;
+  --color-bg-subtle: #1e252e;
 
   /* Borders */
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
+  --color-border: #3a4450;
+  --color-border-light: #2f3842;
 
-  /* Text – slate scale */
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-muted: #64748b;
-  --color-text-subtle: #94a3b8;
+  /* Text */
+  --color-text: #e8eef4;
+  --color-text-secondary: #b0bcc8;
+  --color-text-muted: #8b98a6;
+  --color-text-subtle: #6b7785;
 
   /* Semantic */
   --color-error: #ef4444;
@@ -32,13 +32,13 @@
   --color-success-hover: #059669;
   --color-warning: #f59e0b;
 
-  /* Shadows – soft, neutral with subtle depth */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
-  --shadow-sidebar: 2px 0 24px rgba(0, 0, 0, 0.06);
-  --shadow-focus: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  /* Shadows – soft depth on dark */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-sidebar: 2px 0 24px rgba(0, 0, 0, 0.35);
+  --shadow-focus: 0 0 0 3px rgba(45, 212, 191, 0.35);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -68,7 +68,7 @@
   font-weight: 400;
   color: var(--color-text);
   background-color: var(--color-bg);
-  color-scheme: light;
+  color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

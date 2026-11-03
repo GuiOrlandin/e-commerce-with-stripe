@@ -9,7 +9,7 @@ export const ProfileContainer = styled.div`
 
 export const SideBar = styled.div`
   width: 250px;
-  background: #ffffff;
+  background: var(--color-surface);
 `;
 
 export const ContentWrapper = styled.div`
@@ -25,7 +25,7 @@ export const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   padding: 3.5rem 4rem;
   width: 100%;
   max-width: 700px;
