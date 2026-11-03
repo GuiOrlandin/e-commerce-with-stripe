@@ -71,3 +71,11 @@ npm run dev
 ```sh
 npm run test
 ```
+
+### Chat com IA (Ollama + embeddings)
+
+1. Suba o Ollama (`ollama serve`) e puxe `nomic-embed-text` (+ modelo de chat).
+2. Reindexe produtos: `cd api && npm run db:reindex-products`.
+3. UI usa `POST /chat/v2` (LangChain agent + `conversationId`). O pipeline antigo permanece em `POST /chat`.
+
+Docs: [glossário de IA](docs/ai-glossary.md) · [ADR chat LangChain](docs/adr/chat-langchain-v1.md).

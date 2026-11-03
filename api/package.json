@@ -30,6 +30,9 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@langchain/core": "^1.3.4",
+    "@langchain/langgraph": "^1.6.0",
+    "@langchain/ollama": "^1.3.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.0.0",
@@ -53,7 +56,8 @@
     "pgvector": "^0.3.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "stripe": "^16.6.0"
+    "stripe": "^16.6.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -100,7 +104,8 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^src/(.*)$": "<rootDir>/$1"
+      "^src/(.*)$": "<rootDir>/$1",
+      "^@langchain/langgraph/prebuilt$": "<rootDir>/../node_modules/@langchain/langgraph/dist/prebuilt/index.cjs"
     }
   }
 }

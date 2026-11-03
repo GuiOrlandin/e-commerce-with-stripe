@@ -13,16 +13,23 @@ export interface ChatProduct {
 }
 
 export interface ChatResponse {
+  conversationId: string;
   reply: string;
   products: ChatProduct[];
 }
 
 export function useChat() {
   return useMutation({
-    mutationFn: async (message: string) => {
+    mutationFn: async (input: {
+      message: string;
+      conversationId?: string;
+    }) => {
       const { data } = await axios.post<ChatResponse>(
-        "http://localhost:3333/chat",
-        { message },
+        "http://localhost:3333/chat/v2",
+        {
+          message: input.message,
+          conversationId: input.conversationId,
+        },
       );
       return data;
     },

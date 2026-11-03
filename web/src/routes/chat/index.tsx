@@ -55,6 +55,7 @@ function productImageSrc(imageUrl: string) {
 export default function Chat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [conversationId, setConversationId] = useState<string | undefined>();
   const { mutate, isPending, isError } = useChat();
   const setProduct = productStore((state) => state.setProduct);
   const user = userStore((state) => state.user);
@@ -71,18 +72,22 @@ export default function Chat() {
     setMessages((prev) => [...prev, { role: "user", content: message }]);
     setInput("");
 
-    mutate(message, {
-      onSuccess: (data) => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: data.reply,
-            products: data.products,
-          },
-        ]);
+    mutate(
+      { message, conversationId },
+      {
+        onSuccess: (data) => {
+          setConversationId(data.conversationId);
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "assistant",
+              content: data.reply,
+              products: data.products,
+            },
+          ]);
+        },
       },
-    });
+    );
   }
 
   return (

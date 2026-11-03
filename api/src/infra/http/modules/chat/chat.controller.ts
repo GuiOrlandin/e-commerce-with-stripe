@@ -1,14 +1,16 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Public } from '../auth/decorators/isPublic';
-import { ChatMessageBody } from './dtos/chatMessageBody';
+import { ChatMessageBody, ChatV2MessageBody } from './dtos/chatMessageBody';
 import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
 import { GenerateChatReplyUseCase } from 'src/modules/chat/useCase/generateChatReplyUseCase';
+import { GenerateChatV2ReplyUseCase } from 'src/modules/chat/useCase/generateChatV2ReplyUseCase';
 
 @Controller('chat')
 export class ChatController {
   constructor(
     private searchProducts: SearchProductsByTextUseCase,
     private generateReply: GenerateChatReplyUseCase,
+    private generateV2Reply: GenerateChatV2ReplyUseCase,
   ) {}
 
   @Post()
@@ -32,6 +34,23 @@ export class ChatController {
         score: p.score,
       })),
       meta: { candidateCount: candidates.length, matchCount: matches.length },
+    };
+  }
+
+  /** LangChain agent path (multi-turn + tools). See docs/adr/chat-langchain-v1.md */
+  @Post('v2')
+  @Public()
+  async chatV2(@Body() body: ChatV2MessageBody) {
+    const result = await this.generateV2Reply.execute({
+      message: body.message,
+      conversationId: body.conversationId,
+    });
+
+    return {
+      conversationId: result.conversationId,
+      reply: result.reply,
+      products: result.products,
+      meta: { matchCount: result.products.length },
     };
   }
 }
