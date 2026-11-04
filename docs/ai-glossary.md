@@ -2,7 +2,11 @@
 
 Vocabulário vivo para o chat + embeddings do e-commerce. Cada termo liga ao que o código faz hoje.
 
-Relacionado: [ADR chat LangChain v1](./adr/chat-langchain-v1.md).
+Relacionado:
+
+- [ADR chat LangChain v1](./adr/chat-langchain-v1.md)
+- [Hybrid retrieval & re-rank (estudo)](./learning/hybrid-retrieval-and-rerank.md)
+- [Design hybrid + RRF + re-rank](./superpowers/specs/2026-11-04-hybrid-search-rerank-design.md)
 
 ---
 
@@ -15,10 +19,22 @@ Vetor numérico que representa texto (ou imagem). Aqui: `OllamaService.embed` + 
 Extensão Postgres para tipo `vector` e distância (ex.: `<=>` cosine). Usado em `searchByTextEmbedding`.
 
 ### Similarity / score
-Quão perto dois embeddings estão. No chat, candidatos vêm ordenados por distância; `CHAT_SIMILARITY_THRESHOLD` corta os fracos.
+Quão perto dois embeddings estão. No chat hybrid, o braço semantic não corta por threshold antes do RRF; `CHAT_SIMILARITY_THRESHOLD` permanece no config para eval/legado.
 
 ### Retriever / retrieval
 Passo que **busca** contexto (produtos) antes de o LLM falar. v1: use case de busca. v2: tool `search_products` (mesmo miolo).
+
+### Keyword / lexical retrieval
+Busca por termos exatos ou aproximados no texto (`ILIKE` hoje; BM25/FTS na evolução típica). Forte em nome/código; fraca em paraphrase.
+
+### Hybrid retrieval
+Rodar semantic **e** keyword (em paralelo) e **fundir** resultados. Diferente de “vetorial e, se vazio, keyword” (fallback ≠ hybrid).
+
+### RRF (Reciprocal Rank Fusion)
+Fusão de ranks: soma \(1/(k + \mathrm{rank})\) por lista. Evita calibrar cosine contra score lexical. Constante \(k\) comum: 60.
+
+### Re-rank / re-ranker
+Segunda passagem no top-N para subir precision. Aqui (design): LLM Ollama listwise; em labs: cross-encoder / API rerank.
 
 ### RAG (Retrieval-Augmented Generation)
 Gerar resposta **com** documentos recuperados no prompt, em vez de só “memória” do modelo. Nosso chat é RAG de catálogo.

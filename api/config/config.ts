@@ -7,7 +7,7 @@ const configs = () => ({
   },
   OLLAMA: {
     baseUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434',
-    chatModel: process.env.OLLAMA_CHAT_MODEL || 'gemma3:4b',
+    chatModel: process.env.OLLAMA_CHAT_MODEL || 'qwen2.5:7b',
     embedModel: process.env.OLLAMA_EMBED_MODEL || 'nomic-embed-text',
   },
   EMBEDDING_SERVICE: {
@@ -18,6 +18,10 @@ const configs = () => ({
       process.env.CHAT_SIMILARITY_THRESHOLD || '0.65',
     ),
     topK: parseInt(process.env.CHAT_TOP_K || '5', 10),
+    retrieveK: parseInt(process.env.CHAT_RETRIEVE_K || '15', 10),
+    rerankN: parseInt(process.env.CHAT_RERANK_N || '10', 10),
+    rrfK: parseInt(process.env.CHAT_RRF_K || '60', 10),
+    rerankEnabled: (process.env.CHAT_RERANK_ENABLED || 'true') === 'true',
   },
   STRIPE_CONFIG: {
     apiKey: process.env.STRIPE_SECRET_KEY,

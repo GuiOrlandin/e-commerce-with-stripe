@@ -33,7 +33,11 @@ export class OllamaService {
     return data.embedding;
   }
 
-  async chat(systemPrompt: string, userMessage: string): Promise<string> {
+  async chat(
+    systemPrompt: string,
+    userMessage: string,
+    options?: { temperature?: number },
+  ): Promise<string> {
     const model = this.config.get<string>('OLLAMA.chatModel')!;
     const response = await fetch(`${this.baseUrl}/api/chat`, {
       method: 'POST',
@@ -41,6 +45,10 @@ export class OllamaService {
       body: JSON.stringify({
         model,
         stream: false,
+        options:
+          options?.temperature !== undefined
+            ? { temperature: options.temperature }
+            : undefined,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userMessage },
