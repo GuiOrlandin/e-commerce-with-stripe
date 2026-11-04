@@ -4,8 +4,10 @@ Vocabulário vivo para o chat + embeddings do e-commerce. Cada termo liga ao que
 
 Relacionado:
 
+- [**Guia de estudo AI Engineer (conceitos do projeto)**](./learning/ai-engineer-concepts-from-this-project.md)
 - [ADR chat LangChain v1](./adr/chat-langchain-v1.md)
 - [Hybrid retrieval & re-rank (estudo)](./learning/hybrid-retrieval-and-rerank.md)
+- [Throttle & cota de tokens](./learning/throttle-and-token-quota.md)
 - [Design hybrid + RRF + re-rank](./superpowers/specs/2026-11-04-hybrid-search-rerank-design.md)
 
 ---
