@@ -22,8 +22,22 @@ model User {
     products          Product[]
     purchasedProducts Json?
     soldProducts      Json?
+    aiUsages         UserAiUsage[]
 
     @@map("users")
+}
+
+model UserAiUsage {
+    id            String   @id @default(cuid())
+    userId        String   @map("user_id")
+    day           DateTime @db.Date
+    requestCount  Int      @default(0) @map("request_count")
+    tokenEstimate Int      @default(0) @map("token_estimate")
+    user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, day])
+    @@index([userId])
+    @@map("user_ai_usage")
 }
 
 model Product {

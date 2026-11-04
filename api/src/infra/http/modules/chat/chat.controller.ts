@@ -1,11 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { Public } from '../auth/decorators/isPublic';
-import { ChatMessageBody, ChatV2MessageBody } from './dtos/chatMessageBody';
-import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { GenerateChatReplyUseCase } from 'src/modules/chat/useCase/generateChatReplyUseCase';
 import { GenerateChatV2ReplyUseCase } from 'src/modules/chat/useCase/generateChatV2ReplyUseCase';
+import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
+import { ChatMessageBody, ChatV2MessageBody } from './dtos/chatMessageBody';
+import { ChatQuotaGuard } from './guards/chatQuota.guard';
 
 @Controller('chat')
+@UseGuards(ChatQuotaGuard)
 export class ChatController {
   constructor(
     private searchProducts: SearchProductsByTextUseCase,
@@ -14,7 +15,6 @@ export class ChatController {
   ) {}
 
   @Post()
-  @Public()
   async chat(@Body() body: ChatMessageBody) {
     const { candidates, matches } = await this.searchProducts.execute(
       body.message,
@@ -39,7 +39,6 @@ export class ChatController {
 
   /** LangChain agent path (multi-turn + tools). See docs/adr/chat-langchain-v1.md */
   @Post('v2')
-  @Public()
   async chatV2(@Body() body: ChatV2MessageBody) {
     const result = await this.generateV2Reply.execute({
       message: body.message,

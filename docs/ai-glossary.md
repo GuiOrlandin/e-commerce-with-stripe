@@ -36,6 +36,12 @@ Fusão de ranks: soma \(1/(k + \mathrm{rank})\) por lista. Evita calibrar cosine
 ### Re-rank / re-ranker
 Segunda passagem no top-N para subir precision. Aqui (design): LLM Ollama listwise; em labs: cross-encoder / API rerank.
 
+### Throttle / rate limit
+Teto de **taxa** (ex.: N requests / minuto) por chave (`userId`). Estudo: [throttle-and-token-quota](./learning/throttle-and-token-quota.md).
+
+### Token quota / budget
+Teto de **consumo estimado** de tokens por dia (`UserAiUsage`). Diferente de throttle: protege custo, não só rajada.
+
 ### RAG (Retrieval-Augmented Generation)
 Gerar resposta **com** documentos recuperados no prompt, em vez de só “memória” do modelo. Nosso chat é RAG de catálogo.
 

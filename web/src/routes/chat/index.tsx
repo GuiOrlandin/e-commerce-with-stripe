@@ -1,6 +1,11 @@
 import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChatProduct, useChat } from "../../hooks/useChat";
+import {
+  ChatProduct,
+  ChatRequestError,
+  useChat,
+} from "../../hooks/useChat";
+import { chatStore } from "../../store/chatStore";
 import { Product, productStore } from "../../store/productStore";
 import { userStore } from "../../store/userStore";
 import {
@@ -20,12 +25,6 @@ import {
   ProductsGrid,
   SendButton,
 } from "./styles";
-
-type ChatMessage = {
-  role: "user" | "assistant";
-  content: string;
-  products?: ChatProduct[];
-};
 
 function toStoreProduct(product: ChatProduct): Product {
   const imageFilename = product.image_url.startsWith("/files/")
@@ -53,12 +52,20 @@ function productImageSrc(imageUrl: string) {
 }
 
 export default function Chat() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const [conversationId, setConversationId] = useState<string | undefined>();
-  const { mutate, isPending, isError } = useChat();
+  const messages = chatStore((state) => state.messages);
+  const conversationId = chatStore((state) => state.conversationId);
+  const appendMessage = chatStore((state) => state.appendMessage);
+  const setConversationId = chatStore((state) => state.setConversationId);
+  const { mutate, isPending, isError, error } = useChat();
   const setProduct = productStore((state) => state.setProduct);
   const user = userStore((state) => state.user);
+  const isLoggedIn = Boolean(user?.token);
+
+  const errorMessage =
+    error instanceof ChatRequestError
+      ? error.message
+      : "Não foi possível enviar a mensagem. Verifique se a API e o Ollama estão rodando.";
 
   function handleAddToCart(product: ChatProduct) {
     setProduct(toStoreProduct(product));
@@ -67,9 +74,9 @@ export default function Chat() {
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const message = input.trim();
-    if (!message || isPending) return;
+    if (!message || isPending || !isLoggedIn) return;
 
-    setMessages((prev) => [...prev, { role: "user", content: message }]);
+    appendMessage({ role: "user", content: message });
     setInput("");
 
     mutate(
@@ -77,14 +84,11 @@ export default function Chat() {
       {
         onSuccess: (data) => {
           setConversationId(data.conversationId);
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: "assistant",
-              content: data.reply,
-              products: data.products,
-            },
-          ]);
+          appendMessage({
+            role: "assistant",
+            content: data.reply,
+            products: data.products,
+          });
         },
       },
     );
@@ -97,6 +101,13 @@ export default function Chat() {
         <p>Descreva o que procura e receba sugestões da loja.</p>
       </ChatHeader>
 
+      {!isLoggedIn && (
+        <ErrorMessage>
+          Faça <Link to="/login">login</Link> para usar o chat (controle de uso
+          por usuário).
+        </ErrorMessage>
+      )}
+
       <MessagesArea>
         {messages.length === 0 ? (
           <EmptyState>
@@ -107,62 +118,62 @@ export default function Chat() {
           messages.map((msg, index) => (
             <div key={index}>
               <MessageBubble $role={msg.role}>{msg.content}</MessageBubble>
-              {msg.role === "assistant" && msg.products && msg.products.length > 0 && (
-                <ProductsGrid>
-                  {msg.products.map((product) => (
-                    <ProductCard key={product.id}>
-                      <img
-                        src={productImageSrc(product.image_url)}
-                        alt={product.name}
-                      />
-                      <ProductInfo>
-                        <h3>{product.name}</h3>
-                        <p>{product.description}</p>
-                        <span>
-                          {product.unit_value.toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                            minimumFractionDigits: 2,
-                          })}
-                        </span>
-                      </ProductInfo>
-                      <ProductActions>
-                        <AddToCartButton
-                          type="button"
-                          disabled={!user?.token}
-                          onClick={() => handleAddToCart(product)}
-                        >
-                          Adicionar ao carrinho
-                        </AddToCartButton>
-                      </ProductActions>
-                    </ProductCard>
-                  ))}
-                  <GoToCartLink as={Link} to="/cart">
-                    Ir ao carrinho →
-                  </GoToCartLink>
-                </ProductsGrid>
-              )}
+              {msg.role === "assistant" &&
+                msg.products &&
+                msg.products.length > 0 && (
+                  <ProductsGrid>
+                    {msg.products.map((product) => (
+                      <ProductCard key={product.id}>
+                        <img
+                          src={productImageSrc(product.image_url)}
+                          alt={product.name}
+                        />
+                        <ProductInfo>
+                          <h3>{product.name}</h3>
+                          <p>{product.description}</p>
+                          <span>
+                            {product.unit_value.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                              minimumFractionDigits: 2,
+                            })}
+                          </span>
+                        </ProductInfo>
+                        <ProductActions>
+                          <AddToCartButton
+                            type="button"
+                            disabled={!user?.token}
+                            onClick={() => handleAddToCart(product)}
+                          >
+                            Adicionar ao carrinho
+                          </AddToCartButton>
+                        </ProductActions>
+                      </ProductCard>
+                    ))}
+                    <GoToCartLink as={Link} to="/cart">
+                      Ir ao carrinho →
+                    </GoToCartLink>
+                  </ProductsGrid>
+                )}
             </div>
           ))
         )}
       </MessagesArea>
 
-      {isError && (
-        <ErrorMessage>
-          Não foi possível enviar a mensagem. Verifique se a API e o Ollama estão
-          rodando.
-        </ErrorMessage>
-      )}
+      {isError && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
       <InputArea onSubmit={handleSubmit}>
         <MessageInput
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Descreva o produto que procura..."
-          disabled={isPending}
+          disabled={isPending || !isLoggedIn}
           rows={2}
         />
-        <SendButton type="submit" disabled={isPending || !input.trim()}>
+        <SendButton
+          type="submit"
+          disabled={isPending || !isLoggedIn || !input.trim()}
+        >
           {isPending ? "Enviando..." : "Enviar"}
         </SendButton>
       </InputArea>

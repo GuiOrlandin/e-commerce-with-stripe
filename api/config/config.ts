@@ -22,6 +22,13 @@ const configs = () => ({
     rerankN: parseInt(process.env.CHAT_RERANK_N || '10', 10),
     rrfK: parseInt(process.env.CHAT_RRF_K || '60', 10),
     rerankEnabled: (process.env.CHAT_RERANK_ENABLED || 'true') === 'true',
+    rateLimit: parseInt(process.env.CHAT_RATE_LIMIT || '10', 10),
+    rateWindowMs: parseInt(process.env.CHAT_RATE_WINDOW_MS || '60000', 10),
+    tokenDailyLimit: parseInt(
+      process.env.CHAT_TOKEN_DAILY_LIMIT || '50000',
+      10,
+    ),
+    tokenOverhead: parseInt(process.env.CHAT_TOKEN_OVERHEAD || '1500', 10),
   },
   STRIPE_CONFIG: {
     apiKey: process.env.STRIPE_SECRET_KEY,
