@@ -44,7 +44,7 @@ Regras:
         ? 'O usuário quer ver opções disponíveis: liste todos os candidatos relevantes com nome e preço em linguagem natural (até 5 itens). Se pediu mais de uma categoria, agrupe por categoria.'
         : 'Mencione o nome e preço do produto mais relevante.'
     }
-- Convide o usuário a adicionar ao carrinho.
+- Não diga que vai adicionar ao carrinho. Se for orientar a compra, diga só para clicar no botão "Adicionar ao carrinho" do card — nunca no nome do produto.
 - Valide se o produto existe e está disponível.
 
 Produtos candidatos:

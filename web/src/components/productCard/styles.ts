@@ -55,7 +55,8 @@ export const ProductCartContainer = styled.div`
     overflow: hidden;
   }
 
-  p {
+  /* only the description — nested stock <p> must not inherit clamp/margin */
+  > p {
     margin: 0 1.25rem 1rem;
     color: var(--color-text-muted);
     font-size: 0.875rem;
@@ -103,8 +104,10 @@ export const StockAndAddOrRemoveButtons = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding: 0 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const ImageNameAndDescriptionInCartCard = styled.div`
@@ -165,7 +168,7 @@ export const TotalValueOfProduct = styled.div`
 
 const addRemoveButtonsBase = css`
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -179,12 +182,16 @@ const addRemoveButtonsBase = css`
   }
 
   span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
     color: var(--color-text);
     min-width: 2.25rem;
     text-align: center;
     font-size: 0.9375rem;
     padding: 0 0.25rem;
+    line-height: 1;
     user-select: none;
   }
 `;
@@ -192,15 +199,22 @@ const addRemoveButtonsBase = css`
 export const AddOrRemoveButtons = styled.div`
   ${addRemoveButtonsBase}
   height: 36px;
+  flex-shrink: 0;
+  align-self: center;
 
   button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 36px;
     min-width: 36px;
     height: 36px;
     padding: 0;
+    margin: 0;
     font-size: 1.25rem;
     line-height: 1;
     flex-shrink: 0;
+    box-sizing: border-box;
   }
 
   span {
@@ -215,13 +229,18 @@ export const AddOrRemoveButtonsInCart = styled.div`
   flex-shrink: 0;
 
   button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     min-width: 40px;
     height: 40px;
     padding: 0;
+    margin: 0;
     font-size: 1.25rem;
     line-height: 1;
     flex-shrink: 0;
+    box-sizing: border-box;
   }
 
   span {
@@ -250,14 +269,19 @@ export const NameAndDescriptionInCartCard = styled.div`
 `;
 
 const buttonBase = css`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  margin: 0;
   color: var(--color-text-muted);
   background: transparent;
   border: none;
+  border-radius: 0;
   font-size: 1.125rem;
   font-weight: 500;
+  line-height: 1;
+  box-sizing: border-box;
   cursor: pointer;
   transition: color 0.2s ease-out, background 0.2s ease-out, transform 0.15s ease-out;
 
@@ -280,6 +304,7 @@ const buttonBase = css`
 
   &:focus {
     outline: none;
+    box-shadow: none;
   }
 
   &:focus-visible {
@@ -299,16 +324,23 @@ export const StockContainer = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.375rem 0.75rem;
+  height: 36px;
+  padding: 0 0.75rem;
+  box-sizing: border-box;
   background: var(--color-surface-alt);
   border-radius: 9999px;
   border: 1px solid var(--color-border);
+  flex-shrink: 1;
+  min-width: 0;
+  align-self: center;
 
   p {
     display: inline;
     margin: 0;
+    padding: 0;
     font-weight: 500;
     font-size: 0.8125rem;
+    line-height: 1;
     color: var(--color-text-muted);
   }
 
@@ -316,6 +348,7 @@ export const StockContainer = styled.div`
     font-weight: 600;
     color: var(--color-text);
     font-size: 0.8125rem;
+    line-height: 1;
   }
 `;
 

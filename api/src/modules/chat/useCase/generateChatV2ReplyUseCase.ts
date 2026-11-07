@@ -7,6 +7,7 @@ import {
   extractLastAiText,
   extractProductsFromAgentMessages,
 } from './extractProductsFromAgentMessages';
+import { groundProductsInReply } from './groundProductsInReply';
 import { ChatProductDto } from './parseSearchProductsToolResult';
 import { SearchProductsByTextUseCase } from './searchProductsByTextUseCase';
 
@@ -49,6 +50,9 @@ export class GenerateChatV2ReplyUseCase {
           : 'Encontrei opções no catálogo. Quer que eu detalhe alguma?';
     }
 
+    // Cards follow the reply: decline / off-topic text must not ship search hits.
+    products = groundProductsInReply(products, reply);
+
     return { conversationId, reply, products };
   }
 
@@ -82,11 +86,14 @@ export class GenerateChatV2ReplyUseCase {
     const reply = await this.ollama.chat(
       `Você é assistente de uma loja online em português do Brasil.
 Só recomende produtos da lista. Não invente itens. Seja breve.
+Se o pedido não for de compra/catálogo, diga isso e não cite produtos da lista.
+Não diga que vai adicionar ao carrinho nem pergunte se pode adicionar.
+Se for orientar a compra, diga só para clicar no botão "Adicionar ao carrinho" do card — nunca no nome do produto.
 Produtos:
 ${catalog}`,
       message,
     );
 
-    return { reply, products };
+    return { reply, products: groundProductsInReply(products, reply) };
   }
 }

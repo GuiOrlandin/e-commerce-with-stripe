@@ -1,5 +1,7 @@
 # AI Engineer — conceitos deste projeto (guia de estudo)
 
+> **Versão navegador:** abra [`ai-engineer-concepts-from-this-project.html`](./ai-engineer-concepts-from-this-project.html) no Chrome/Edge (duplo clique ou arraste o arquivo para a aba).
+
 Base de estudo para quem está migrando para **AI Engineer**, ancorada no que **já existe** neste e-commerce (Nest + Ollama + pgvector + LangChain + chat autenticado).
 
 Para cada conceito: **o que é** → **onde foi aplicado aqui** → **como a indústria costuma aplicar** → **por onde aprofundar**.

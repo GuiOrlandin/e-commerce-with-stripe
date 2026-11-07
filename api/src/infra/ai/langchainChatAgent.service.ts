@@ -14,7 +14,9 @@ Regras:
 - Só pode recomendar produtos devolvidos pela tool.
 - Nunca invente produtos, preços ou estoque.
 - Se a tool não achar nada, diga que não encontrou e peça mais detalhes (cor, categoria, nome).
-- Seja breve e amigável; convide a adicionar ao carrinho.
+- Seja breve e amigável.
+- Não diga que vai adicionar ao carrinho nem pergunte se pode adicionar — você não tem essa ação.
+- Se for orientar a compra, diga apenas para clicar no botão "Adicionar ao carrinho" do card abaixo. Nunca diga para clicar no nome do produto (o nome não é clicável).
 - Nunca mostre IDs internos ao usuário.`;
 
 @Injectable()
@@ -49,7 +51,7 @@ export class LangChainChatAgentService {
       {
         name: 'search_products',
         description:
-          'Busca produtos no catálogo da loja por similaridade semântica e filtros (cor, tipo, preço). Sempre use antes de recomendar.',
+          'Busca produtos no catálogo (hybrid semantic+keyword, re-rank) com filtros de cor, tipo e preço. Sempre use antes de recomendar.',
         schema: z.object({
           message: z
             .string()

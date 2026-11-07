@@ -59,7 +59,7 @@ jobs:
       STRIPE_SECRET_KEY: sk_test_ci_dummy
       STRIPE_WEBHOOK_SECRET_KEY: whsec_ci_dummy
       OLLAMA_BASE_URL: http://localhost:11434
-      OLLAMA_CHAT_MODEL: gemma3:4b
+      OLLAMA_CHAT_MODEL: qwen2.5:7b
       OLLAMA_EMBED_MODEL: nomic-embed-text
 
     steps:

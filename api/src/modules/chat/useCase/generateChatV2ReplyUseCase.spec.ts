@@ -86,4 +86,44 @@ describe('GenerateChatV2ReplyUseCase', () => {
     expect(result.conversationId).toMatch(/^[0-9a-f-]{36}$/i);
     expect(result.products).toEqual([]);
   });
+
+  it('does not return search hits when the reply never names them', async () => {
+    const invoke = jest.fn().mockResolvedValue({
+      messages: [
+        new HumanMessage('i was thinking to adopt a dog.'),
+        new AIMessage({
+          content: '',
+          tool_calls: [
+            {
+              id: 'call-1',
+              name: 'search_products',
+              args: { message: 'adopt a dog' },
+            },
+          ],
+        }),
+        new ToolMessage({
+          tool_call_id: 'call-1',
+          name: 'search_products',
+          content: JSON.stringify({ products: [product] }),
+        }),
+        new AIMessage(
+          'Entendo o interesse em adotar, mas isso não está relacionado aos produtos da loja.',
+        ),
+      ],
+    });
+
+    const useCase = new GenerateChatV2ReplyUseCase(
+      { invoke } as never,
+      { execute: jest.fn() } as never,
+      { chat: jest.fn() } as never,
+    );
+
+    const result = await useCase.execute({
+      message: 'i was thinking to adopt a dog.',
+      conversationId: 'conv-2',
+    });
+
+    expect(result.products).toEqual([]);
+    expect(result.reply).toContain('não está relacionado');
+  });
 });

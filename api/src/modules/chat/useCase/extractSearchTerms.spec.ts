@@ -26,6 +26,17 @@ describe('extractSearchTerms', () => {
   it('strips punctuation from terms', () => {
     expect(extractSearchTerms('camisa preta?')).toEqual(['camisa', 'preta']);
   });
+
+  it('drops inventory and filler words that pollute retrieval', () => {
+    expect(extractSearchTerms('vocês tem celular em estoque?')).toEqual([
+      'celular',
+    ]);
+    expect(
+      extractSearchTerms(
+        'eu vi que tem um iphone com estoque, ele não é celular?',
+      ),
+    ).toEqual(['iphone', 'celular']);
+  });
 });
 
 describe('buildProductSearchQuery', () => {
@@ -71,6 +82,17 @@ describe('buildProductSearchQuery', () => {
     expect(buildProductSearchQuery('opções de celular e camisas')).toBe(
       'camisa celular',
     );
+  });
+
+  it('does not append estoque or pronouns to the vector query', () => {
+    expect(buildProductSearchQuery('vocês tem celular em estoque?')).toBe(
+      'celular',
+    );
+    expect(
+      buildProductSearchQuery(
+        'eu vi que tem um iphone com estoque, ele não é celular?',
+      ),
+    ).toBe('celular');
   });
 });
 

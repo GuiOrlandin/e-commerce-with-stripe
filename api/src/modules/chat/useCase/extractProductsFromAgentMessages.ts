@@ -4,17 +4,29 @@ import {
   parseSearchProductsToolResult,
 } from './parseSearchProductsToolResult';
 
-export function agentCalledSearchProducts(messages: BaseMessage[]): boolean {
-  return messages.some(
-    (msg) => ToolMessage.isInstance(msg) && msg.name === 'search_products',
-  );
+/** Index of the latest user turn — memory may contain older tool calls. */
+function lastHumanMessageIndex(messages: BaseMessage[]): number {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i]._getType() === 'human') return i;
+  }
+  return 0;
 }
 
-/** Last search_products tool payload wins (grounding source of truth). */
+export function agentCalledSearchProducts(messages: BaseMessage[]): boolean {
+  const from = lastHumanMessageIndex(messages);
+  return messages
+    .slice(from)
+    .some(
+      (msg) => ToolMessage.isInstance(msg) && msg.name === 'search_products',
+    );
+}
+
+/** Last search_products in the current turn wins (grounding source of truth). */
 export function extractProductsFromAgentMessages(
   messages: BaseMessage[],
 ): ChatProductDto[] {
-  for (let i = messages.length - 1; i >= 0; i--) {
+  const from = lastHumanMessageIndex(messages);
+  for (let i = messages.length - 1; i >= from; i--) {
     const msg = messages[i];
     if (ToolMessage.isInstance(msg) && msg.name === 'search_products') {
       return parseSearchProductsToolResult(String(msg.content));

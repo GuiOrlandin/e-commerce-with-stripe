@@ -8,7 +8,6 @@ import {
   DeleteButton,
   DialogDeleteCommentContainer,
   DialogTitle,
-  DialogTrigger,
   Overlay,
 } from "./styles";
 
@@ -29,9 +28,7 @@ export default function DeleteDialog({
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <DialogTrigger onClick={() => setOpen(true)} asChild>
-        <DeleteButton>{deleteButtonText}</DeleteButton>
-      </DialogTrigger>
+      <DeleteButton>{deleteButtonText}</DeleteButton>
       <Dialog.Portal>
         <Overlay />
         <Content>

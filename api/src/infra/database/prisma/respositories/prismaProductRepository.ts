@@ -92,7 +92,7 @@ export class PrismaProductRepository implements ProductRepository {
         1.0::double precision AS score
       FROM products
       WHERE stock >= 1
-        AND ${Prisma.join(termConditions, ' AND ')}
+        AND (${Prisma.join(termConditions, ' OR ')})
       LIMIT ${topK}
     `;
   }

@@ -1,25 +1,39 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import styled, { css } from "styled-components";
 
-export const DeleteButton = styled.button`
-  background: none;
-  color: var(--color-primary);
+/* Compact qty-control trigger — DeleteDialog is only used as cart "−" */
+export const DeleteButton = styled(Dialog.Trigger)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
   font-weight: 500;
+  font-family: inherit;
+  line-height: 1;
+  box-sizing: border-box;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  transition: color 0.2s ease-out, background 0.2s ease-out;
 
   &:hover {
-    border: 1px solid var(--color-primary);
-    background: var(--color-primary-light);
+    background: var(--color-surface-alt);
+    color: var(--color-text-secondary);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--color-primary-border);
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--color-primary);
   }
 `;
 
@@ -133,10 +147,6 @@ export const DialogTitle = styled(Dialog.Title)`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-`;
-
-export const DialogTrigger = styled(Dialog.Trigger)`
-  display: flex;
 `;
 
 export const DialogDeleteTriggerButton = styled.button`
