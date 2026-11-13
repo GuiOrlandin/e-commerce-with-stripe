@@ -7,6 +7,8 @@ class FakeUsageStore extends AiUsageStore {
     super();
   }
 
+  adjustDaily = jest.fn(async () => {});
+
   async tryConsumeDaily(): Promise<boolean> {
     return this.result;
   }
@@ -24,12 +26,10 @@ describe('ChatQuotaService', () => {
       return map[key];
     });
 
-    const service = new ChatQuotaService(
-      { get: configGet } as never,
-      new FakeUsageStore(opts.consumeOk ?? true),
-    );
+    const store = new FakeUsageStore(opts.consumeOk ?? true);
+    const service = new ChatQuotaService({ get: configGet } as never, store);
 
-    return { service };
+    return { service, store };
   }
 
   it('rejects missing userId', async () => {
@@ -65,5 +65,27 @@ describe('ChatQuotaService', () => {
         code: 'CHAT_TOKEN_QUOTA',
       });
     }
+  });
+
+  describe('settle', () => {
+    const reservation = { userId: 'u1', day: '2026-11-13', reserved: 101 };
+
+    it('charges the difference between real usage and the reserve', async () => {
+      const { service, store } = build({});
+      await service.settle(reservation, 1800);
+      expect(store.adjustDaily).toHaveBeenCalledWith('u1', '2026-11-13', 1699);
+    });
+
+    it('keeps the reserve when nothing was metered', async () => {
+      const { service, store } = build({});
+      await service.settle(reservation, 0);
+      expect(store.adjustDaily).not.toHaveBeenCalled();
+    });
+
+    it('swallows store failures (reply already sent)', async () => {
+      const { service, store } = build({});
+      store.adjustDaily.mockRejectedValueOnce(new Error('db down'));
+      await expect(service.settle(reservation, 500)).resolves.toBeUndefined();
+    });
   });
 });

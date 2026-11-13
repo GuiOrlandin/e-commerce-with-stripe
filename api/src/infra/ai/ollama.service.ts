@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { estimateTokens } from 'src/modules/chat/quota/estimateTokens';
+import { recordUsage } from 'src/modules/chat/quota/usageMeter';
 
 interface OllamaEmbedResponse {
   embedding: number[];
@@ -7,6 +9,8 @@ interface OllamaEmbedResponse {
 
 interface OllamaChatResponse {
   message: { role: string; content: string };
+  prompt_eval_count?: number;
+  eval_count?: number;
 }
 
 @Injectable()
@@ -35,6 +39,8 @@ export class OllamaService {
     }
 
     const data = (await response.json()) as OllamaEmbedResponse;
+    // /api/embeddings returns no token count: estimate.
+    recordUsage(estimateTokens(text));
     return data.embedding;
   }
 
@@ -67,6 +73,7 @@ export class OllamaService {
     }
 
     const data = (await response.json()) as OllamaChatResponse;
+    recordUsage((data.prompt_eval_count ?? 0) + (data.eval_count ?? 0));
     return data.message.content;
   }
 }

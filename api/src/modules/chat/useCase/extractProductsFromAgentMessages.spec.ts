@@ -1,5 +1,6 @@
 import { AIMessage, HumanMessage, ToolMessage } from '@langchain/core/messages';
 import {
+  agentTurnTokens,
   agentCalledSearchProducts,
   extractProductsFromAgentMessages,
 } from './extractProductsFromAgentMessages';
@@ -71,5 +72,30 @@ describe('extractProductsFromAgentMessages (current turn)', () => {
 
     expect(extractProductsFromAgentMessages(messages)).toEqual([iphone]);
     expect(agentCalledSearchProducts(messages)).toBe(true);
+  });
+});
+
+describe('agentTurnTokens', () => {
+  const ai = (total: number) =>
+    new AIMessage({
+      content: '',
+      usage_metadata: {
+        input_tokens: total - 1,
+        output_tokens: 1,
+        total_tokens: total,
+      },
+    });
+
+  it('sums only the LLM calls of the current turn', () => {
+    expect(
+      agentTurnTokens([
+        new HumanMessage('turno antigo'),
+        ai(1000),
+        new HumanMessage('turno atual'),
+        ai(300),
+        new ToolMessage({ content: '{}', tool_call_id: 't1' }),
+        ai(450),
+      ]),
+    ).toBe(750);
   });
 });

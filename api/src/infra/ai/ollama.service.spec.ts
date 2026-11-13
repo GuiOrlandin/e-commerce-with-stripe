@@ -1,6 +1,10 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import configs from '../../../config/config';
+import {
+  meteredTokens,
+  runWithUsageMeter,
+} from 'src/modules/chat/quota/usageMeter';
 import { OllamaService } from './ollama.service';
 
 describe('OllamaService', () => {
@@ -48,5 +52,36 @@ describe('OllamaService', () => {
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
     timeout.mockRestore();
+  });
+
+  it('records real chat tokens and estimated embed tokens on the request meter', async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          message: { role: 'assistant', content: 'ok' },
+          prompt_eval_count: 120,
+          eval_count: 30,
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ embedding: [0.1] }),
+      }) as jest.Mock;
+
+    const moduleRef = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot({ load: [configs], isGlobal: true })],
+      providers: [OllamaService],
+    }).compile();
+    const service = moduleRef.get(OllamaService);
+
+    const total = await runWithUsageMeter(async () => {
+      await service.chat('sys', 'oi');
+      await service.embed('abcdefgh'); // estimateTokens -> 2
+      return meteredTokens();
+    });
+
+    expect(total).toBe(152);
   });
 });

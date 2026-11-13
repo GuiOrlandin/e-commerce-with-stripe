@@ -8,6 +8,7 @@ import { GenerateChatV2ReplyUseCase } from 'src/modules/chat/useCase/generateCha
 import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
 import { ChatController } from './chat.controller';
 import { ChatQuotaGuard } from './guards/chatQuota.guard';
+import { ChatUsageInterceptor } from './interceptors/chatUsage.interceptor';
 
 @Module({
   imports: [DatabaseModule, AiModule],
@@ -19,6 +20,7 @@ import { ChatQuotaGuard } from './guards/chatQuota.guard';
     GenerateChatV2ReplyUseCase,
     ChatQuotaService,
     ChatQuotaGuard,
+    ChatUsageInterceptor,
   ],
 })
 export class ChatModule {}

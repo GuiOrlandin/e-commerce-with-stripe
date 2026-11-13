@@ -4,8 +4,10 @@ import { randomUUID } from 'crypto';
 import { LangChainChatAgentService } from 'src/infra/ai/langchainChatAgent.service';
 import { OllamaService } from 'src/infra/ai/ollama.service';
 import { BASE_SYSTEM_PROMPT, formatCatalog } from '../prompts';
+import { recordUsage } from '../quota/usageMeter';
 import {
   agentCalledSearchProducts,
+  agentTurnTokens,
   extractLastAiText,
   extractProductsFromAgentMessages,
 } from './extractProductsFromAgentMessages';
@@ -47,6 +49,8 @@ export class GenerateChatV2ReplyUseCase {
       });
 
     const messages = agentState.messages ?? [];
+    // Tool-side embeddings/rerank are metered in OllamaService; this adds the agent's own LLM calls.
+    recordUsage(agentTurnTokens(messages));
     let products = extractProductsFromAgentMessages(messages);
     let reply = extractLastAiText(messages);
 

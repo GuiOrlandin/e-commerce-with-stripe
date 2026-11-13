@@ -27,4 +27,12 @@ export class PrismaAiUsageStore extends AiUsageStore {
     `;
     return rows > 0;
   }
+
+  async adjustDaily(userId: string, day: string, delta: number) {
+    await this.prisma.$executeRaw`
+      UPDATE user_ai_usage
+      SET token_estimate = GREATEST(token_estimate + ${delta}, 0)
+      WHERE user_id = ${userId} AND day = ${day}::date
+    `;
+  }
 }

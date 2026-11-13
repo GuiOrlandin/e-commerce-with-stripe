@@ -5,4 +5,11 @@ export abstract class AiUsageStore {
     tokens: number,
     dailyLimit: number,
   ): Promise<boolean>;
+
+  /** Settle actual vs reserved; no limit check (may overshoot, next reserve then blocks). */
+  abstract adjustDaily(
+    userId: string,
+    day: string,
+    delta: number,
+  ): Promise<void>;
 }

@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Request,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthRequestModel } from '../auth/models/AuthRequestModel';
 import { GenerateChatReplyUseCase } from 'src/modules/chat/useCase/generateChatReplyUseCase';
 import { GenerateChatV2ReplyUseCase } from 'src/modules/chat/useCase/generateChatV2ReplyUseCase';
@@ -6,9 +13,12 @@ import { groundProductsInReply } from 'src/modules/chat/useCase/groundProductsIn
 import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
 import { ChatMessageBody, ChatV2MessageBody } from './dtos/chatMessageBody';
 import { ChatQuotaGuard } from './guards/chatQuota.guard';
+import { ChatUsageInterceptor } from './interceptors/chatUsage.interceptor';
+import { meteredTokens } from 'src/modules/chat/quota/usageMeter';
 
 @Controller('chat')
 @UseGuards(ChatQuotaGuard)
+@UseInterceptors(ChatUsageInterceptor)
 export class ChatController {
   constructor(
     private searchProducts: SearchProductsByTextUseCase,
@@ -36,7 +46,11 @@ export class ChatController {
         category: p.category,
         score: p.score,
       })),
-      meta: { candidateCount: candidates.length, matchCount: matches.length },
+      meta: {
+        candidateCount: candidates.length,
+        matchCount: matches.length,
+        usage: { tokens: meteredTokens() },
+      },
     };
   }
 
@@ -56,7 +70,10 @@ export class ChatController {
       conversationId: result.conversationId,
       reply: result.reply,
       products: result.products,
-      meta: { matchCount: result.products.length },
+      meta: {
+        matchCount: result.products.length,
+        usage: { tokens: meteredTokens() },
+      },
     };
   }
 }

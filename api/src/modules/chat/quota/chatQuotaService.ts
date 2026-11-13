@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -10,8 +11,11 @@ import { estimateTokens } from './estimateTokens';
 import { SlidingWindowThrottle } from './slidingWindowThrottle';
 import { utcDayString } from './utcDayString';
 
+export type ChatReservation = { userId: string; day: string; reserved: number };
+
 @Injectable()
 export class ChatQuotaService {
+  private readonly logger = new Logger(ChatQuotaService.name);
   private readonly throttle = new SlidingWindowThrottle();
 
   constructor(
@@ -75,5 +79,20 @@ export class ChatQuotaService {
     }
 
     return { tokens, day };
+  }
+
+  /** Swap the reserve for real usage. Never throws: the reply already happened. */
+  async settle(reservation: ChatReservation, actual: number) {
+    // Nothing metered (e.g. failed before any LLM call): keep the reserve as the charge.
+    if (actual <= 0 || actual === reservation.reserved) return;
+    try {
+      await this.usageStore.adjustDaily(
+        reservation.userId,
+        reservation.day,
+        actual - reservation.reserved,
+      );
+    } catch (error) {
+      this.logger.warn(`usage settle failed: ${String(error)}`);
+    }
   }
 }

@@ -1,4 +1,9 @@
-import { BaseMessage, ToolMessage } from '@langchain/core/messages';
+import {
+  AIMessage,
+  BaseMessage,
+  ToolMessage,
+  UsageMetadata,
+} from '@langchain/core/messages';
 import {
   ChatProductDto,
   parseSearchProductsToolResult,
@@ -18,6 +23,21 @@ export function agentCalledSearchProducts(messages: BaseMessage[]): boolean {
     .slice(from)
     .some(
       (msg) => ToolMessage.isInstance(msg) && msg.name === 'search_products',
+    );
+}
+
+/** Real tokens (input + output) of every LLM call in the current turn; history resends included. */
+export function agentTurnTokens(messages: BaseMessage[]): number {
+  return messages
+    .slice(lastHumanMessageIndex(messages))
+    .reduce(
+      (sum, msg) =>
+        sum +
+        (AIMessage.isInstance(msg)
+          ? ((msg.usage_metadata as UsageMetadata | undefined)?.total_tokens ??
+            0)
+          : 0),
+      0,
     );
 }
 
