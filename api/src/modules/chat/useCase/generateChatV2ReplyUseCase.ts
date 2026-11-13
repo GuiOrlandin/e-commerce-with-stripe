@@ -85,7 +85,9 @@ export class GenerateChatV2ReplyUseCase {
     // Judged against everything retrieved (agent or fallback); the fixed reply names no product, so grounding drops all cards.
     const verdict = judgeReply(reply, products);
     if ('reasons' in verdict) {
-      this.logger.warn(`judge rejected reply: ${verdict.reasons.join('; ')}`);
+      this.logger.warn(
+        `judge rejected reply: ${reasonKinds(verdict.reasons).join(', ')}`,
+      );
       noteChat({
         judgeBlocked: true,
         judgeReasons: reasonKinds(verdict.reasons),

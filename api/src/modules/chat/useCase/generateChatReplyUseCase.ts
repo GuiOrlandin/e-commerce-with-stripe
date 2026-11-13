@@ -45,7 +45,9 @@ ${formatCatalog(matches)}`;
     const reply = await this.ollama.chat(systemPrompt, userMessage);
     const verdict = judgeReply(reply, matches);
     if (!('reasons' in verdict)) return reply;
-    this.logger.warn(`judge rejected reply: ${verdict.reasons.join('; ')}`);
+    this.logger.warn(
+      `judge rejected reply: ${reasonKinds(verdict.reasons).join(', ')}`,
+    );
     noteChat({
       judgeBlocked: true,
       judgeReasons: reasonKinds(verdict.reasons),
