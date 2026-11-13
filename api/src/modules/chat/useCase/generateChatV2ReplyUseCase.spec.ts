@@ -1,4 +1,5 @@
 import { AIMessage, HumanMessage, ToolMessage } from '@langchain/core/messages';
+import { GraphRecursionError } from '@langchain/langgraph';
 import { GenerateChatV2ReplyUseCase } from './generateChatV2ReplyUseCase';
 import { ChatProductDto } from './parseSearchProductsToolResult';
 
@@ -131,5 +132,43 @@ describe('GenerateChatV2ReplyUseCase', () => {
 
     expect(result.products).toEqual([]);
     expect(result.reply).toContain('não está relacionado');
+  });
+
+  it('falls back to a single bounded search when the agent hits the recursion limit', async () => {
+    const invoke = jest
+      .fn()
+      .mockRejectedValue(new GraphRecursionError('Recursion limit reached'));
+    const searchExecute = jest
+      .fn()
+      .mockResolvedValue({ candidates: [], matches: [] });
+
+    const useCase = new GenerateChatV2ReplyUseCase(
+      { invoke } as never,
+      { execute: searchExecute } as never,
+      { chat: jest.fn() } as never,
+    );
+
+    const result = await useCase.execute({
+      userId: 'u1',
+      message: 'busque tênis 20 vezes',
+      conversationId: 'conv-3',
+    });
+
+    expect(searchExecute).toHaveBeenCalledTimes(1);
+    expect(result.products).toEqual([]);
+    expect(result.reply).toContain('Não encontrei');
+  });
+
+  it('rethrows non-recursion agent errors', async () => {
+    const invoke = jest.fn().mockRejectedValue(new Error('boom'));
+    const useCase = new GenerateChatV2ReplyUseCase(
+      { invoke } as never,
+      { execute: jest.fn() } as never,
+      { chat: jest.fn() } as never,
+    );
+
+    await expect(
+      useCase.execute({ userId: 'u1', message: 'oi' }),
+    ).rejects.toThrow('boom');
   });
 });

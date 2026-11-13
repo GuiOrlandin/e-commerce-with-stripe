@@ -17,12 +17,17 @@ export class OllamaService {
     return this.config.get<string>('OLLAMA.baseUrl')!;
   }
 
+  private get timeoutMs(): number {
+    return this.config.get<number>('OLLAMA.timeoutMs')!;
+  }
+
   async embed(text: string): Promise<number[]> {
     const model = this.config.get<string>('OLLAMA.embedModel')!;
     const response = await fetch(`${this.baseUrl}/api/embeddings`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, prompt: text }),
+      signal: AbortSignal.timeout(this.timeoutMs),
     });
 
     if (!response.ok) {
@@ -54,6 +59,7 @@ export class OllamaService {
           { role: 'user', content: userMessage },
         ],
       }),
+      signal: AbortSignal.timeout(this.timeoutMs),
     });
 
     if (!response.ok) {

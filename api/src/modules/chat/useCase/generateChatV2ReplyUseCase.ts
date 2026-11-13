@@ -1,3 +1,4 @@
+import { GraphRecursionError } from '@langchain/langgraph';
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { LangChainChatAgentService } from 'src/infra/ai/langchainChatAgent.service';
@@ -29,11 +30,17 @@ export class GenerateChatV2ReplyUseCase {
   }) {
     const conversationId = input.conversationId?.trim() || randomUUID();
 
-    const agentState = await this.agent.invoke({
-      message: input.message,
-      // Memory is keyed by owner + id: a leaked/guessed conversationId can't read another user's history.
-      conversationId: `${input.userId}:${conversationId}`,
-    });
+    const agentState = await this.agent
+      .invoke({
+        message: input.message,
+        // Memory is keyed by owner + id: a leaked/guessed conversationId can't read another user's history.
+        conversationId: `${input.userId}:${conversationId}`,
+      })
+      .catch((error: unknown) => {
+        // Loop cap hit: drop the agent output; no search tool call -> single bounded fallback below.
+        if (error instanceof GraphRecursionError) return { messages: [] };
+        throw error;
+      });
 
     const messages = agentState.messages ?? [];
     let products = extractProductsFromAgentMessages(messages);

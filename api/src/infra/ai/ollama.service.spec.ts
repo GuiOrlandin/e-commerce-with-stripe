@@ -21,7 +21,32 @@ describe('OllamaService', () => {
     expect(result).toEqual([0.1, 0.2, 0.3]);
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining('/api/embeddings'),
-      expect.objectContaining({ method: 'POST' }),
+      expect.objectContaining({
+        method: 'POST',
+        signal: expect.any(AbortSignal),
+      }),
     );
+  });
+
+  it('chat passes a timeout signal so a hung Ollama cannot block forever', async () => {
+    const timeout = jest.spyOn(AbortSignal, 'timeout');
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ message: { role: 'assistant', content: 'ok' } }),
+    }) as jest.Mock;
+
+    const moduleRef = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot({ load: [configs], isGlobal: true })],
+      providers: [OllamaService],
+    }).compile();
+
+    await moduleRef.get(OllamaService).chat('sys', 'oi');
+
+    expect(timeout).toHaveBeenCalledWith(60000);
+    expect(global.fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/api/chat'),
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
+    timeout.mockRestore();
   });
 });

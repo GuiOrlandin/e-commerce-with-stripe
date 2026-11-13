@@ -9,6 +9,7 @@ const configs = () => ({
     baseUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434',
     chatModel: process.env.OLLAMA_CHAT_MODEL || 'qwen2.5:7b',
     embedModel: process.env.OLLAMA_EMBED_MODEL || 'nomic-embed-text',
+    timeoutMs: parseInt(process.env.OLLAMA_TIMEOUT_MS || '60000', 10),
   },
   EMBEDDING_SERVICE: {
     baseUrl: process.env.EMBEDDING_SERVICE_URL || 'http://localhost:8000',
@@ -29,6 +30,14 @@ const configs = () => ({
       10,
     ),
     tokenOverhead: parseInt(process.env.CHAT_TOKEN_OVERHEAD || '1500', 10),
+    agentRecursionLimit: parseInt(
+      process.env.CHAT_AGENT_RECURSION_LIMIT || '6',
+      10,
+    ),
+    historyMaxMessages: parseInt(
+      process.env.CHAT_HISTORY_MAX_MESSAGES || '12',
+      10,
+    ),
   },
   STRIPE_CONFIG: {
     apiKey: process.env.STRIPE_SECRET_KEY,

@@ -1,4 +1,9 @@
-import { HumanMessage } from '@langchain/core/messages';
+import {
+  BaseMessage,
+  HumanMessage,
+  SystemMessage,
+  trimMessages,
+} from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
 import { MemorySaver } from '@langchain/langgraph';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
@@ -19,6 +24,16 @@ Regras:
 - Se for orientar a compra, diga apenas para clicar no botão "Adicionar ao carrinho" do card abaixo. Nunca diga para clicar no nome do produto (o nome não é clicável).
 - Nunca mostre IDs internos ao usuário.`;
 
+// Keep the last `max` messages, starting on a human turn so no ToolMessage loses its AI tool_call.
+export function trimHistory(messages: BaseMessage[], max: number) {
+  return trimMessages(messages, {
+    maxTokens: max,
+    tokenCounter: (msgs) => msgs.length,
+    strategy: 'last',
+    startOn: 'human',
+  });
+}
+
 @Injectable()
 export class LangChainChatAgentService {
   private readonly agent: ReturnType<typeof createReactAgent>;
@@ -29,6 +44,7 @@ export class LangChainChatAgentService {
   ) {
     const baseUrl = this.config.get<string>('OLLAMA.baseUrl')!;
     const model = this.config.get<string>('OLLAMA.chatModel')!;
+    const historyMax = this.config.get<number>('CHAT.historyMaxMessages')!;
 
     const searchProductsTool = tool(
       async ({ message }: { message: string }) => {
@@ -69,8 +85,13 @@ export class LangChainChatAgentService {
     this.agent = createReactAgent({
       llm,
       tools: [searchProductsTool],
+      // shortcut: MemorySaver keeps every thread in RAM forever (only what the model sees is trimmed), swap for a persistent checkpointer with TTL (e.g. Postgres saver) before multi-instance/prod.
       checkpointSaver: new MemorySaver(),
-      prompt: SYSTEM_PROMPT,
+      // Bound context per call: older turns stay in memory but are not resent to the model.
+      prompt: async (state) => [
+        new SystemMessage(SYSTEM_PROMPT),
+        ...(await trimHistory(state.messages, historyMax)),
+      ],
     });
   }
 
@@ -78,7 +99,15 @@ export class LangChainChatAgentService {
     // MemorySaver keeps prior turns per thread_id; only append the new user message.
     return this.agent.invoke(
       { messages: [new HumanMessage(input.message)] },
-      { configurable: { thread_id: input.conversationId } },
+      {
+        configurable: { thread_id: input.conversationId },
+        // Caps agent<->tool loops: a prompt-injected "search 20 times" stops here (GraphRecursionError).
+        recursionLimit: this.config.get<number>('CHAT.agentRecursionLimit')!,
+        // ChatOllama has no timeout option; bound the whole run instead.
+        signal: AbortSignal.timeout(
+          this.config.get<number>('OLLAMA.timeoutMs')!,
+        ),
+      },
     );
   }
 }
