@@ -1,4 +1,5 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { AuthRequestModel } from '../auth/models/AuthRequestModel';
 import { GenerateChatReplyUseCase } from 'src/modules/chat/useCase/generateChatReplyUseCase';
 import { GenerateChatV2ReplyUseCase } from 'src/modules/chat/useCase/generateChatV2ReplyUseCase';
 import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
@@ -39,8 +40,12 @@ export class ChatController {
 
   /** LangChain agent path (multi-turn + tools). See docs/adr/chat-langchain-v1.md */
   @Post('v2')
-  async chatV2(@Body() body: ChatV2MessageBody) {
+  async chatV2(
+    @Body() body: ChatV2MessageBody,
+    @Request() request: AuthRequestModel,
+  ) {
     const result = await this.generateV2Reply.execute({
+      userId: request.user.id,
       message: body.message,
       conversationId: body.conversationId,
     });

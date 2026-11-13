@@ -52,6 +52,7 @@ describe('GenerateChatV2ReplyUseCase', () => {
     );
 
     const result = await useCase.execute({
+      userId: 'u1',
       message: 'quero tênis vermelho',
       conversationId: 'conv-1',
     });
@@ -59,7 +60,11 @@ describe('GenerateChatV2ReplyUseCase', () => {
     expect(result.conversationId).toBe('conv-1');
     expect(result.products).toEqual([product]);
     expect(result.reply).toContain('Tênis vermelho');
-    expect(invoke).toHaveBeenCalled();
+    // Agent memory is scoped to the owner; the client only sees its own id.
+    expect(invoke).toHaveBeenCalledWith({
+      message: 'quero tênis vermelho',
+      conversationId: 'u1:conv-1',
+    });
   });
 
   it('creates a conversationId when none is provided', async () => {
@@ -81,7 +86,7 @@ describe('GenerateChatV2ReplyUseCase', () => {
       { chat: ollamaChat } as never,
     );
 
-    const result = await useCase.execute({ message: 'oi' });
+    const result = await useCase.execute({ userId: 'u1', message: 'oi' });
 
     expect(result.conversationId).toMatch(/^[0-9a-f-]{36}$/i);
     expect(result.products).toEqual([]);
@@ -119,6 +124,7 @@ describe('GenerateChatV2ReplyUseCase', () => {
     );
 
     const result = await useCase.execute({
+      userId: 'u1',
       message: 'i was thinking to adopt a dog.',
       conversationId: 'conv-2',
     });

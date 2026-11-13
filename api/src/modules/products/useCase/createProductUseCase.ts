@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Product } from '../entities/product';
 import { ProductRepository } from '../repositories/productRepository';
+import { UserRepository } from 'src/modules/user/repositories/userRepository';
+import { UserWithoutPermissionException } from 'src/modules/user/exceptions/userWithoutPermission';
 
 interface CreatedProductRequest {
   _id?: string;
@@ -16,7 +18,10 @@ interface CreatedProductRequest {
 
 @Injectable()
 export class CreateProductUseCase {
-  constructor(private productRepository: ProductRepository) {}
+  constructor(
+    private productRepository: ProductRepository,
+    private userRepository: UserRepository,
+  ) {}
 
   async execute({
     created_at,
@@ -28,6 +33,14 @@ export class CreateProductUseCase {
     user_id,
     category,
   }: CreatedProductRequest) {
+    // Product text feeds every user's chat prompt: only admins may write it (indirect prompt injection).
+    const user = await this.userRepository.findById(user_id);
+    if (user?.role !== 'ADMIN') {
+      throw new UserWithoutPermissionException({
+        actionName: 'cadastrar produtos',
+      });
+    }
+
     const product = new Product({
       created_at,
       image_url,

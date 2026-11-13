@@ -22,12 +22,17 @@ export class GenerateChatV2ReplyUseCase {
     private ollama: OllamaService,
   ) {}
 
-  async execute(input: { message: string; conversationId?: string }) {
+  async execute(input: {
+    userId: string;
+    message: string;
+    conversationId?: string;
+  }) {
     const conversationId = input.conversationId?.trim() || randomUUID();
 
     const agentState = await this.agent.invoke({
       message: input.message,
-      conversationId,
+      // Memory is keyed by owner + id: a leaked/guessed conversationId can't read another user's history.
+      conversationId: `${input.userId}:${conversationId}`,
     });
 
     const messages = agentState.messages ?? [];
