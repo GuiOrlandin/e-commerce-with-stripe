@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OllamaService } from 'src/infra/ai/ollama.service';
+import { BASE_SYSTEM_PROMPT, formatCatalog } from '../prompts';
 import { isCatalogBrowseQuestion } from './extractSearchTerms';
 
 type Candidate = {
@@ -20,35 +21,22 @@ export class GenerateChatReplyUseCase {
       return 'Não encontrei um produto parecido na loja. Pode descrever com mais detalhes (cor, categoria, nome)?';
     }
 
-    const catalog = matches
-      .map(
-        (p, i) =>
-          `${i + 1}. ${p.name} | ${p.category} | R$ ${p.unit_value.toFixed(2)} | ${p.description ?? ''}`,
-      )
-      .join('\n');
-
     const browseCatalog = isCatalogBrowseQuestion(userMessage);
 
-    const systemPrompt = `Você é assistente de uma loja online em português do Brasil.
-Regras:
-- Só pode recomendar produtos da lista fornecida.
-- Nunca invente produtos ou preços.
+    const systemPrompt = `${BASE_SYSTEM_PROMPT}
+- Só pode recomendar produtos do catálogo entre <catalogo> e </catalogo> abaixo.
 - Compare o pedido do usuário com nome, categoria e descrição de cada candidato.
 - Se o usuário pediu um atributo explícito (ex.: cor "roxa", tamanho "G"), só recomende produtos que mencionem esse atributo ou equivalente.
 - Se nenhum candidato atender aos atributos pedidos, diga claramente que não temos esse item e peça mais detalhes. Não recomende produto incompatível (ex.: usuário pediu roxa, produto é preta).
-- Nunca mostre IDs internos, pipes (|) nem o formato técnico da lista ao usuário.
+- Nunca mostre pipes (|) nem o formato técnico da lista ao usuário.
 - Só diga que uma categoria não está disponível se nenhum candidato da lista pertencer a ela.
-- Seja breve e amigável.
 - ${
       browseCatalog
         ? 'O usuário quer ver opções disponíveis: liste todos os candidatos relevantes com nome e preço em linguagem natural (até 5 itens). Se pediu mais de uma categoria, agrupe por categoria.'
         : 'Mencione o nome e preço do produto mais relevante.'
     }
-- Não diga que vai adicionar ao carrinho. Se for orientar a compra, diga só para clicar no botão "Adicionar ao carrinho" do card — nunca no nome do produto.
-- Valide se o produto existe e está disponível.
 
-Produtos candidatos:
-${catalog}`;
+${formatCatalog(matches)}`;
 
     return this.ollama.chat(systemPrompt, userMessage);
   }

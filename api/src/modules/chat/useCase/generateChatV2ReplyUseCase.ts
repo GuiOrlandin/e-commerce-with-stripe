@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { LangChainChatAgentService } from 'src/infra/ai/langchainChatAgent.service';
 import { OllamaService } from 'src/infra/ai/ollama.service';
+import { BASE_SYSTEM_PROMPT, formatCatalog } from '../prompts';
 import {
   agentCalledSearchProducts,
   extractLastAiText,
@@ -88,21 +89,11 @@ export class GenerateChatV2ReplyUseCase {
       return { reply: EMPTY_CATALOG_REPLY, products };
     }
 
-    const catalog = products
-      .map(
-        (p, i) =>
-          `${i + 1}. ${p.name} | ${p.category} | R$ ${p.unit_value.toFixed(2)} | ${p.description ?? ''}`,
-      )
-      .join('\n');
-
     const reply = await this.ollama.chat(
-      `Você é assistente de uma loja online em português do Brasil.
-Só recomende produtos da lista. Não invente itens. Seja breve.
-Se o pedido não for de compra/catálogo, diga isso e não cite produtos da lista.
-Não diga que vai adicionar ao carrinho nem pergunte se pode adicionar.
-Se for orientar a compra, diga só para clicar no botão "Adicionar ao carrinho" do card — nunca no nome do produto.
-Produtos:
-${catalog}`,
+      `${BASE_SYSTEM_PROMPT}
+- Só pode recomendar produtos do catálogo entre <catalogo> e </catalogo> abaixo.
+
+${formatCatalog(products)}`,
       message,
     );
 

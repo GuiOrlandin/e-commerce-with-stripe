@@ -1,5 +1,6 @@
 import { AIMessage, HumanMessage, ToolMessage } from '@langchain/core/messages';
 import { GraphRecursionError } from '@langchain/langgraph';
+import { BASE_SYSTEM_PROMPT } from '../prompts';
 import { GenerateChatV2ReplyUseCase } from './generateChatV2ReplyUseCase';
 import { ChatProductDto } from './parseSearchProductsToolResult';
 
@@ -170,5 +171,26 @@ describe('GenerateChatV2ReplyUseCase', () => {
     await expect(
       useCase.execute({ userId: 'u1', message: 'oi' }),
     ).rejects.toThrow('boom');
+  });
+
+  it('fallback prompt uses the shared base rules and delimits the catalog', async () => {
+    const ollamaChat = jest.fn().mockResolvedValue('Temos o Tênis vermelho.');
+    const useCase = new GenerateChatV2ReplyUseCase(
+      { invoke: jest.fn().mockResolvedValue({ messages: [] }) } as never,
+      {
+        execute: jest.fn().mockResolvedValue({
+          matches: [{ ...product, image_url: 'tenis.jpg' }],
+        }),
+      } as never,
+      { chat: ollamaChat } as never,
+    );
+
+    await useCase.execute({ userId: 'u1', message: 'tênis' });
+
+    const systemPrompt = ollamaChat.mock.calls[0][0] as string;
+    expect(systemPrompt).toContain(BASE_SYSTEM_PROMPT);
+    expect(systemPrompt).toContain(
+      '<catalogo>\n1. Tênis vermelho | calcado | R$ 199.00 | \n</catalogo>',
+    );
   });
 });
