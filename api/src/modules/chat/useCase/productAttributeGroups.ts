@@ -23,12 +23,18 @@ export function normalize(text: string): string {
   return text.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
 }
 
+// Whole word (plural ok), not substring: "calcado" (calçado) must not match "calca".
+function hasTerm(normalizedText: string, term: string): boolean {
+  return new RegExp(`(^|[^a-z0-9])${normalize(term)}(s|es)?(?![a-z0-9])`).test(
+    normalizedText,
+  );
+}
+
 export function findGroup(text: string, groups: string[][]): string[] | null {
   const normalized = normalize(text);
   return (
-    groups.find((group) =>
-      group.some((term) => normalized.includes(normalize(term))),
-    ) ?? null
+    groups.find((group) => group.some((term) => hasTerm(normalized, term))) ??
+    null
   );
 }
 
@@ -38,7 +44,7 @@ export function findAllMatchedGroups(
 ): string[][] {
   const normalized = normalize(text);
   return groups.filter((group) =>
-    group.some((term) => normalized.includes(normalize(term))),
+    group.some((term) => hasTerm(normalized, term)),
   );
 }
 
@@ -48,7 +54,7 @@ export function findMatchedTermInMessage(
 ): string | null {
   const normalized = normalize(message);
   for (const group of groups) {
-    const matched = group.find((term) => normalized.includes(normalize(term)));
+    const matched = group.find((term) => hasTerm(normalized, term));
     if (matched) {
       return normalize(matched);
     }
@@ -62,7 +68,7 @@ export function findAllMatchedTermsInMessage(
 ): string[] {
   const normalized = normalize(message);
   return findAllMatchedGroups(message, groups).map((group) => {
-    const matched = group.find((term) => normalized.includes(normalize(term)))!;
+    const matched = group.find((term) => hasTerm(normalized, term))!;
     return normalize(matched);
   });
 }

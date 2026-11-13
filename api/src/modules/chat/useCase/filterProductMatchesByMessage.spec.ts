@@ -45,4 +45,25 @@ describe('filterProductMatchesByMessage', () => {
     );
     expect(result).toEqual([blackShirt, iphone]);
   });
+
+  // "calcado" (calçado) contains "calca": substring matching typed every shoe as pants.
+  it('keeps a shoe whose category is "calçado"', () => {
+    const shoe = {
+      ...blackShirt,
+      id: '3',
+      name: 'Tênis Nike',
+      description: 'Tênis de corrida leve',
+      category: 'Calçado',
+    };
+    expect(filterProductMatchesByMessage('tem tênis da nike?', [shoe])).toEqual(
+      [shoe],
+    );
+    expect(filterProductMatchesByMessage('calça jeans', [shoe])).toEqual([]);
+  });
+
+  it('still matches plurals of the asked type', () => {
+    expect(
+      filterProductMatchesByMessage('camisetas pretas', [blackShirt]),
+    ).toEqual([blackShirt]);
+  });
 });
