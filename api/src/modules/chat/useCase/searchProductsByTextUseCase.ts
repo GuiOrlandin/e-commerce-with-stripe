@@ -17,6 +17,7 @@ import {
   PRODUCT_TYPE_GROUPS,
   COLOR_GROUPS,
 } from './productAttributeGroups';
+import { noteChat } from '../quota/usageMeter';
 import { applyRerankOrder, parseRerankOrderedIds } from './rerankOrder';
 import { rrfMerge } from './rrfMerge';
 
@@ -65,10 +66,7 @@ export class SearchProductsByTextUseCase {
 
     let ordered = candidates;
     if (rerankEnabled && ordered.length > 1) {
-      ordered = await this.rerankWithOllama(
-        message,
-        ordered.slice(0, rerankN),
-      );
+      ordered = await this.rerankWithOllama(message, ordered.slice(0, rerankN));
     }
 
     let matches = filterProductMatchesByMessage(message, ordered);
@@ -140,10 +138,13 @@ export class SearchProductsByTextUseCase {
       const orderedIds = parseRerankOrderedIds(raw);
       if (!orderedIds) {
         this.logger.warn('Rerank parse failed; keeping RRF order');
+        noteChat({ rerank: 'parse_failed' });
         return candidates;
       }
+      noteChat({ rerank: 'ok' });
       return applyRerankOrder(candidates, orderedIds);
     } catch (err) {
+      noteChat({ rerank: 'error' });
       this.logger.warn(
         `Rerank Ollama failed; keeping RRF order: ${
           err instanceof Error ? err.message : String(err)

@@ -2,7 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { OllamaService } from 'src/infra/ai/ollama.service';
 import { BASE_SYSTEM_PROMPT, formatCatalog } from '../prompts';
 import { isCatalogBrowseQuestion } from './extractSearchTerms';
-import { JUDGE_FALLBACK_REPLY, judgeReply } from './judgeReply';
+import { noteChat } from '../quota/usageMeter';
+import { JUDGE_FALLBACK_REPLY, judgeReply, reasonKinds } from './judgeReply';
 
 type Candidate = {
   id: string;
@@ -45,6 +46,10 @@ ${formatCatalog(matches)}`;
     const verdict = judgeReply(reply, matches);
     if (!('reasons' in verdict)) return reply;
     this.logger.warn(`judge rejected reply: ${verdict.reasons.join('; ')}`);
+    noteChat({
+      judgeBlocked: true,
+      judgeReasons: reasonKinds(verdict.reasons),
+    });
     return JUDGE_FALLBACK_REPLY;
   }
 }

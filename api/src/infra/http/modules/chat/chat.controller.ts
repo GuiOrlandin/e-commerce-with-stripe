@@ -14,7 +14,7 @@ import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProd
 import { ChatMessageBody, ChatV2MessageBody } from './dtos/chatMessageBody';
 import { ChatQuotaGuard } from './guards/chatQuota.guard';
 import { ChatUsageInterceptor } from './interceptors/chatUsage.interceptor';
-import { meteredTokens } from 'src/modules/chat/quota/usageMeter';
+import { meteredTokens, noteChat } from 'src/modules/chat/quota/usageMeter';
 
 @Controller('chat')
 @UseGuards(ChatQuotaGuard)
@@ -28,9 +28,11 @@ export class ChatController {
 
   @Post()
   async chat(@Body() body: ChatMessageBody) {
+    noteChat({ route: 'v1' });
     const { candidates, matches } = await this.searchProducts.execute(
       body.message,
     );
+    noteChat({ matchCount: matches.length });
     const reply = await this.generateReply.execute(body.message, matches);
 
     return {
@@ -60,11 +62,13 @@ export class ChatController {
     @Body() body: ChatV2MessageBody,
     @Request() request: AuthRequestModel,
   ) {
+    noteChat({ route: 'v2' });
     const result = await this.generateV2Reply.execute({
       userId: request.user.id,
       message: body.message,
       conversationId: body.conversationId,
     });
+    noteChat({ matchCount: result.products.length });
 
     return {
       conversationId: result.conversationId,

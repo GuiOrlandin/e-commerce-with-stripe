@@ -1,4 +1,10 @@
-import { meteredTokens, recordUsage, runWithUsageMeter } from './usageMeter';
+import {
+  meteredTokens,
+  noteChat,
+  recordLlmCall,
+  recordUsage,
+  runWithUsageMeter,
+} from './usageMeter';
 
 describe('usageMeter', () => {
   it('sums usage across awaits inside one request', async () => {
@@ -27,5 +33,24 @@ describe('usageMeter', () => {
       }),
     ]);
     expect([a, b]).toEqual([1, 7]);
+  });
+
+  it('accumulates LLM calls and keeps the last noted facts', async () => {
+    const meter = await runWithUsageMeter(async (m) => {
+      recordLlmCall({ model: 'qwen', ms: 100 });
+      await Promise.resolve();
+      recordLlmCall({ calls: 3 });
+      noteChat({ rerank: 'parse_failed', judgeBlocked: true });
+      noteChat({ rerank: 'ok' });
+      return m;
+    });
+    expect(meter).toMatchObject({
+      model: 'qwen',
+      llmCalls: 4,
+      llmMs: 100,
+      rerank: 'ok',
+      judgeBlocked: true,
+      fallback: 'none',
+    });
   });
 });

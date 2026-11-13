@@ -4,15 +4,16 @@ import { randomUUID } from 'crypto';
 import { LangChainChatAgentService } from 'src/infra/ai/langchainChatAgent.service';
 import { OllamaService } from 'src/infra/ai/ollama.service';
 import { BASE_SYSTEM_PROMPT, formatCatalog } from '../prompts';
-import { recordUsage } from '../quota/usageMeter';
+import { noteChat, recordLlmCall, recordUsage } from '../quota/usageMeter';
 import {
   agentCalledSearchProducts,
+  agentTurnLlmCalls,
   agentTurnTokens,
   extractLastAiText,
   extractProductsFromAgentMessages,
 } from './extractProductsFromAgentMessages';
 import { groundProductsInReply } from './groundProductsInReply';
-import { JUDGE_FALLBACK_REPLY, judgeReply } from './judgeReply';
+import { JUDGE_FALLBACK_REPLY, judgeReply, reasonKinds } from './judgeReply';
 import { ChatProductDto } from './parseSearchProductsToolResult';
 import { SearchProductsByTextUseCase } from './searchProductsByTextUseCase';
 
@@ -51,11 +52,22 @@ export class GenerateChatV2ReplyUseCase {
     const messages = agentState.messages ?? [];
     // Tool-side embeddings/rerank are metered in OllamaService; this adds the agent's own LLM calls.
     recordUsage(agentTurnTokens(messages));
+    recordLlmCall({ calls: agentTurnLlmCalls(messages) });
     let products = extractProductsFromAgentMessages(messages);
     let reply = extractLastAiText(messages);
 
     // Fallback only when the model skipped tool-calling (common on small local models).
-    if (!agentCalledSearchProducts(messages)) {
+    const toolCalled = agentCalledSearchProducts(messages);
+    // Empty messages only come from the recursion-limit catch above.
+    noteChat({
+      toolCalled,
+      fallback: toolCalled
+        ? 'none'
+        : messages.length
+          ? 'no_tool'
+          : 'recursion_limit',
+    });
+    if (!toolCalled) {
       const fallback = await this.fallbackSearchAndReply(input.message);
       products = fallback.products;
       reply = fallback.reply;
@@ -74,6 +86,10 @@ export class GenerateChatV2ReplyUseCase {
     const verdict = judgeReply(reply, products);
     if ('reasons' in verdict) {
       this.logger.warn(`judge rejected reply: ${verdict.reasons.join('; ')}`);
+      noteChat({
+        judgeBlocked: true,
+        judgeReasons: reasonKinds(verdict.reasons),
+      });
       reply = JUDGE_FALLBACK_REPLY;
     }
 

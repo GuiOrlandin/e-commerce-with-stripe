@@ -12,6 +12,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { z } from 'zod';
 import { BASE_SYSTEM_PROMPT } from 'src/modules/chat/prompts';
+import { noteChat } from 'src/modules/chat/quota/usageMeter';
 import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
 
 const SYSTEM_PROMPT = `${BASE_SYSTEM_PROMPT}
@@ -91,6 +92,7 @@ export class LangChainChatAgentService {
   }
 
   async invoke(input: { message: string; conversationId: string }) {
+    noteChat({ model: this.config.get<string>('OLLAMA.chatModel') });
     // MemorySaver keeps prior turns per thread_id; only append the new user message.
     return this.agent.invoke(
       { messages: [new HumanMessage(input.message)] },

@@ -26,6 +26,13 @@ export function agentCalledSearchProducts(messages: BaseMessage[]): boolean {
     );
 }
 
+/** One AIMessage per agent LLM call in the current turn. */
+export function agentTurnLlmCalls(messages: BaseMessage[]): number {
+  return messages
+    .slice(lastHumanMessageIndex(messages))
+    .filter((msg) => AIMessage.isInstance(msg)).length;
+}
+
 /** Real tokens (input + output) of every LLM call in the current turn; history resends included. */
 export function agentTurnTokens(messages: BaseMessage[]): number {
   return messages

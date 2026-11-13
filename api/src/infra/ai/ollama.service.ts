@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { estimateTokens } from 'src/modules/chat/quota/estimateTokens';
-import { recordUsage } from 'src/modules/chat/quota/usageMeter';
+import { recordLlmCall, recordUsage } from 'src/modules/chat/quota/usageMeter';
 
 interface OllamaEmbedResponse {
   embedding: number[];
@@ -50,6 +50,7 @@ export class OllamaService {
     options?: { temperature?: number },
   ): Promise<string> {
     const model = this.config.get<string>('OLLAMA.chatModel')!;
+    const startedAt = Date.now();
     const response = await fetch(`${this.baseUrl}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -74,6 +75,7 @@ export class OllamaService {
 
     const data = (await response.json()) as OllamaChatResponse;
     recordUsage((data.prompt_eval_count ?? 0) + (data.eval_count ?? 0));
+    recordLlmCall({ model, ms: Date.now() - startedAt });
     return data.message.content;
   }
 }

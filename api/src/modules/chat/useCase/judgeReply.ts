@@ -37,3 +37,8 @@ export function judgeReply(
 
   return reasons.length ? { ok: false, reasons } : { ok: true };
 }
+
+/** Reason kinds without the matched reply text, safe for structured logs. */
+export function reasonKinds(reasons: string[]): string[] {
+  return [...new Set(reasons.map((r) => r.split(':')[0]))];
+}
