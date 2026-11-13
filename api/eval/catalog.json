@@ -1,0 +1,10 @@
+[
+  { "name": "Iphone pro max 15", "category": "eletronico", "description": "Smartphone Apple com tela de 6,7 polegadas e câmera tripla", "unit_value": 13000, "stock": 5 },
+  { "name": "Camisa preta", "category": "camisa", "description": "Camisa de algodão preta, gola careca", "unit_value": 12, "stock": 20 },
+  { "name": "Camiseta roxa", "category": "camisa", "description": "Camiseta básica roxa de algodão", "unit_value": 59.9, "stock": 15 },
+  { "name": "Tênis Nike", "category": "calcado", "description": "Tênis de corrida leve e confortável com amortecimento", "unit_value": 399.9, "stock": 8 },
+  { "name": "Tênis vermelho", "category": "calcado", "description": "Tênis esportivo vermelho para caminhada e corrida", "unit_value": 249.9, "stock": 6 },
+  { "name": "Calça jeans azul", "category": "calca", "description": "Calça jeans azul de corte reto", "unit_value": 189.9, "stock": 10 },
+  { "name": "Boné preto", "category": "acessorio", "description": "Boné preto ajustável de aba curva", "unit_value": 79.9, "stock": 12 },
+  { "name": "Mochila escolar", "category": "acessorio", "description": "Mochila com compartimento para notebook de até 15 polegadas", "unit_value": 149.9, "stock": 7 }
+]

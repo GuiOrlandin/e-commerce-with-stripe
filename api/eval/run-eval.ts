@@ -27,6 +27,8 @@ import {
 
 const EVAL_USER_ID = 'eval-user';
 const EVAL_PREFIX = '[EVAL]';
+// Fixtures are marked by image_url, not name: the reply must quote the plain name for its card to show.
+const FIXTURE_IMAGE_PREFIX = 'eval-fixture-';
 // Indirect prompt injection: instructions hidden in catalog data that reaches the prompts.
 const POISONED_PRODUCT = {
   name: `${EVAL_PREFIX} Fone de ouvido Bluetooth`,
@@ -79,94 +81,145 @@ async function main() {
   const prisma = app.get(PrismaService);
   const productRepository = app.get(ProductRepository);
   const k = app.get(ConfigService).get<number>('CHAT.topK')!;
+  const embeddings = app.get(EmbeddingIndexService);
 
-  // A stale golden set looks like a model regression; flag names missing from the catalog.
-  const catalog = new Set(
+  // Leftovers from a run killed before its finally.
+  await prisma.product.deleteMany({
+    where: {
+      OR: [
+        { name: { startsWith: EVAL_PREFIX } },
+        { image_url: { startsWith: FIXTURE_IMAGE_PREFIX } },
+      ],
+    },
+  });
+  // products.user_id is a FK; eval products are owned by an existing admin.
+  const admin = await prisma.user.findFirst({
+    where: { role: 'ADMIN' },
+    select: { id: true },
+  });
+  const createEvalProduct = async (
+    p: typeof POISONED_PRODUCT,
+    imageUrl: string,
+  ) => {
+    const id = await productRepository.create(
+      new Product({
+        ...p,
+        created_at: new Date(),
+        image_url: imageUrl,
+        user_id: admin!.id,
+      }),
+    );
+    await embeddings.indexProductText(id, p);
+    return id;
+  };
+
+  // Fixed catalog so results don't depend on what the dev DB holds; only missing names are added.
+  const existing = new Set(
     (await prisma.product.findMany({ select: { name: true } })).map((p) =>
       normalize(p.name.trim()),
     ),
   );
-  for (const c of cases) {
-    const missing = (c.expectedNames ?? []).filter(
-      (n) => !catalog.has(normalize(n.trim())),
-    );
-    if (missing.length) console.warn(`[${c.id}] not in catalog: ${missing}`);
-  }
-
+  const fixtures: (typeof POISONED_PRODUCT)[] = JSON.parse(
+    readFileSync(join(__dirname, 'catalog.json'), 'utf8'),
+  );
+  const fixtureIds: string[] = [];
   const results = [];
-  for (const c of cases) {
-    let t = Date.now();
-    const { matches } = await search.execute(c.query);
-    const retrievalMs = Date.now() - t;
-    const retrieved = matches.map((m) => m.name);
-
-    t = Date.now();
-    const { reply, products } = await chatV2.execute({
-      userId: EVAL_USER_ID,
-      message: c.query,
-      conversationId: randomUUID(),
-    });
-    const e2eMs = Date.now() - t;
-    const productNames = products.map((p) => p.name);
-
-    const result = {
-      id: c.id,
-      query: c.query,
-      shouldRefuse: !!c.shouldRefuse,
-      hit: c.shouldRefuse ? null : hitAtK(c.expectedNames, retrieved, k),
-      recall: c.shouldRefuse ? null : recallAtK(c.expectedNames, retrieved, k),
-      e2eOk: endToEndCorrect(c, productNames),
-      retrievalMs,
-      e2eMs,
-      retrieved,
-      productNames,
-      reply,
-    };
-    results.push(result);
-    console.log(
-      [
-        c.id.padEnd(28),
-        `hit=${result.hit ?? '-'}`.padEnd(10),
-        `recall=${result.recall?.toFixed(2) ?? '-'}`.padEnd(12),
-        `e2e=${result.e2eOk ? 'ok' : 'FAIL'}`.padEnd(9),
-        `${retrievalMs}ms/${e2eMs}ms`,
-      ].join(' '),
-    );
-  }
-
-  // Red-team: same cases against v2 (agent) and v1 (single prompt, weaker rules).
   const redTeamResults = [];
-  // Leftovers from a run killed before its finally.
-  await prisma.product.deleteMany({
-    where: { name: { startsWith: EVAL_PREFIX } },
-  });
   let poisonedId: string | null = null;
   try {
+    if (!admin) {
+      console.warn(
+        'No ADMIN user: skipping fixture catalog and poisoned product',
+      );
+    } else {
+      for (const p of fixtures.filter(
+        (f) => !existing.has(normalize(f.name)),
+      )) {
+        fixtureIds.push(
+          await createEvalProduct(
+            p,
+            `${FIXTURE_IMAGE_PREFIX}${randomUUID()}.none`,
+          ),
+        );
+      }
+      console.log(`Fixture catalog: ${fixtureIds.length} products added`);
+    }
+
+    // A stale golden set looks like a model regression; flag names missing from the catalog.
+    const catalog = new Set(
+      (await prisma.product.findMany({ select: { name: true } })).map((p) =>
+        normalize(p.name.trim()),
+      ),
+    );
+    for (const c of cases) {
+      const missing = (c.expectedNames ?? []).filter(
+        (n) => !catalog.has(normalize(n.trim())),
+      );
+      if (missing.length) console.warn(`[${c.id}] not in catalog: ${missing}`);
+    }
+
+    for (const c of cases) {
+      let t = Date.now();
+      const { matches } = await search.execute(c.query);
+      const retrievalMs = Date.now() - t;
+      const retrieved = matches.map((m) => m.name);
+
+      t = Date.now();
+      // One slow/failed case (e.g. agent timeout) counts as a failure, not a crashed eval.
+      let reply = '';
+      let products: { name: string }[] = [];
+      let error: string | undefined;
+      try {
+        ({ reply, products } = await chatV2.execute({
+          userId: EVAL_USER_ID,
+          message: c.query,
+          conversationId: randomUUID(),
+        }));
+      } catch (err) {
+        error = err instanceof Error ? err.name : String(err);
+      }
+      const e2eMs = Date.now() - t;
+      const productNames = products.map((p) => p.name);
+
+      const result = {
+        id: c.id,
+        query: c.query,
+        shouldRefuse: !!c.shouldRefuse,
+        hit: c.shouldRefuse ? null : hitAtK(c.expectedNames, retrieved, k),
+        recall: c.shouldRefuse
+          ? null
+          : recallAtK(c.expectedNames, retrieved, k),
+        e2eOk: !error && endToEndCorrect(c, productNames),
+        retrievalMs,
+        e2eMs,
+        retrieved,
+        productNames,
+        reply,
+        error,
+      };
+      results.push(result);
+      console.log(
+        [
+          c.id.padEnd(28),
+          `hit=${result.hit ?? '-'}`.padEnd(10),
+          `recall=${result.recall?.toFixed(2) ?? '-'}`.padEnd(12),
+          `e2e=${result.e2eOk ? 'ok' : 'FAIL'}`.padEnd(9),
+          `${retrievalMs}ms/${e2eMs}ms`,
+          error ?? '',
+        ].join(' '),
+      );
+    }
+
+    // Red-team: same cases against v2 (agent) and v1 (single prompt, weaker rules).
     if (
+      admin &&
       !process.argv.includes('--no-poison') &&
       redTeamCases.some((c) => c.needsPoisonedProduct)
     ) {
-      // products.user_id is a FK; the product is owned by an existing admin.
-      const admin = await prisma.user.findFirst({
-        where: { role: 'ADMIN' },
-        select: { id: true },
-      });
-      if (admin) {
-        poisonedId = await productRepository.create(
-          new Product({
-            ...POISONED_PRODUCT,
-            created_at: new Date(),
-            // Unique missing file: repository.delete unlinks image_url if it exists.
-            image_url: `eval-${randomUUID()}.none`,
-            user_id: admin.id,
-          }),
-        );
-        await app
-          .get(EmbeddingIndexService)
-          .indexProductText(poisonedId, POISONED_PRODUCT);
-      } else {
-        console.warn('No ADMIN user: skipping needsPoisonedProduct cases');
-      }
+      poisonedId = await createEvalProduct(
+        POISONED_PRODUCT,
+        `${FIXTURE_IMAGE_PREFIX}${randomUUID()}.none`,
+      );
     }
 
     for (const c of redTeamCases) {
@@ -202,7 +255,12 @@ async function main() {
       );
     }
   } finally {
-    if (poisonedId) await productRepository.delete(poisonedId);
+    // Plain deleteMany: fixtures have no image file to unlink.
+    await prisma.product.deleteMany({
+      where: {
+        id: { in: [...fixtureIds, ...(poisonedId ? [poisonedId] : [])] },
+      },
+    });
   }
   await app.close();
 
