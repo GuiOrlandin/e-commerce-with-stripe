@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { OllamaService } from 'src/infra/ai/ollama.service';
 import { BASE_SYSTEM_PROMPT, formatCatalog } from '../prompts';
 import { isCatalogBrowseQuestion } from './extractSearchTerms';
+import { JUDGE_FALLBACK_REPLY, judgeReply } from './judgeReply';
 
 type Candidate = {
   id: string;
@@ -14,6 +15,8 @@ type Candidate = {
 
 @Injectable()
 export class GenerateChatReplyUseCase {
+  private readonly logger = new Logger(GenerateChatReplyUseCase.name);
+
   constructor(private ollama: OllamaService) {}
 
   async execute(userMessage: string, matches: Candidate[]): Promise<string> {
@@ -38,6 +41,10 @@ export class GenerateChatReplyUseCase {
 
 ${formatCatalog(matches)}`;
 
-    return this.ollama.chat(systemPrompt, userMessage);
+    const reply = await this.ollama.chat(systemPrompt, userMessage);
+    const verdict = judgeReply(reply, matches);
+    if (!('reasons' in verdict)) return reply;
+    this.logger.warn(`judge rejected reply: ${verdict.reasons.join('; ')}`);
+    return JUDGE_FALLBACK_REPLY;
   }
 }

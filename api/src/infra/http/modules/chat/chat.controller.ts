@@ -2,6 +2,7 @@ import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthRequestModel } from '../auth/models/AuthRequestModel';
 import { GenerateChatReplyUseCase } from 'src/modules/chat/useCase/generateChatReplyUseCase';
 import { GenerateChatV2ReplyUseCase } from 'src/modules/chat/useCase/generateChatV2ReplyUseCase';
+import { groundProductsInReply } from 'src/modules/chat/useCase/groundProductsInReply';
 import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
 import { ChatMessageBody, ChatV2MessageBody } from './dtos/chatMessageBody';
 import { ChatQuotaGuard } from './guards/chatQuota.guard';
@@ -24,7 +25,8 @@ export class ChatController {
 
     return {
       reply,
-      products: matches.map((p) => ({
+      // Cards follow the reply: refusals and judge fallbacks name no product, so they ship none.
+      products: groundProductsInReply(matches, reply).map((p) => ({
         id: p.id,
         name: p.name,
         description: p.description,

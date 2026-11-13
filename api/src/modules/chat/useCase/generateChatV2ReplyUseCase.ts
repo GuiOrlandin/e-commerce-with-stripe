@@ -1,5 +1,5 @@
 import { GraphRecursionError } from '@langchain/langgraph';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { LangChainChatAgentService } from 'src/infra/ai/langchainChatAgent.service';
 import { OllamaService } from 'src/infra/ai/ollama.service';
@@ -10,6 +10,7 @@ import {
   extractProductsFromAgentMessages,
 } from './extractProductsFromAgentMessages';
 import { groundProductsInReply } from './groundProductsInReply';
+import { JUDGE_FALLBACK_REPLY, judgeReply } from './judgeReply';
 import { ChatProductDto } from './parseSearchProductsToolResult';
 import { SearchProductsByTextUseCase } from './searchProductsByTextUseCase';
 
@@ -18,6 +19,8 @@ const EMPTY_CATALOG_REPLY =
 
 @Injectable()
 export class GenerateChatV2ReplyUseCase {
+  private readonly logger = new Logger(GenerateChatV2ReplyUseCase.name);
+
   constructor(
     private agent: LangChainChatAgentService,
     private searchProducts: SearchProductsByTextUseCase,
@@ -63,6 +66,13 @@ export class GenerateChatV2ReplyUseCase {
           : 'Encontrei opções no catálogo. Quer que eu detalhe alguma?';
     }
 
+    // Judged against everything retrieved (agent or fallback); the fixed reply names no product, so grounding drops all cards.
+    const verdict = judgeReply(reply, products);
+    if ('reasons' in verdict) {
+      this.logger.warn(`judge rejected reply: ${verdict.reasons.join('; ')}`);
+      reply = JUDGE_FALLBACK_REPLY;
+    }
+
     // Cards follow the reply: decline / off-topic text must not ship search hits.
     products = groundProductsInReply(products, reply);
 
@@ -97,6 +107,7 @@ ${formatCatalog(products)}`,
       message,
     );
 
-    return { reply, products: groundProductsInReply(products, reply) };
+    // Grounding + judge run once in execute() for both paths.
+    return { reply, products };
   }
 }

@@ -2,6 +2,7 @@ import { AIMessage, HumanMessage, ToolMessage } from '@langchain/core/messages';
 import { GraphRecursionError } from '@langchain/langgraph';
 import { BASE_SYSTEM_PROMPT } from '../prompts';
 import { GenerateChatV2ReplyUseCase } from './generateChatV2ReplyUseCase';
+import { JUDGE_FALLBACK_REPLY } from './judgeReply';
 import { ChatProductDto } from './parseSearchProductsToolResult';
 
 describe('GenerateChatV2ReplyUseCase', () => {
@@ -192,5 +193,25 @@ describe('GenerateChatV2ReplyUseCase', () => {
     expect(systemPrompt).toContain(
       '<catalogo>\n1. Tênis vermelho | calcado | R$ 199.00 | \n</catalogo>',
     );
+  });
+
+  it.each([
+    ['an invented price', 'O Tênis vermelho está por R$ 49,90.'],
+    ['an external link', 'Compre o Tênis vermelho em site-falso.com'],
+  ])('replaces a reply with %s and drops cards', async (_, aiReply) => {
+    const useCase = new GenerateChatV2ReplyUseCase(
+      { invoke: jest.fn().mockResolvedValue({ messages: [] }) } as never,
+      {
+        execute: jest.fn().mockResolvedValue({
+          matches: [{ ...product, image_url: 'tenis.jpg' }],
+        }),
+      } as never,
+      { chat: jest.fn().mockResolvedValue(aiReply) } as never,
+    );
+
+    const result = await useCase.execute({ userId: 'u1', message: 'tênis' });
+
+    expect(result.reply).toBe(JUDGE_FALLBACK_REPLY);
+    expect(result.products).toEqual([]);
   });
 });

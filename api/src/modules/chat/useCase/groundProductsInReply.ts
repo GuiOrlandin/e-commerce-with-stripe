@@ -1,17 +1,10 @@
-import { ChatProductDto } from './parseSearchProductsToolResult';
-
-function normalize(text: string): string {
-  return text
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .toLowerCase();
-}
+import { normalize } from './productAttributeGroups';
 
 /** Keep only catalog products the assistant actually named in the reply. */
-export function groundProductsInReply(
-  products: ChatProductDto[],
+export function groundProductsInReply<T extends { name: string }>(
+  products: T[],
   reply: string,
-): ChatProductDto[] {
+): T[] {
   const haystack = normalize(reply);
   if (!haystack || products.length === 0) return [];
 

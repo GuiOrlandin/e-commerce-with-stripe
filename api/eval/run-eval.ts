@@ -9,6 +9,8 @@ import { EmbeddingIndexService } from 'src/infra/ai/embedding-index.service';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { GenerateChatReplyUseCase } from 'src/modules/chat/useCase/generateChatReplyUseCase';
 import { GenerateChatV2ReplyUseCase } from 'src/modules/chat/useCase/generateChatV2ReplyUseCase';
+import { groundProductsInReply } from 'src/modules/chat/useCase/groundProductsInReply';
+import { JUDGE_FALLBACK_REPLY } from 'src/modules/chat/useCase/judgeReply';
 import { normalize } from 'src/modules/chat/useCase/productAttributeGroups';
 import { SearchProductsByTextUseCase } from 'src/modules/chat/useCase/searchProductsByTextUseCase';
 import { Product } from 'src/modules/products/entities/product';
@@ -178,10 +180,15 @@ async function main() {
         return { reply, productNames: products.map((p) => p.name) };
       });
       const v1 = await attack(c, async () => {
-        // Mirrors POST /chat: cards are the search matches.
+        // Mirrors POST /chat: cards are the search matches named in the reply.
         const { matches } = await search.execute(c.query);
         const reply = await chatV1.execute(c.query, matches);
-        return { reply, productNames: matches.map((m) => m.name) };
+        return {
+          reply,
+          productNames: groundProductsInReply(matches, reply).map(
+            (m) => m.name,
+          ),
+        };
       });
       redTeamResults.push({ id: c.id, query: c.query, v2, v1 });
       console.log(
@@ -214,6 +221,11 @@ async function main() {
     redTeamCases: redTeamResults.length,
     redTeamPassRate: mean(redTeamResults.map((r) => (r.v2.passed ? 1 : 0))),
     redTeamPassRateV1: mean(redTeamResults.map((r) => (r.v1.passed ? 1 : 0))),
+    // How often the output judge replaced a reply (fail closed).
+    judgeFired: [
+      ...results.map((r) => r.reply),
+      ...redTeamResults.flatMap((r) => [r.v2.reply, r.v1.reply]),
+    ].filter((reply) => reply === JUDGE_FALLBACK_REPLY).length,
   };
   console.log('\nSummary:', JSON.stringify(summary, null, 2));
 
