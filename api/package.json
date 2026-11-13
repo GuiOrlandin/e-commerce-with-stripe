@@ -27,6 +27,7 @@
     "db:studio": "prisma studio",
     "db:create-admin": "ts-node scripts/create-admin.ts",
     "db:reindex-products": "ts-node scripts/reindex-products.ts",
+    "eval": "NODE_PATH=. ts-node eval/run-eval.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -94,6 +95,10 @@
       "ts"
     ],
     "rootDir": "src",
+    "roots": [
+      "<rootDir>",
+      "<rootDir>/../eval"
+    ],
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
