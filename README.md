@@ -6,6 +6,10 @@ O backend foi desenvolvido com Node.js, PostgreSQL e TypeScript, utilizando o fr
 
 O foco principal deste projeto foi integrar o Stripe como método de pagamento, aprimorando minhas habilidades em integração com APIs de pagamento. Com essa integração, pude aprimorar meus conhecimentos em pagamentos online, automação de cobranças e manipulação segura de dados financeiros.
 
+### Fluxo do chat com IA
+
+![Fluxo do chat com IA](docs/ai-flow.gif)
+
 ### Clonando o repositório
 
 ```sh
