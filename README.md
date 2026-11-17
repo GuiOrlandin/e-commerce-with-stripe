@@ -8,7 +8,7 @@ O foco principal deste projeto foi integrar o Stripe como método de pagamento, 
 
 ### Fluxo do chat com IA
 
-![Fluxo do chat com IA](docs/ai-flow.gif)
+![Fluxo do chat com IA](assets/ai-flow.gif)
 
 ### Clonando o repositório
 
