@@ -82,3 +82,18 @@ npm run test
 2. Reindexe produtos: `cd api && npm run db:reindex-products`.
 3. UI usa `POST /chat/v2` (LangChain agent + `conversationId`). O pipeline antigo permanece em `POST /chat`.
 4. Chat exige **login** (JWT). Há throttle por usuário e cota diária de tokens estimados (ver `.env.example`).
+
+### Estudos de IA aplicados no projeto
+
+O chat foi a forma que encontrei de estudar AI Engineering na prática. Cada conceito abaixo está implementado no código:
+
+- **Embeddings + pgvector**: produtos viram vetores (`nomic-embed-text` via Ollama) guardados no PostgreSQL com pgvector.
+- **Busca híbrida + RRF**: busca por palavra-chave e semântica combinadas com Reciprocal Rank Fusion (`rrfMerge.ts`).
+- **Re-ranking**: um modelo local reordena os candidatos antes da resposta (`rerankOrder.ts`).
+- **RAG e grounding**: o agente responde só com produtos do catálogo, e os produtos citados são conferidos na resposta (`groundProductsInReply.ts`).
+- **Agente com tools (LangChain)**: loop ReAct com tool de busca, memória por usuário/conversa e limite de iterações e de histórico.
+- **Prompt engineering defensivo**: system prompt compartilhado e catálogo delimitado contra prompt injection (`prompts.ts`).
+- **Output judge**: validação determinística de preços e links antes de devolver a resposta (`judgeReply.ts`).
+- **Custo e limites**: throttle por usuário e cota diária liquidada com o uso real de tokens.
+- **Avaliação offline**: golden set com métricas hit@k/recall@k e casos de red-team (`npm run eval`).
+- **Observabilidade**: uma linha de log estruturada por requisição do chat.
