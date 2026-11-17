@@ -1,5 +1,7 @@
 # APP
 
+🇺🇸 [Read in English](README.en.md)
+
 Desenvolvi este projeto com o objetivo de criar uma plataforma de e-commerce onde os usuários podem adicionar produtos ao carrinho, remover e finalizar compras, ajustem quantidades, realizem pagamentos e após o pagamento o produto é debitado e em caso de não haver estoque o produto é retirado da pagina de produtos. O frontend foi construído utilizando React, Zustand e React Query, cada uma escolhida por suas qualidades específicas. O React, por exemplo, permite a criação de componentes reutilizáveis, facilitando a manutenção e acelerando o desenvolvimento. Para o gerenciamento de estado global devido à sua simplicidade e eficiência, foi utilizado o Zustand, permitindo o controle de informações como o carrinho de compras e dados do usuário entre diferentes páginas.  Para o gerenciamento de chamadas de API, caching e atualização de dados foi utilizado o React Query.
 
 O backend foi desenvolvido com Node.js, PostgreSQL e TypeScript, utilizando o framework Nest.js para a construção das APIs. O Node.js foi escolhido pela sua capacidade de criar aplicações rápidas e escaláveis com JavaScript, enquanto o PostgreSQL oferece consistência relacional para informações de produtos e usuários. O Prisma foi utilizado para o gerenciamento do banco de dados.
