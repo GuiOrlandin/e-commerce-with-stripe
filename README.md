@@ -82,5 +82,3 @@ npm run test
 2. Reindexe produtos: `cd api && npm run db:reindex-products`.
 3. UI usa `POST /chat/v2` (LangChain agent + `conversationId`). O pipeline antigo permanece em `POST /chat`.
 4. Chat exige **login** (JWT). Há throttle por usuário e cota diária de tokens estimados (ver `.env.example`).
-
-Docs: [guia AI Engineer](docs/learning/ai-engineer-concepts-from-this-project.md) · [glossário](docs/ai-glossary.md) · [ADR chat LangChain](docs/adr/chat-langchain-v1.md) · [throttle & cota](docs/learning/throttle-and-token-quota.md).
